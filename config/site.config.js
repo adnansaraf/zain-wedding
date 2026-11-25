@@ -176,9 +176,9 @@ const SITE_CONFIG = {
   },
 
   guestbook: {
-    supabaseUrl: "https://fbhc80u2qp9jzhpcbskg.supabase.co",
-    publishableKey: "sb_publishable_-fbhc80u2Qp9j-ZhPCBsKg_CznVtiU0",
-    tableName: "wishes",
+    supabaseUrl: "YOUR_SUPABASE_URL",
+    publishableKey: "YOUR_SUPABASE_PUBLISHABLE_KEY",
+    tableName: "zain_hanna_wishes",
     isSample: false,
     sampleWishes: [
       {

@@ -55,7 +55,7 @@ A production-ready, zero-dependency wedding invitation website (Groom's side) bu
 ## Setup & Deployment
 
 ### 1. Supabase Guestbook Database
-Run `supabase/schema.sql` inside your Supabase Dashboard **SQL Editor** to create the `public.wishes` table, index, and Row Level Security (`anon` select/insert) policies.
+Run `supabase/schema.sql` inside your Supabase Dashboard **SQL Editor** to create the `public.zain_hanna_wishes` table, index, and Row Level Security (`anon` select/insert) policies.
 
 Update `guestbook.supabaseUrl`, `guestbook.publishableKey`, and `guestbook.isSample` in `config/site.config.js`.
 

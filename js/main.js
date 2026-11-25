@@ -386,13 +386,22 @@
     isSupabaseConfigured: function () {
       const gb = config.guestbook;
       if (!gb || !gb.supabaseUrl || !gb.publishableKey) return false;
-      if (gb.supabaseUrl.includes('YOUR_SUPABASE_URL') || gb.publishableKey.includes('YOUR_SUPABASE_PUBLISHABLE_KEY')) {
+      if (!gb.supabaseUrl.startsWith('https://') || gb.supabaseUrl.includes('YOUR_SUPABASE_URL') || gb.publishableKey.includes('YOUR_SUPABASE_PUBLISHABLE_KEY')) {
         return false;
       }
       // Accept both legacy eyJ... JWT keys and new sb_publishable_... keys
       const hasValidKey = gb.publishableKey.startsWith('eyJ') || gb.publishableKey.startsWith('sb_publishable_');
       if (!hasValidKey) return false;
       return true;
+    },
+
+    buildHeaders: function (publishableKey, extra) {
+      const headers = Object.assign({ 'apikey': publishableKey }, extra || {});
+      // Only legacy eyJ... keys are JWTs; sb_publishable_... keys must NOT be sent as Bearer tokens
+      if (publishableKey && publishableKey.startsWith('eyJ')) {
+        headers['Authorization'] = `Bearer ${publishableKey}`;
+      }
+      return headers;
     },
 
     fetchWishes: async function (page = 0) {
@@ -407,7 +416,7 @@
       }
 
       const gb = config.guestbook;
-      const table = gb.tableName || 'wishes';
+      const table = gb.tableName || 'zain_hanna_wishes';
       const offset = page * this.pageSize;
       const limit = this.pageSize;
       const url = `${gb.supabaseUrl.replace(/\/$/, '')}/rest/v1/${table}?select=*&visible=eq.true&order=created_at.desc&offset=${offset}&limit=${limit}`;
@@ -415,11 +424,7 @@
       try {
         const response = await fetch(url, {
           method: 'GET',
-          headers: {
-            'apikey': gb.publishableKey,
-            'Authorization': `Bearer ${gb.publishableKey}`,
-            'Prefer': 'count=exact'
-          }
+          headers: this.buildHeaders(gb.publishableKey, { 'Prefer': 'count=exact' })
         });
 
         if (!response.ok) {
@@ -471,7 +476,7 @@
       }
 
       const gb = config.guestbook;
-      const table = gb.tableName || 'wishes';
+      const table = gb.tableName || 'zain_hanna_wishes';
       const url = `${gb.supabaseUrl.replace(/\/$/, '')}/rest/v1/${table}`;
 
       const payload = {
@@ -482,12 +487,10 @@
 
       const response = await fetch(url, {
         method: 'POST',
-        headers: {
-          'apikey': gb.publishableKey,
-          'Authorization': `Bearer ${gb.publishableKey}`,
+        headers: this.buildHeaders(gb.publishableKey, {
           'Content-Type': 'application/json',
           'Prefer': 'return=representation'
-        },
+        }),
         body: JSON.stringify(payload)
       });
 
