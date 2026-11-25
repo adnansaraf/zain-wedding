@@ -1,0 +1,15 @@
+# OS & Editor metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*~
+
+# Local archives, logs, and environment files
+*.zip
+*.log
+.env
+.env.*
+node_modules/

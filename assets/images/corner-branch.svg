@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 280" width="280" height="280" fill="none">
+  <defs>
+    <linearGradient id="branchGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8D19E"/>
+      <stop offset="50%" stop-color="#C5A566"/>
+      <stop offset="100%" stop-color="#9E7B3E"/>
+    </linearGradient>
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EAD9AB"/>
+      <stop offset="60%" stop-color="#C5A566"/>
+      <stop offset="100%" stop-color="#1E4332"/>
+    </linearGradient>
+  </defs>
+  <!-- Curving main vine stem -->
+  <path d="M 0 14 C 90 25, 170 85, 220 180 C 245 228, 255 260, 260 280" stroke="url(#branchGold)" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 12 0 C 80 40, 150 110, 185 200 C 200 240, 205 265, 208 280" stroke="url(#branchGold)" stroke-width="1.2" opacity="0.6" stroke-linecap="round"/>
+
+  <!-- Olive / Laurel Leaves along the branches -->
+  <!-- Leaf 1 -->
+  <path d="M 30 18 C 45 6, 62 10, 68 25 C 55 35, 38 32, 30 18 Z" fill="url(#leafGrad)" opacity="0.9"/>
+  <!-- Leaf 2 -->
+  <path d="M 55 30 C 72 20, 90 28, 92 46 C 78 52, 60 45, 55 30 Z" fill="url(#leafGrad)" opacity="0.95"/>
+  <!-- Leaf 3 -->
+  <path d="M 85 48 C 105 38, 122 50, 122 68 C 105 72, 88 64, 85 48 Z" fill="url(#leafGrad)" opacity="0.9"/>
+  <!-- Leaf 4 -->
+  <path d="M 115 72 C 135 62, 154 76, 150 96 C 132 98, 116 88, 115 72 Z" fill="url(#leafGrad)" opacity="0.95"/>
+  <!-- Leaf 5 -->
+  <path d="M 145 102 C 168 95, 184 112, 178 132 C 160 132, 144 118, 145 102 Z" fill="url(#leafGrad)" opacity="0.9"/>
+  <!-- Leaf 6 -->
+  <path d="M 172 136 C 196 130, 210 150, 202 170 C 184 168, 170 152, 172 136 Z" fill="url(#leafGrad)" opacity="0.95"/>
+  <!-- Leaf 7 -->
+  <path d="M 195 174 C 220 172, 232 195, 222 214 C 204 210, 192 192, 195 174 Z" fill="url(#leafGrad)" opacity="0.9"/>
+  <!-- Leaf 8 -->
+  <path d="M 218 215 C 242 216, 252 240, 240 258 C 224 252, 214 232, 218 215 Z" fill="url(#leafGrad)" opacity="0.95"/>
+
+  <!-- Smaller secondary leaves -->
+  <path d="M 40 44 C 52 35, 65 42, 64 54 C 52 57, 42 52, 40 44 Z" fill="url(#leafGrad)" opacity="0.8"/>
+  <path d="M 72 72 C 86 64, 100 72, 98 86 C 85 88, 74 82, 72 72 Z" fill="url(#leafGrad)" opacity="0.8"/>
+  <path d="M 104 104 C 120 96, 134 106, 130 120 C 116 120, 106 114, 104 104 Z" fill="url(#leafGrad)" opacity="0.8"/>
+  <path d="M 134 140 C 150 134, 162 146, 156 160 C 142 158, 134 150, 134 140 Z" fill="url(#leafGrad)" opacity="0.8"/>
+  <path d="M 160 180 C 176 176, 186 190, 180 204 C 166 200, 160 190, 160 180 Z" fill="url(#leafGrad)" opacity="0.8"/>
+
+  <!-- Golden Berries / Buds -->
+  <circle cx="50" cy="22" r="3.5" fill="url(#branchGold)"/>
+  <circle cx="82" cy="40" r="3.5" fill="url(#branchGold)"/>
+  <circle cx="112" cy="62" r="3.5" fill="url(#branchGold)"/>
+  <circle cx="142" cy="90" r="3.5" fill="url(#branchGold)"/>
+  <circle cx="170" cy="122" r="3.5" fill="url(#branchGold)"/>
+  <circle cx="195" cy="160" r="3.5" fill="url(#branchGold)"/>
+  <circle cx="218" cy="200" r="3.5" fill="url(#branchGold)"/>
+</svg>
