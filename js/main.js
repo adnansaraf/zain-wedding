@@ -1,8 +1,7 @@
 /**
- * WEDDING INVITATION — PRODUCTION JAVASCRIPT (LIGHT LUXURY ROYAL EDITION)
+ * Wedding Invitation — Interactive Script
  * Dr. Sayed Zain Mashhoor & Adv. Hanna Musthafa
- * 
- * Vanilla JS • Zero Dependencies • Accessible • Zero Lag Opening
+ * Vanilla JS · Zero Dependencies · Accessible · 60fps
  */
 
 (function () {
@@ -10,148 +9,228 @@
 
   const config = window.SITE_CONFIG || {};
 
-  // -------------------------------------------------------------------------
-  // 1. CONTENT HYDRATION (Driven entirely by site.config.js)
-  // -------------------------------------------------------------------------
-  function applyThemeTokens() {
-    if (!config.theme || !config.theme.tokens) return;
-    const root = document.documentElement;
-    const tokens = config.theme.tokens;
-
-    if (tokens.bgPrimary) root.style.setProperty('--bg-primary', tokens.bgPrimary);
-    if (tokens.bgSecondary) root.style.setProperty('--bg-secondary', tokens.bgSecondary);
-    if (tokens.bgCard) root.style.setProperty('--bg-card', tokens.bgCard);
-    if (tokens.accent) root.style.setProperty('--accent', tokens.accent);
-    if (tokens.accentDeep) root.style.setProperty('--accent-deep', tokens.accentDeep);
-    if (tokens.accentSoft) root.style.setProperty('--accent-soft', tokens.accentSoft);
-    if (tokens.gold) root.style.setProperty('--gold', tokens.gold);
-    if (tokens.goldBright) root.style.setProperty('--gold-bright', tokens.goldBright);
-    if (tokens.goldDark) root.style.setProperty('--gold-dark', tokens.goldDark);
-    if (tokens.textPrimary) root.style.setProperty('--text-primary', tokens.textPrimary);
-    if (tokens.textDark) root.style.setProperty('--text-dark', tokens.textDark);
-    if (tokens.textSecondary) root.style.setProperty('--text-secondary', tokens.textSecondary);
-    if (tokens.textMuted) root.style.setProperty('--text-muted', tokens.textMuted);
-    if (tokens.borderGold) root.style.setProperty('--border-gold', tokens.borderGold);
+  function setText(id, value) {
+    if (value === undefined || value === null || value === '') return;
+    const el = document.getElementById(id);
+    const str = String(value);
+    if (el && el.textContent !== str) el.textContent = str;
   }
 
-  function hydrateContent() {
-    // 1. Meta & Document
-    if (config.meta) {
-      if (config.meta.title) {
-        document.title = config.meta.title;
-        const el = document.getElementById('metaTitle');
-        if (el) el.textContent = config.meta.title;
-      }
-      if (config.meta.description) {
-        const descEl = document.getElementById('metaDescription');
-        if (descEl) descEl.setAttribute('content', config.meta.description);
-      }
-      if (config.meta.ogImage) {
-        const ogImg = document.getElementById('ogImage');
-        if (ogImg) ogImg.setAttribute('content', config.meta.ogImage);
-        const twImg = document.getElementById('twitterImage');
-        if (twImg) twImg.setAttribute('content', config.meta.ogImage);
-      }
-      if (config.meta.url) {
-        const ogUrl = document.getElementById('ogUrl');
-        if (ogUrl) ogUrl.setAttribute('content', config.meta.url);
-      }
+  function setAttr(id, attr, value) {
+    if (!value) return;
+    const el = document.getElementById(id);
+    if (el && el.getAttribute(attr) !== value) el.setAttribute(attr, value);
+  }
+
+  const BUILTIN_THEMES = {
+    ivorySage: {
+      bg: '#FBF9F4', bg2: '#F3EEE2', tint: '#C9D5C3', tintSoft: '#E6ECE2',
+      ink: '#24402F', inkMuted: '#5F6F63', accent: '#B08D4A', line: 'rgba(176,141,74,.35)'
+    },
+    pearlBlue: {
+      bg: '#FCFBF8', bg2: '#F1F4F6', tint: '#DCE6EC', tintSoft: '#EAF0F4',
+      ink: '#2C4257', inkMuted: '#647789', accent: '#BFA46F', line: 'rgba(191,164,111,.4)'
+    }
+  };
+
+  // -------------------------------------------------------------------------
+  // 1. THEME PRESETS ("ivorySage" | "pearlBlue")
+  // -------------------------------------------------------------------------
+  function applyThemePreset() {
+    const themeCfg = config.theme || {};
+    const presetName = themeCfg.preset === 'pearlBlue' ? 'pearlBlue' : 'ivorySage';
+    const root = document.documentElement;
+    if (root.getAttribute('data-theme') !== presetName) {
+      root.setAttribute('data-theme', presetName);
     }
 
-    // 2. Cover Gate (Stacked: Zain \n weds \n Hanna)
+    const tokens = (themeCfg.presets && themeCfg.presets[presetName]) || null;
+    const baseline = BUILTIN_THEMES[presetName];
+    if (!tokens || !baseline) return;
+
+    // Only write inline CSS vars if config overrides built-in defaults (avoids load-time style recalc)
+    if (tokens.bg && tokens.bg !== baseline.bg) root.style.setProperty('--bg', tokens.bg);
+    if (tokens.bg2 && tokens.bg2 !== baseline.bg2) root.style.setProperty('--bg-2', tokens.bg2);
+    if (tokens.tint && tokens.tint !== baseline.tint) root.style.setProperty('--tint', tokens.tint);
+    if (tokens.tintSoft && tokens.tintSoft !== baseline.tintSoft) root.style.setProperty('--tint-soft', tokens.tintSoft);
+    if (tokens.ink && tokens.ink !== baseline.ink) root.style.setProperty('--ink', tokens.ink);
+    if (tokens.inkMuted && tokens.inkMuted !== baseline.inkMuted) root.style.setProperty('--ink-muted', tokens.inkMuted);
+    if (tokens.accent && tokens.accent !== baseline.accent) root.style.setProperty('--accent', tokens.accent);
+    if (tokens.line && tokens.line !== baseline.line) root.style.setProperty('--line', tokens.line);
+
+    const metaTheme = document.getElementById('metaThemeColor');
+    if (metaTheme && tokens.themeColor && metaTheme.getAttribute('content') !== tokens.themeColor) {
+      metaTheme.setAttribute('content', tokens.themeColor);
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // 2. CONTENT HYDRATION FROM CONFIG
+  // -------------------------------------------------------------------------
+  function hydrateCover() {
+    if (config.meta && config.meta.title && document.title !== config.meta.title) {
+      document.title = config.meta.title;
+    }
     if (config.cover) {
       setText('coverBismillah', config.cover.bismillah);
       setText('coverTagline', config.cover.tagline);
-      setText('coverDate', config.cover.dateDisplay);
+      setText('coverGroomName', config.cover.groomName);
+      setText('coverWedsText', config.cover.wedsText);
+      setText('coverBrideName', config.cover.brideName);
+      setText('coverDateNumbers', config.cover.dateNumbers);
+      setText('coverDayName', config.cover.dayName);
+      setText('coverSealMonogram', config.cover.sealMonogram);
       setText('coverBtnText', config.cover.buttonText);
     }
+  }
 
-    // 3. Navigation
+  function hydrateContent() {
+    if (config.meta) {
+      if (config.meta.title) {
+        setText('metaTitle', config.meta.title);
+        setAttr('ogTitle', 'content', config.meta.title);
+        setAttr('twitterTitle', 'content', config.meta.title);
+      }
+      if (config.meta.description) {
+        setAttr('metaDescription', 'content', config.meta.description);
+        setAttr('ogDescription', 'content', config.meta.description);
+        setAttr('twitterDescription', 'content', config.meta.description);
+      }
+      if (config.meta.ogImage) {
+        setAttr('ogImage', 'content', config.meta.ogImage);
+        setAttr('twitterImage', 'content', config.meta.ogImage);
+      }
+      if (config.meta.url) {
+        setAttr('ogUrl', 'content', config.meta.url);
+      }
+    }
+
+    // Navigation
     if (config.navigation) {
-      setText('mobileBrandText', config.navigation.monogram);
-      setText('desktopBrandText', config.navigation.monogram);
-      setText('mobileShareBtnLabel', config.navigation.shareButtonText);
+      setText('navMonogram', config.navigation.monogram);
       setText('desktopShareBtnLabel', config.navigation.shareButtonText);
+
+      if (Array.isArray(config.navigation.links) && config.navigation.links.length) {
+        const expected = config.navigation.links.map(i => `#${i.id}:${i.label}`).join('|');
+        const desktopList = document.getElementById('desktopNavLinks');
+        const mobileList = document.getElementById('mobileNavList');
+        const current = desktopList
+          ? [...desktopList.querySelectorAll('a')].map(a => `${a.getAttribute('href')}:${a.textContent}`).join('|')
+          : '';
+
+        if (current !== expected) {
+          if (desktopList) {
+            desktopList.textContent = '';
+            config.navigation.links.forEach(function (item) {
+              const li = document.createElement('li');
+              const a = document.createElement('a');
+              a.setAttribute('href', `#${item.id}`);
+              a.textContent = item.label;
+              li.appendChild(a);
+              desktopList.appendChild(li);
+            });
+          }
+          if (mobileList) {
+            mobileList.textContent = '';
+            config.navigation.links.forEach(function (item) {
+              const li = document.createElement('li');
+              const a = document.createElement('a');
+              a.className = 'mobile-nav-link';
+              a.setAttribute('href', `#${item.id}`);
+              a.textContent = item.label;
+              li.appendChild(a);
+              mobileList.appendChild(li);
+            });
+          }
+        }
+      }
     }
 
-    // 4. Hero & Intro (Stacked: Zain \n weds \n Hanna)
+    // Hero & Intro Note
+    const groomHero = config.cover?.groomName || 'Zain';
+    const brideHero = config.cover?.brideName || 'Hanna';
+    setText('heroGroomName', groomHero);
+    setText('heroBrideName', brideHero);
+    setText('heroAmpersand', config.couple?.dividerText || '&');
+
     if (config.intro) {
-      setText('introBismillah', config.cover?.bismillah || "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ");
-      setText('introKicker', config.intro.kicker);
+      setText('introBismillah', config.intro.bismillah);
       setText('introSubKicker', config.intro.subKicker);
+      setText('introKicker', config.intro.kicker);
+      setText('heroMonth', config.intro.month);
+      setText('heroDay', config.intro.day);
+      setText('heroWeekday', config.intro.weekday);
+      setText('heroYear', config.intro.year);
       setText('introLead', config.intro.lead);
-      setText('heroDateDisplay', config.intro.heroDate);
-      setText('sideAnnotation', config.intro.sideAnnotation);
     }
 
-    // 5. Couple (Groom First)
+    // Couple (Groom First)
     if (config.couple) {
       if (config.couple.groom) {
         setText('groomRole', config.couple.groom.role);
         setText('groomName', config.couple.groom.name);
         setText('groomLineage', config.couple.groom.lineage);
-        const groomShort = config.couple.groom.name.replace(/Dr\.\s*|Sayed\s*|Adv\.\s*|Mashhoor/gi, '').trim() || "Zain";
-        setText('coverGroomName', groomShort);
-        setText('heroGroomName', groomShort);
       }
       setText('coupleAmpersand', config.couple.dividerText || '&');
-      setText('coverWedsText', 'weds');
-      setText('heroWedsText', 'weds');
       if (config.couple.bride) {
         setText('brideRole', config.couple.bride.role);
         setText('brideName', config.couple.bride.name);
         setText('brideLineage', config.couple.bride.lineage);
-        const brideShort = config.couple.bride.name.replace(/Adv\.\s*|Musthafa/gi, '').trim() || "Hanna";
-        setText('coverBrideName', brideShort);
-        setText('heroBrideName', brideShort);
       }
     }
 
-    // 6. Ceremony
+    // Ceremony
     if (config.ceremony) {
       setText('ceremonyHeading', config.ceremony.heading);
       if (config.ceremony.date) {
         setText('dateLabel', config.ceremony.date.label);
-        setText('dateFull', config.ceremony.date.fullDate);
-        setText('dateDayNumber', config.ceremony.date.dayNumber);
+        setText('dateValue', config.ceremony.date.value);
+        setText('dateSubtext', config.ceremony.date.subtext);
       }
       if (config.ceremony.time) {
         setText('timeLabel', config.ceremony.time.label);
-        setText('timeDisplay', config.ceremony.time.displayTime);
-        setText('timeZone', config.ceremony.time.timeZone);
+        setText('timeDisplay', config.ceremony.time.value);
+        setText('timeZone', config.ceremony.time.subtext);
       }
       if (config.ceremony.venue) {
         setText('venueLabel', config.ceremony.venue.label);
-        setText('venueName', config.ceremony.venue.name);
-        setText('venueLocation', config.ceremony.venue.location);
+        setText('venueName', config.ceremony.venue.value);
+        setText('venueLocation', config.ceremony.venue.subtext);
       }
-      if (config.ceremony.mapCard) {
-        setText('mapBtnText', config.ceremony.mapCard.buttonText);
-        const mapBtn = document.getElementById('openMapsBtn');
-        if (mapBtn && config.ceremony.mapCard.mapsUrl) {
-          mapBtn.setAttribute('href', config.ceremony.mapCard.mapsUrl);
-        }
-        const mapFrame = document.querySelector('.map-interactive-frame');
-        if (mapFrame && config.ceremony.mapCard.mapsUrl) {
-          mapFrame.setAttribute('href', config.ceremony.mapCard.mapsUrl);
-        }
-      }
-      if (config.ceremony.calendar) {
-        setText('calendarBtnText', config.ceremony.calendar.buttonText);
-        const calBtn = document.getElementById('addToCalendarBtn');
-        if (calBtn && config.ceremony.calendar.calendarUrl) {
-          calBtn.setAttribute('href', config.ceremony.calendar.calendarUrl);
+    }
+
+    // Venue Card
+    if (config.venue) {
+      setText('venueCardName', config.venue.name);
+      setText('venueCardArea', config.venue.area);
+      setText('venueCardAddress', config.venue.address);
+      setText('mapBtnText', config.venue.mapsButtonText);
+      setAttr('openMapsBtn', 'href', config.venue.mapsUrl);
+      setText('calendarBtnText', config.venue.calendarButtonText);
+      setAttr('addToCalendarBtn', 'href', config.venue.calendarUrl);
+      setText('copyAddressBtnText', config.venue.copyButtonText);
+
+      const photoWrap = document.getElementById('venuePhotoWrap');
+      const photoImg = document.getElementById('venuePhotoImg');
+      if (photoWrap && photoImg) {
+        if (config.venue.photo && String(config.venue.photo).trim()) {
+          photoImg.src = String(config.venue.photo).trim();
+          photoImg.alt = config.venue.name || 'Ceremony Venue';
+          photoWrap.hidden = false;
+        } else {
+          photoWrap.hidden = true;
         }
       }
     }
 
-    // 7. Countdown
+    // Countdown
     if (config.countdown) {
-      setText('countdownHeading', config.countdown.heading);
+      setText('countdownHeadingPrefix', config.countdown.headingPrefix);
+      setText('countdownHeadingAccent', config.countdown.headingAccent);
       setText('countdownSubtext', config.countdown.subheading);
     }
 
-    // 8. Wishes
+    // Wishes
     if (config.wishes) {
       setText('wishesHeading', config.wishes.heading);
       setText('wishesDesc', config.wishes.description);
@@ -177,24 +256,21 @@
       }
     }
 
-    // 9. Footer
+    // Footer
     if (config.footer) {
       setText('footerDua', config.footer.dua);
       setText('footerGratitudeTitle', config.footer.gratitudeTitle);
       setText('footerGratitudeMsg', config.footer.gratitudeMessage);
+      setText('footerGroomName', groomHero);
+      setText('footerWedsText', config.footer.wedsText);
+      setText('footerBrideName', brideHero);
       setText('footerDate', config.footer.dateFormatted);
       setText('footerCopyright', config.footer.copyright);
     }
   }
 
-  function setText(id, text) {
-    if (!text) return;
-    const el = document.getElementById(id);
-    if (el) el.textContent = text;
-  }
-
   // -------------------------------------------------------------------------
-  // 2. TOAST NOTIFICATIONS
+  // 3. TOAST NOTIFICATIONS
   // -------------------------------------------------------------------------
   let toastTimer = null;
   function showToast(message) {
@@ -205,67 +281,158 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(function () {
       toast.classList.remove('is-active');
-    }, 3200);
+    }, 3000);
   }
 
   // -------------------------------------------------------------------------
-  // 3. ROYAL COVER GATE UNVEIL — FAST, FLUID, ZERO LAG
+  // 4. COVER GATE (DOORS OPEN IN 2.4s, IMMEDIATE SCROLL UNLOCK)
   // -------------------------------------------------------------------------
-  function setupCoverGate() {
+  function setupCoverGate(onOpen) {
     const doorGate = document.getElementById('doorGate');
     const openBtn = document.getElementById('openInvitationBtn');
-    const waxSeal = document.querySelector('.wax-seal-img');
     const pageContent = document.getElementById('pageContent');
-    const introLead = document.getElementById('introLead');
+    const heroHeading = document.querySelector('.hero-names');
     const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (!doorGate || !pageContent) return;
+    if (!doorGate || !pageContent) {
+      if (typeof onOpen === 'function') onOpen();
+      return;
+    }
 
+    let opened = false;
     function triggerOpen() {
-      // 1. Immediately unlock scroll with ZERO delay
+      if (opened) return;
+      opened = true;
+
+      // Unlock scroll & interactivity immediately on tap
       document.documentElement.classList.remove('scroll-locked');
       document.body.classList.remove('scroll-locked');
-
-      // 2. Immediately remove inert so page is fully interactive
       pageContent.removeAttribute('inert');
 
-      // 3. Trigger smooth unveiling transition (fast 500ms)
+      // Reveal page shell & trigger 2.4s door swing
       doorGate.classList.add('is-opening');
       pageContent.classList.add('is-revealed');
 
-      // 4. Cleanly remove gate from DOM after leaves finish opening (680ms)
-      // and gently focus heading without causing any scroll jumps or jank
-      const duration = reducedMotion ? 200 : 700;
+      // Initialize page sections cleanly as doors swing open
+      if (typeof onOpen === 'function') onOpen();
+
+      // Move focus to first hero heading cleanly without scrolling
+      setTimeout(function () {
+        if (heroHeading) {
+          heroHeading.setAttribute('tabindex', '-1');
+          try {
+            heroHeading.focus({ preventScroll: true });
+          } catch (err) {
+            heroHeading.focus();
+          }
+        }
+      }, reducedMotion ? 100 : 600);
+
+      // Remove cover gate from DOM once swing completes (2.5s or 300ms)
+      const removeDelay = reducedMotion ? 300 : 2500;
       setTimeout(function () {
         if (doorGate.parentNode) {
           doorGate.parentNode.removeChild(doorGate);
         }
-        if (introLead) {
-          introLead.setAttribute('tabindex', '-1');
-          try {
-            introLead.focus({ preventScroll: true });
-          } catch (e) {
-            // fallback for older browsers
-          }
-        }
-      }, duration);
+      }, removeDelay);
     }
 
-    if (openBtn) openBtn.addEventListener('click', triggerOpen);
-    if (waxSeal) waxSeal.addEventListener('click', triggerOpen);
+    if (openBtn) {
+      openBtn.addEventListener('click', triggerOpen);
+    }
   }
 
   // -------------------------------------------------------------------------
-  // 4. SECTION FADE-UP ANIMATIONS (IntersectionObserver)
+  // 5. NAVIGATION & SCROLL BLUR
+  // -------------------------------------------------------------------------
+  function setupNavigation() {
+    const navEl = document.getElementById('siteNav');
+    const overlay = document.getElementById('mobileMenuOverlay');
+    const openBtn = document.getElementById('menuOpenBtn');
+    const closeBtn = document.getElementById('menuCloseBtn');
+
+    function updateNavBlur() {
+      if (!navEl) return;
+      if (window.scrollY > 16) {
+        navEl.classList.add('is-scrolled');
+      } else {
+        navEl.classList.remove('is-scrolled');
+      }
+    }
+
+    window.addEventListener('scroll', updateNavBlur, { passive: true });
+
+    function openOverlay() {
+      if (!overlay) return;
+      overlay.hidden = false;
+      overlay.classList.add('is-open');
+      if (openBtn) openBtn.setAttribute('aria-expanded', 'true');
+      const firstLink = overlay.querySelector('a');
+      if (firstLink) firstLink.focus();
+    }
+
+    function closeOverlay() {
+      if (!overlay) return;
+      overlay.classList.remove('is-open');
+      overlay.hidden = true;
+      if (openBtn) {
+        openBtn.setAttribute('aria-expanded', 'false');
+        openBtn.focus();
+      }
+    }
+
+    if (openBtn) openBtn.addEventListener('click', openOverlay);
+    if (closeBtn) closeBtn.addEventListener('click', closeOverlay);
+
+    if (overlay) {
+      overlay.addEventListener('click', function (e) {
+        if (e.target.classList && e.target.classList.contains('mobile-nav-link')) {
+          overlay.classList.remove('is-open');
+          overlay.hidden = true;
+          if (openBtn) openBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if ((e.key === 'Escape' || e.keyCode === 27) && overlay && overlay.classList.contains('is-open')) {
+        closeOverlay();
+      }
+    });
+
+    const shareData = {
+      title: config.meta?.title || 'Zain Weds Hanna',
+      text: config.meta?.description || 'You are cordially invited to celebrate the Nikah of Dr. Sayed Zain Mashhoor & Adv. Hanna Musthafa on 26 December 2026.',
+      url: window.location.href
+    };
+
+    function handleShare() {
+      if (navigator.share) {
+        navigator.share(shareData).catch(function () {});
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(window.location.href)
+          .then(function () { showToast('Invitation link copied'); })
+          .catch(function () { showToast('Ready to share: ' + window.location.href); });
+      } else {
+        showToast('Ready to share');
+      }
+    }
+
+    const shareMobile = document.getElementById('shareBtnMobile');
+    const shareDesktop = document.getElementById('shareBtnDesktop');
+    if (shareMobile) shareMobile.addEventListener('click', handleShare);
+    if (shareDesktop) shareDesktop.addEventListener('click', handleShare);
+  }
+
+  // -------------------------------------------------------------------------
+  // 6. ONE-TIME SECTION & STAGGER REVEALS
   // -------------------------------------------------------------------------
   function setupSectionReveals() {
-    const sections = document.querySelectorAll('.reveal-section');
+    const items = document.querySelectorAll('.reveal-block, .reveal-stagger');
     const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (reducedMotion || !('IntersectionObserver' in window)) {
-      sections.forEach(function (sec) {
-        sec.classList.add('is-visible');
-      });
+      items.forEach(function (el) { el.classList.add('is-visible'); });
       return;
     }
 
@@ -277,17 +444,53 @@
         }
       });
     }, {
-      threshold: 0.04,
-      rootMargin: '0px 0px 80px 0px'
+      threshold: 0.08,
+      rootMargin: '0px 0px 40px 0px'
     });
 
-    sections.forEach(function (sec) {
-      observer.observe(sec);
-    });
+    items.forEach(function (el) { observer.observe(el); });
   }
 
   // -------------------------------------------------------------------------
-  // 5. COUNTDOWN TIMER
+  // 7. VENUE COPY ADDRESS
+  // -------------------------------------------------------------------------
+  function setupVenueCopy() {
+    const copyBtn = document.getElementById('copyAddressBtn');
+    if (!copyBtn) return;
+
+    copyBtn.addEventListener('click', function () {
+      const address = (config.venue && config.venue.address) || 'Presidency Convention Center, Poopalam, Perinthalmanna, Kerala 679322';
+      const toastMsg = (config.venue && config.venue.copiedToast) || 'Address copied';
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(address)
+          .then(function () { showToast(toastMsg); })
+          .catch(function () { fallbackCopy(address, toastMsg); });
+      } else {
+        fallbackCopy(address, toastMsg);
+      }
+    });
+
+    function fallbackCopy(text, msg) {
+      const area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      area.select();
+      try {
+        document.execCommand('copy');
+        showToast(msg);
+      } catch (err) {
+        showToast(text);
+      }
+      document.body.removeChild(area);
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // 8. COUNTDOWN WITH 60S ARCH PROGRESS STROKE
   // -------------------------------------------------------------------------
   function setupCountdown() {
     const targetIso = (config.countdown && config.countdown.isoDateTime) || '2026-12-26T11:00:00+05:30';
@@ -298,45 +501,62 @@
     const minsEl = document.getElementById('cd-minutes');
     const secsEl = document.getElementById('cd-seconds');
     const subtextEl = document.getElementById('countdownSubtext');
+    const progressPath = document.getElementById('secondsProgressPath');
+    const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (!daysEl || !hoursEl || !minsEl || !secsEl) return;
+
+    let lastSec = null;
 
     function rollValue(el, val, animate) {
       const nextStr = String(val).padStart(2, '0');
       if (el.textContent !== nextStr) {
         el.textContent = nextStr;
-        if (animate) {
-          el.classList.remove('odometer-enter');
+        if (animate && !reducedMotion) {
+          el.classList.remove('is-rolling');
           void el.offsetWidth;
-          el.classList.add('odometer-enter');
+          el.classList.add('is-rolling');
         }
       }
     }
 
+    function updateProgressRing(secs, animate) {
+      if (!progressPath) return;
+      if (animate && lastSec !== null && secs > lastSec) {
+        progressPath.style.transition = 'none';
+        progressPath.style.strokeDashoffset = '60';
+        void progressPath.getBoundingClientRect();
+        progressPath.style.transition = '';
+      }
+      progressPath.style.strokeDashoffset = String(secs);
+      lastSec = secs;
+    }
+
     function updateTimer(animate) {
-      const now = Date.now();
-      const diff = targetTime - now;
+      const diff = targetTime - Date.now();
 
       if (diff <= 0) {
         rollValue(daysEl, 0, false);
         rollValue(hoursEl, 0, false);
         rollValue(minsEl, 0, false);
         rollValue(secsEl, 0, false);
+        updateProgressRing(0, false);
         if (subtextEl && config.countdown && config.countdown.completedText) {
           subtextEl.textContent = config.countdown.completedText;
         }
         return false;
       }
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff / 3600000) % 24);
+      const minutes = Math.floor((diff / 60000) % 60);
       const seconds = Math.floor((diff / 1000) % 60);
 
       rollValue(daysEl, days, animate);
       rollValue(hoursEl, hours, animate);
       rollValue(minsEl, minutes, animate);
       rollValue(secsEl, seconds, animate);
+      updateProgressRing(seconds, animate);
       return true;
     }
 
@@ -346,8 +566,7 @@
     function startTicking() {
       if (intervalId) return;
       intervalId = setInterval(function () {
-        const keepGoing = updateTimer(true);
-        if (!keepGoing) {
+        if (!updateTimer(true)) {
           clearInterval(intervalId);
           intervalId = null;
         }
@@ -374,7 +593,7 @@
   }
 
   // -------------------------------------------------------------------------
-  // 6. GUESTBOOK SERVICE
+  // 9. GUESTBOOK & SUPABASE WISHES
   // -------------------------------------------------------------------------
   const Guestbook = {
     wishes: [],
@@ -386,18 +605,16 @@
     isSupabaseConfigured: function () {
       const gb = config.guestbook;
       if (!gb || !gb.supabaseUrl || !gb.publishableKey) return false;
-      if (!gb.supabaseUrl.startsWith('https://') || gb.supabaseUrl.includes('YOUR_SUPABASE_URL') || gb.publishableKey.includes('YOUR_SUPABASE_PUBLISHABLE_KEY')) {
+      if (!gb.supabaseUrl.startsWith('https://') ||
+          gb.supabaseUrl.includes('YOUR_SUPABASE_URL') ||
+          gb.publishableKey.includes('YOUR_SUPABASE_PUBLISHABLE_KEY')) {
         return false;
       }
-      // Accept both legacy eyJ... JWT keys and new sb_publishable_... keys
-      const hasValidKey = gb.publishableKey.startsWith('eyJ') || gb.publishableKey.startsWith('sb_publishable_');
-      if (!hasValidKey) return false;
-      return true;
+      return gb.publishableKey.startsWith('eyJ') || gb.publishableKey.startsWith('sb_publishable_');
     },
 
     buildHeaders: function (publishableKey, extra) {
       const headers = Object.assign({ 'apikey': publishableKey }, extra || {});
-      // Only legacy eyJ... keys are JWTs; sb_publishable_... keys must NOT be sent as Bearer tokens
       if (publishableKey && publishableKey.startsWith('eyJ')) {
         headers['Authorization'] = `Bearer ${publishableKey}`;
       }
@@ -406,6 +623,7 @@
 
     fetchWishes: async function (page = 0) {
       if (!this.isSupabaseConfigured()) {
+        console.warn('[Wishes] Supabase credentials not configured in config/site.config.js.');
         if (config.guestbook && config.guestbook.isSample && Array.isArray(config.guestbook.sampleWishes)) {
           this.wishes = config.guestbook.sampleWishes.slice();
           this.totalCount = this.wishes.length;
@@ -419,8 +637,7 @@
       const table = gb.tableName || 'zain_hanna_wishes';
       const baseUrl = gb.supabaseUrl.replace(/\/rest\/v1\/?$/, '').replace(/\/$/, '');
       const offset = page * this.pageSize;
-      const limit = this.pageSize;
-      const url = `${baseUrl}/rest/v1/${table}?select=*&visible=eq.true&order=created_at.desc&offset=${offset}&limit=${limit}`;
+      const url = `${baseUrl}/rest/v1/${table}?select=*&visible=eq.true&order=created_at.desc&offset=${offset}&limit=${this.pageSize}`;
 
       try {
         const response = await fetch(url, {
@@ -429,7 +646,8 @@
         });
 
         if (!response.ok) {
-          throw new Error(`Supabase request failed with status ${response.status}`);
+          const errDetail = await response.text().catch(function () { return ''; });
+          throw new Error(`HTTP ${response.status} from Supabase (${table}): ${errDetail}`);
         }
 
         const data = await response.json();
@@ -442,18 +660,18 @@
           }
         }
 
-        if (page === 0) {
-          this.wishes = data;
-        } else {
-          this.wishes = this.wishes.concat(data);
-        }
+        this.wishes = page === 0 ? data : this.wishes.concat(data);
         this.totalCount = count;
         this.currentPage = page;
         this.hasMore = this.wishes.length < this.totalCount;
 
+        if (this.totalCount === 0) {
+          console.info(`[Wishes] Connected cleanly to "${table}", currently 0 visible rows.`);
+        }
+
         return { wishes: this.wishes, count: this.totalCount, isSample: false };
       } catch (err) {
-        console.warn('Could not fetch wishes from Supabase:', err);
+        console.error('[Wishes] Failed to load wishes from Supabase:', err);
         if (config.guestbook && config.guestbook.isSample && Array.isArray(config.guestbook.sampleWishes)) {
           this.wishes = config.guestbook.sampleWishes.slice();
           this.totalCount = this.wishes.length;
@@ -481,24 +699,23 @@
       const baseUrl = gb.supabaseUrl.replace(/\/rest\/v1\/?$/, '').replace(/\/$/, '');
       const url = `${baseUrl}/rest/v1/${table}`;
 
-      const payload = {
-        name: name.trim(),
-        message: message.trim(),
-        visible: true
-      };
-
       const response = await fetch(url, {
         method: 'POST',
         headers: this.buildHeaders(gb.publishableKey, {
           'Content-Type': 'application/json',
           'Prefer': 'return=representation'
         }),
-        body: JSON.stringify(payload)
+        body: JSON.stringify({
+          name: name.trim(),
+          message: message.trim(),
+          visible: true
+        })
       });
 
       if (!response.ok) {
-        const errText = await response.text();
-        throw new Error(errText || 'Failed to submit wish');
+        const errText = await response.text().catch(function () { return ''; });
+        console.error(`[Wishes] Submit failed (${response.status}):`, errText);
+        throw new Error(errText || `HTTP ${response.status}`);
       }
 
       const inserted = await response.json();
@@ -510,86 +727,78 @@
   };
 
   // -------------------------------------------------------------------------
-  // 7. WISH TICKER
+  // 10. WISH TICKER & CONTROLS
   // -------------------------------------------------------------------------
   function setupWishTicker() {
     const tickerPanel = document.getElementById('wishTickerPanel');
     const tickerContent = document.getElementById('wishTickerContent');
     const counterBadge = document.getElementById('wishTickerCounter');
+    const countWrap = document.getElementById('wishCountWrap');
+    const countChip = document.getElementById('wishCountChip');
     const prevBtn = document.getElementById('wishPrevBtn');
     const nextBtn = document.getElementById('wishNextBtn');
     const pauseBtn = document.getElementById('wishPauseBtn');
     const pauseIcon = document.getElementById('pauseIcon');
     const playIcon = document.getElementById('playIcon');
-    const countChip = document.getElementById('wishCountChip');
 
     let currentIndex = 0;
     let isPaused = false;
     let cycleTimeout = null;
-    let isTransitioning = false;
     let sectionInView = true;
 
-    function updateCountChip() {
-      if (!countChip) return;
+    function updateCountUI() {
       const total = Guestbook.totalCount;
-      const suffix = (config.wishes && config.wishes.ticker && config.wishes.ticker.counterSuffix) || 'wishes';
-      countChip.textContent = `${total} ${suffix}`;
+      const countLabel = (config.wishes?.ticker?.counterSuffix) || 'wishes';
+
+      if (countWrap && countChip) {
+        if (total > 0) {
+          countChip.textContent = `${total} ${total === 1 ? 'wish' : countLabel}`;
+          countWrap.hidden = false;
+        } else {
+          countWrap.hidden = true;
+        }
+      }
+
+      if (counterBadge) {
+        counterBadge.hidden = total <= 0;
+      }
     }
 
-    function createWishElement(wish) {
-      const item = document.createElement('div');
-      item.className = 'wish-item';
-
-      const authorDiv = document.createElement('div');
-      authorDiv.className = 'wish-author';
-
-      const avatar = document.createElement('div');
-      avatar.className = 'wish-avatar';
-      avatar.setAttribute('aria-hidden', 'true');
-      const initial = (wish.name && wish.name.trim().charAt(0).toUpperCase()) || '✦';
-      avatar.textContent = initial;
+    function createWishNode(wish) {
+      const wrap = document.createElement('div');
+      wrap.className = 'wish-item';
 
       const nameEl = document.createElement('h3');
       nameEl.className = 'wish-name';
       nameEl.textContent = wish.name || 'Well-wisher';
 
-      authorDiv.appendChild(avatar);
-      authorDiv.appendChild(nameEl);
+      const msgEl = document.createElement('p');
+      msgEl.className = 'wish-message';
+      msgEl.textContent = wish.message || '';
 
-      const sparkle = document.createElement('div');
-      sparkle.className = 'wish-sparkle';
-      sparkle.setAttribute('aria-hidden', 'true');
-      sparkle.textContent = '✦';
-
-      const messageEl = document.createElement('p');
-      messageEl.className = 'wish-message';
-      messageEl.textContent = wish.message || '';
-
-      item.appendChild(authorDiv);
-      item.appendChild(sparkle);
-      item.appendChild(messageEl);
-
-      return item;
+      wrap.appendChild(nameEl);
+      wrap.appendChild(msgEl);
+      return wrap;
     }
 
-    function renderEmptyState() {
+    function renderEmpty() {
       if (!tickerContent) return;
-      tickerContent.innerHTML = '';
-      const emptyDiv = document.createElement('div');
-      emptyDiv.className = 'wish-item entering';
+      tickerContent.textContent = '';
 
+      const item = document.createElement('div');
+      item.className = 'wish-item';
       const msg = document.createElement('p');
       msg.className = 'wish-message';
-      msg.textContent = (config.wishes && config.wishes.ticker && config.wishes.ticker.emptyStateText) || 'Be the first to leave a wish.';
-      emptyDiv.appendChild(msg);
-      tickerContent.appendChild(emptyDiv);
+      msg.textContent = config.wishes?.ticker?.emptyStateText || 'Be the first to leave a wish.';
+      item.appendChild(msg);
+      tickerContent.appendChild(item);
 
-      if (counterBadge) counterBadge.textContent = '0 / 0';
+      if (counterBadge) counterBadge.hidden = true;
     }
 
-    function displayWishAtIndex(index, immediate = false) {
+    function showWish(index, immediate = false) {
       if (!Guestbook.wishes.length) {
-        renderEmptyState();
+        renderEmpty();
         return;
       }
 
@@ -597,90 +806,82 @@
       const wish = Guestbook.wishes[currentIndex];
 
       if (counterBadge) {
+        counterBadge.hidden = false;
         counterBadge.textContent = `${currentIndex + 1} / ${Guestbook.wishes.length}`;
       }
 
-      const newItem = createWishElement(wish);
-      newItem.classList.add('entering');
+      const nextNode = createWishNode(wish);
+      nextNode.classList.add('entering');
+      const prevNode = tickerContent.querySelector('.wish-item');
 
-      const oldItem = tickerContent.querySelector('.wish-item');
-
-      if (oldItem && !immediate) {
-        isTransitioning = true;
-        oldItem.classList.remove('entering', 'holding');
-        oldItem.classList.add('exiting');
-
+      if (prevNode && !immediate) {
+        prevNode.classList.remove('entering');
+        prevNode.classList.add('exiting');
         setTimeout(function () {
-          tickerContent.innerHTML = '';
-          tickerContent.appendChild(newItem);
-          isTransitioning = false;
-          scheduleNextCycle(wish.message);
-        }, 550);
+          tickerContent.textContent = '';
+          tickerContent.appendChild(nextNode);
+          scheduleNext(wish.message);
+        }, 560);
       } else {
-        tickerContent.innerHTML = '';
-        tickerContent.appendChild(newItem);
-        scheduleNextCycle(wish.message);
+        tickerContent.textContent = '';
+        tickerContent.appendChild(nextNode);
+        scheduleNext(wish.message);
       }
     }
 
-    function scheduleNextCycle(message) {
+    function scheduleNext(message) {
       clearTimeout(cycleTimeout);
-      if (isPaused || !sectionInView || document.hidden || Guestbook.wishes.length <= 1) {
-        return;
-      }
+      if (isPaused || !sectionInView || document.hidden || Guestbook.wishes.length <= 1) return;
 
       const words = (message || '').trim().split(/\s+/).length;
-      const extraTime = Math.max(0, words - 15) * 40;
-      const holdTime = Math.min(6000, 2000 + extraTime);
+      const extraMs = Math.max(0, words - 15) * 40;
+      const holdMs = Math.min(6000, 2000 + extraMs);
 
       cycleTimeout = setTimeout(function () {
-        displayWishAtIndex(currentIndex + 1);
-      }, holdTime);
+        showWish(currentIndex + 1);
+      }, holdMs);
     }
 
-    function togglePause() {
-      isPaused = !isPaused;
-      if (pauseIcon && playIcon) {
-        pauseIcon.style.display = isPaused ? 'none' : 'block';
-        playIcon.style.display = isPaused ? 'block' : 'none';
-      }
-      if (pauseBtn) {
-        const ariaLabel = isPaused
-          ? (config.wishes?.ticker?.playButtonAria || 'Resume wish ticker')
-          : (config.wishes?.ticker?.pauseButtonAria || 'Pause wish ticker');
-        pauseBtn.setAttribute('aria-label', ariaLabel);
-      }
-      if (!isPaused) {
-        displayWishAtIndex(currentIndex + 1);
-      } else {
-        clearTimeout(cycleTimeout);
-      }
+    if (pauseBtn) {
+      pauseBtn.addEventListener('click', function () {
+        isPaused = !isPaused;
+        if (pauseIcon && playIcon) {
+          pauseIcon.style.display = isPaused ? 'none' : 'block';
+          playIcon.style.display = isPaused ? 'block' : 'none';
+        }
+        pauseBtn.setAttribute('aria-label', isPaused ? 'Resume wish ticker' : 'Pause wish ticker');
+        if (isPaused) {
+          clearTimeout(cycleTimeout);
+        } else if (Guestbook.wishes.length) {
+          showWish(currentIndex + 1);
+        }
+      });
     }
-
-    if (pauseBtn) pauseBtn.addEventListener('click', togglePause);
 
     if (prevBtn) {
       prevBtn.addEventListener('click', function () {
+        if (!Guestbook.wishes.length) return;
         clearTimeout(cycleTimeout);
-        displayWishAtIndex(currentIndex - 1, true);
+        showWish(currentIndex - 1, true);
       });
     }
 
     if (nextBtn) {
       nextBtn.addEventListener('click', function () {
+        if (!Guestbook.wishes.length) return;
         clearTimeout(cycleTimeout);
-        displayWishAtIndex(currentIndex + 1, true);
+        showWish(currentIndex + 1, true);
       });
     }
 
     if (tickerPanel) {
       tickerPanel.addEventListener('mouseenter', function () { clearTimeout(cycleTimeout); });
       tickerPanel.addEventListener('mouseleave', function () {
-        if (!isPaused) scheduleNextCycle(Guestbook.wishes[currentIndex]?.message);
+        if (!isPaused && Guestbook.wishes.length) scheduleNext(Guestbook.wishes[currentIndex]?.message);
       });
       tickerPanel.addEventListener('focusin', function () { clearTimeout(cycleTimeout); });
       tickerPanel.addEventListener('focusout', function () {
-        if (!isPaused) scheduleNextCycle(Guestbook.wishes[currentIndex]?.message);
+        if (!isPaused && Guestbook.wishes.length) scheduleNext(Guestbook.wishes[currentIndex]?.message);
       });
       tickerPanel.addEventListener('touchstart', function () { clearTimeout(cycleTimeout); }, { passive: true });
     }
@@ -690,8 +891,8 @@
       const observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           sectionInView = entry.isIntersecting;
-          if (sectionInView && !isPaused && !document.hidden) {
-            scheduleNextCycle(Guestbook.wishes[currentIndex]?.message);
+          if (sectionInView && !isPaused && !document.hidden && Guestbook.wishes.length) {
+            scheduleNext(Guestbook.wishes[currentIndex]?.message);
           } else {
             clearTimeout(cycleTimeout);
           }
@@ -703,30 +904,30 @@
     document.addEventListener('visibilitychange', function () {
       if (document.hidden) {
         clearTimeout(cycleTimeout);
-      } else if (!isPaused && sectionInView) {
-        scheduleNextCycle(Guestbook.wishes[currentIndex]?.message);
+      } else if (!isPaused && sectionInView && Guestbook.wishes.length) {
+        scheduleNext(Guestbook.wishes[currentIndex]?.message);
       }
     });
 
     Guestbook.fetchWishes(0).then(function (res) {
-      updateCountChip();
+      updateCountUI();
       if (res.wishes && res.wishes.length > 0) {
-        displayWishAtIndex(0, true);
+        showWish(0, true);
       } else {
-        renderEmptyState();
+        renderEmpty();
       }
     });
 
     return {
       onNewWishAdded: function () {
-        updateCountChip();
-        displayWishAtIndex(0, true);
+        updateCountUI();
+        showWish(0, true);
       }
     };
   }
 
   // -------------------------------------------------------------------------
-  // 8. WISH FORM SUBMISSION
+  // 11. WISH FORM & MODAL
   // -------------------------------------------------------------------------
   function setupWishForm(tickerApi) {
     const form = document.getElementById('wishForm');
@@ -739,23 +940,20 @@
     if (!form || !nameInput || !msgInput || !submitBtn) return;
 
     const cooldownKey = 'nikah_wish_cooldown_ts';
-    const cooldownSecs = (config.wishes && config.wishes.limits && config.wishes.limits.cooldownSeconds) || 60;
+    const cooldownSecs = (config.wishes?.limits?.cooldownSeconds) || 60;
 
-    function showAlert(text, isError = false) {
+    function showAlert(text, isError) {
       if (!alertBox) return;
       alertBox.textContent = text;
       alertBox.className = isError ? 'form-alert is-error' : 'form-alert is-success';
     }
 
-    function clearAlert() {
-      if (!alertBox) return;
-      alertBox.textContent = '';
-      alertBox.className = 'form-alert';
-    }
-
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
-      clearAlert();
+      if (alertBox) {
+        alertBox.textContent = '';
+        alertBox.className = 'form-alert';
+      }
 
       if (hpInput && hpInput.value) {
         showToast('Thank you for your wishes.');
@@ -768,63 +966,52 @@
         const diffSecs = (Date.now() - parseInt(lastSent, 10)) / 1000;
         if (diffSecs < cooldownSecs) {
           const waitSecs = Math.ceil(cooldownSecs - diffSecs);
-          const cooldownMsg = (config.wishes && config.wishes.form && config.wishes.form.cooldownMessage) || 'Please wait before sending another wish.';
-          showAlert(`${cooldownMsg} (${waitSecs}s remaining)`, true);
+          const msg = config.wishes?.form?.cooldownMessage || 'Please wait before sending another wish.';
+          showAlert(`${msg} (${waitSecs}s)`, true);
           return;
         }
       }
 
       const name = nameInput.value.trim();
       const message = msgInput.value.trim();
-      const maxName = (config.wishes && config.wishes.limits && config.wishes.limits.nameMaxLength) || 60;
-      const maxMsg = (config.wishes && config.wishes.limits && config.wishes.limits.messageMaxLength) || 300;
+      const maxName = config.wishes?.limits?.nameMaxLength || 60;
+      const maxMsg = config.wishes?.limits?.messageMaxLength || 300;
 
       if (!name || name.length > maxName) {
-        showAlert(`Please enter a name up to ${maxName} characters.`, true);
+        showAlert(`Please enter your name (up to ${maxName} characters).`, true);
         nameInput.focus();
         return;
       }
 
       if (!message || message.length > maxMsg) {
-        showAlert(`Please enter a message up to ${maxMsg} characters.`, true);
+        showAlert(`Please enter a message (up to ${maxMsg} characters).`, true);
         msgInput.focus();
         return;
       }
 
       submitBtn.disabled = true;
-      const origText = submitBtn.querySelector('span')?.textContent || 'Send your wishes';
-      if (submitBtn.querySelector('span')) {
-        submitBtn.querySelector('span').textContent = (config.wishes && config.wishes.form && config.wishes.form.submittingButtonText) || 'Sending...';
-      }
+      const btnSpan = submitBtn.querySelector('span');
+      const origLabel = btnSpan ? btnSpan.textContent : 'Send your wishes';
+      if (btnSpan) btnSpan.textContent = config.wishes?.form?.submittingButtonText || 'Sending...';
 
       try {
         await Guestbook.submitWish(name, message);
         localStorage.setItem(cooldownKey, Date.now().toString());
         form.reset();
-
-        const successMsg = (config.wishes && config.wishes.form && config.wishes.form.successMessage) || 'Thank you for your warm wishes & prayers!';
-        showAlert(successMsg, false);
-        showToast('Wish sent successfully');
-
+        showAlert(config.wishes?.form?.successMessage || 'Thank you for your warm wishes & prayers!', false);
+        showToast('Wish sent');
         if (tickerApi && typeof tickerApi.onNewWishAdded === 'function') {
           tickerApi.onNewWishAdded();
         }
       } catch (err) {
-        console.error('Wish submission error:', err);
-        const errMsg = (config.wishes && config.wishes.form && config.wishes.form.errorMessage) || 'Could not send wish. Please try again.';
-        showAlert(errMsg, true);
+        showAlert(config.wishes?.form?.errorMessage || 'Could not send wish. Please try again.', true);
       } finally {
         submitBtn.disabled = false;
-        if (submitBtn.querySelector('span')) {
-          submitBtn.querySelector('span').textContent = origText;
-        }
+        if (btnSpan) btnSpan.textContent = origLabel;
       }
     });
   }
 
-  // -------------------------------------------------------------------------
-  // 9. "VIEW ALL WISHES" MODAL
-  // -------------------------------------------------------------------------
   function setupAllWishesModal() {
     const modal = document.getElementById('wishesModal');
     const openBtn = document.getElementById('viewAllWishesBtn');
@@ -832,18 +1019,19 @@
     const listContainer = document.getElementById('modalWishesList');
     const loadMoreBtn = document.getElementById('modalLoadMoreBtn');
     const loadMoreText = document.getElementById('modalLoadMoreText');
-    let previousActiveElement = null;
+    let previousFocus = null;
 
     if (!modal || !openBtn || !closeBtn || !listContainer) return;
 
-    function renderModalList(clear = false) {
-      if (clear) listContainer.innerHTML = '';
+    function renderList() {
+      listContainer.textContent = '';
 
       if (!Guestbook.wishes.length) {
         const empty = document.createElement('p');
-        empty.className = 'text-center text-muted';
-        empty.style.padding = '32px 0';
-        empty.textContent = (config.wishes && config.wishes.ticker && config.wishes.ticker.emptyStateText) || 'Be the first to leave a wish.';
+        empty.className = 'wish-message';
+        empty.style.textAlign = 'center';
+        empty.style.padding = '24px 0';
+        empty.textContent = config.wishes?.ticker?.emptyStateText || 'Be the first to leave a wish.';
         listContainer.appendChild(empty);
         if (loadMoreBtn) loadMoreBtn.style.display = 'none';
         return;
@@ -853,25 +1041,15 @@
         const card = document.createElement('article');
         card.className = 'modal-wish-card';
 
-        const authorDiv = document.createElement('div');
-        authorDiv.className = 'wish-author';
-
-        const avatar = document.createElement('div');
-        avatar.className = 'wish-avatar';
-        avatar.textContent = (wish.name && wish.name.trim().charAt(0).toUpperCase()) || '✦';
-
         const nameEl = document.createElement('h4');
         nameEl.className = 'wish-name';
         nameEl.textContent = wish.name || 'Well-wisher';
-
-        authorDiv.appendChild(avatar);
-        authorDiv.appendChild(nameEl);
 
         const msgEl = document.createElement('p');
         msgEl.className = 'wish-message';
         msgEl.textContent = wish.message || '';
 
-        card.appendChild(authorDiv);
+        card.appendChild(nameEl);
         card.appendChild(msgEl);
         listContainer.appendChild(card);
       });
@@ -882,52 +1060,45 @@
     }
 
     function openModal() {
-      previousActiveElement = document.activeElement;
-      renderModalList(true);
+      previousFocus = document.activeElement;
+      renderList();
       modal.classList.add('is-open');
       modal.focus();
       document.body.style.overflow = 'hidden';
-      document.addEventListener('keydown', handleTrapKey);
+      document.addEventListener('keydown', onModalKeyDown);
     }
 
     function closeModal() {
       modal.classList.remove('is-open');
       document.body.style.overflow = '';
-      document.removeEventListener('keydown', handleTrapKey);
-      if (previousActiveElement && typeof previousActiveElement.focus === 'function') {
-        previousActiveElement.focus();
+      document.removeEventListener('keydown', onModalKeyDown);
+      if (previousFocus && typeof previousFocus.focus === 'function') {
+        previousFocus.focus();
       }
     }
 
-    function handleTrapKey(e) {
+    function onModalKeyDown(e) {
       if (e.key === 'Escape' || e.keyCode === 27) {
         closeModal();
         return;
       }
-
       if (e.key === 'Tab' || e.keyCode === 9) {
-        const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-        if (!focusable.length) return;
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-
-        if (e.shiftKey) {
-          if (document.activeElement === first) {
-            last.focus();
-            e.preventDefault();
-          }
-        } else {
-          if (document.activeElement === last) {
-            first.focus();
-            e.preventDefault();
-          }
+        const focusables = modal.querySelectorAll('button, [href], input, textarea, [tabindex]:not([tabindex="-1"])');
+        if (!focusables.length) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          last.focus();
+          e.preventDefault();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          first.focus();
+          e.preventDefault();
         }
       }
     }
 
     openBtn.addEventListener('click', openModal);
     closeBtn.addEventListener('click', closeModal);
-
     modal.addEventListener('click', function (e) {
       if (e.target === modal) closeModal();
     });
@@ -937,93 +1108,31 @@
         loadMoreBtn.disabled = true;
         if (loadMoreText) loadMoreText.textContent = 'Loading...';
         await Guestbook.fetchWishes(Guestbook.currentPage + 1);
-        renderModalList(true);
+        renderList();
         loadMoreBtn.disabled = false;
-        if (loadMoreText) {
-          loadMoreText.textContent = (config.wishes && config.wishes.modal && config.wishes.modal.loadMoreText) || 'Load more';
-        }
+        if (loadMoreText) loadMoreText.textContent = config.wishes?.modal?.loadMoreText || 'Load more';
       });
     }
   }
 
   // -------------------------------------------------------------------------
-  // 10. NAVIGATION
+  // INITIALIZE
   // -------------------------------------------------------------------------
-  function setupNavigation() {
-    const overlay = document.getElementById('mobileMenuOverlay');
-    const openBtn = document.getElementById('menuOpenBtn');
-    const closeBtn = document.getElementById('menuCloseBtn');
-    const navLinks = document.querySelectorAll('.mobile-nav-link');
-
-    if (openBtn && overlay) {
-      openBtn.addEventListener('click', function () {
-        overlay.classList.add('is-open');
-        const firstLink = overlay.querySelector('a');
-        if (firstLink) firstLink.focus();
-      });
-    }
-
-    if (closeBtn && overlay) {
-      closeBtn.addEventListener('click', function () {
-        overlay.classList.remove('is-open');
-        if (openBtn) openBtn.focus();
-      });
-    }
-
-    navLinks.forEach(function (link) {
-      link.addEventListener('click', function () {
-        if (overlay) overlay.classList.remove('is-open');
-      });
-    });
-
-    document.addEventListener('keydown', function (e) {
-      if ((e.key === 'Escape' || e.keyCode === 27) && overlay && overlay.classList.contains('is-open')) {
-        overlay.classList.remove('is-open');
-        if (openBtn) openBtn.focus();
-      }
-    });
-
-    const shareData = {
-      title: config.meta?.title || 'Zain Weds Hanna',
-      text: config.meta?.description || 'You are cordially invited to celebrate the Nikah of Dr. Sayed Zain Mashhoor & Adv. Hanna Musthafa on 26 December 2026.',
-      url: window.location.href
-    };
-
-    function handleShare() {
-      if (navigator.share) {
-        navigator.share(shareData).catch(function () {});
-      } else {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(window.location.href).then(function () {
-            showToast('Invitation link copied to clipboard!');
-          }).catch(function () {
-            showToast('Invitation ready to share: ' + window.location.href);
-          });
-        } else {
-          showToast('Invitation link ready to share');
-        }
-      }
-    }
-
-    const shareBtnMobile = document.getElementById('shareBtnMobile');
-    const shareBtnDesktop = document.getElementById('shareBtnDesktop');
-    if (shareBtnMobile) shareBtnMobile.addEventListener('click', handleShare);
-    if (shareBtnDesktop) shareBtnDesktop.addEventListener('click', handleShare);
-  }
-
-  // -------------------------------------------------------------------------
-  // 11. INITIALIZATION
-  // -------------------------------------------------------------------------
-  function init() {
-    applyThemeTokens();
+  function initRevealedPage() {
     hydrateContent();
-    setupCoverGate();
+    setupNavigation();
     setupSectionReveals();
+    setupVenueCopy();
     setupCountdown();
     const tickerApi = setupWishTicker();
     setupWishForm(tickerApi);
     setupAllWishesModal();
-    setupNavigation();
+  }
+
+  function init() {
+    applyThemePreset();
+    hydrateCover();
+    setupCoverGate(initRevealedPage);
   }
 
   if (document.readyState === 'loading') {

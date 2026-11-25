@@ -1,9 +1,9 @@
 /**
  * Wedding Invitation Configuration
  * Dr. Sayed Zain Mashhoor & Adv. Hanna Musthafa
- * 
- * ALL content, links, dates, tokens, and credentials live here.
- * Nothing is hardcoded in HTML or JS.
+ *
+ * ALL content, links, dates, theme presets, and Supabase credentials live here.
+ * Switch `theme.preset` between "ivorySage" and "pearlBlue" to change palettes & botanical motifs.
  */
 
 const SITE_CONFIG = {
@@ -13,55 +13,53 @@ const SITE_CONFIG = {
     url: "https://zain-wedding.vercel.app",
     ogImage: "assets/images/share.jpg",
     favicon: "assets/images/favicon.svg",
-    robots: "noindex, nofollow", // Private wedding invitation
-    themeColor: "#FAF7F2"
+    robots: "noindex, nofollow"
   },
 
-  // Color Theme Configuration & Prompts
-  // Presets available:
-  // 1. "emerald" (Default): Royal Emerald Green & Warm Gold on Luminous Ivory Cream (Regal Groom aesthetic)
-  // 2. "navy": Sapphire Royal Navy & Champagne Gold on Pearl Cream
-  // 3. "sage": Desert Sage Green & Antique Bronze on Linen Cream
   theme: {
-    preset: "emerald",
-    doorStyle: "light", // "light" (cream-gold) | "dark"
-    tokens: {
-      bgPrimary: "#FAF7F2",       // Luminous warm ivory cream
-      bgSecondary: "#F4ECE1",     // Deeper parchment cream
-      bgCard: "rgba(255, 255, 255, 0.92)", // Crisp white frosted card
-      bgCardSolid: "#FFFFFF",
-      accent: "#163E2B",          // Royal Emerald Green
-      accentDeep: "#0E281C",      // Deep Forest Emerald
-      accentLight: "#2D5C43",     // Soft Emerald
-      gold: "#C5A566",            // Warm Antique Gold
-      goldBright: "#E4C88E",      // Shimmer Gold
-      goldDark: "#9A7B40",        // Deep Gold
-      textPrimary: "#163E2B",     // Emerald headline
-      textDark: "#2B241E",        // Deep charcoal/espresso text
-      textSecondary: "#52463B",   // Warm charcoal
-      textMuted: "#827567",       // Refined muted stone
-      borderGold: "rgba(197, 165, 102, 0.4)",
-      borderSubtle: "rgba(197, 165, 102, 0.2)",
-      doorLightStart: "#FAF6EF",
-      doorLightEnd: "#EFE5D6",
-      doorHairline: "#C5A566"
+    preset: "ivorySage", // "ivorySage" (default) | "pearlBlue"
+    presets: {
+      ivorySage: {
+        bg: "#FBF9F4",
+        bg2: "#F3EEE2",
+        tint: "#C9D5C3",
+        tintSoft: "#E6ECE2",
+        ink: "#24402F",
+        inkMuted: "#5F6F63",
+        accent: "#B08D4A",
+        line: "rgba(176,141,74,.35)",
+        themeColor: "#FBF9F4",
+        botanical: "olive"
+      },
+      pearlBlue: {
+        bg: "#FCFBF8",
+        bg2: "#F1F4F6",
+        tint: "#DCE6EC",
+        tintSoft: "#EAF0F4",
+        ink: "#2C4257",
+        inkMuted: "#647789",
+        accent: "#BFA46F",
+        line: "rgba(191,164,111,.4)",
+        themeColor: "#FCFBF8",
+        botanical: "wheat"
+      }
     }
   },
 
   cover: {
-    doorStyle: "light",
     bismillah: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
     tagline: "A CELEBRATION OF LOVE & FAITH",
     groomName: "Zain",
     wedsText: "weds",
     brideName: "Hanna",
-    title: "Zain Weds Hanna",
-    dateDisplay: "26 · 12 · 2026, Saturday",
+    dateNumbers: "26 · 12 · 2026",
+    dayName: "SATURDAY",
+    sealMonogram: "Z&H",
     buttonText: "OPEN INVITATION"
   },
 
   navigation: {
-    monogram: "Z & H",
+    monogram: "Z&H",
     shareButtonText: "Share invitation",
     links: [
       { id: "intro", label: "Home" },
@@ -74,12 +72,14 @@ const SITE_CONFIG = {
   },
 
   intro: {
-    kicker: "WE ARE GETTING MARRIED",
+    bismillah: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
     subKicker: "TOGETHER WITH OUR FAMILIES",
-    lead: "With the blessings of Allah, we cordially invite you to the Nikah ceremony.",
-    heroCouple: "Zain & Hanna",
-    heroDate: "26 DECEMBER 2026 | SATURDAY",
-    sideAnnotation: "A NEW CHAPTER · 2026"
+    kicker: "WE ARE GETTING MARRIED",
+    month: "DEC",
+    day: "26",
+    weekday: "SATURDAY",
+    year: "2026",
+    lead: "With the blessings of Allah, we cordially invite you to the Nikah ceremony."
   },
 
   couple: {
@@ -99,33 +99,38 @@ const SITE_CONFIG = {
   ceremony: {
     heading: "The Nikah Ceremony",
     date: {
-      label: "Date",
-      dayNumber: "26",
-      fullDate: "26 December 2026 · Saturday"
+      label: "DATE",
+      value: "26",
+      subtext: "December 2026 · Saturday"
     },
     time: {
-      label: "Time",
-      displayTime: "11:00 AM",
-      timeZone: "Indian Standard Time"
+      label: "TIME",
+      value: "11:00 AM",
+      subtext: "Indian Standard Time"
     },
     venue: {
-      label: "Venue",
-      name: "Presidency Convention Center",
-      location: "Poopalam"
-    },
-    mapCard: {
-      badge: "Poopalam",
-      buttonText: "Open location in Maps",
-      mapsUrl: "https://maps.app.goo.gl/CgF19UWEokYYaRuU6"
-    },
-    calendar: {
-      buttonText: "Add to Calendar",
-      calendarUrl: "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Nikah+Ceremony%3A+Zain+Weds+Hanna&dates=20261226T053000Z/20261226T063000Z&details=With+the+blessings+of+Allah%2C+we+cordially+invite+you+to+the+Nikah+ceremony+of+Dr.+Sayed+Zain+Mashhoor+and+Adv.+Hanna+Musthafa.&location=Presidency+Convention+Center%2C+Poopalam"
+      label: "VENUE",
+      value: "Presidency Convention Center",
+      subtext: "Poopalam"
     }
   },
 
+  venue: {
+    name: "Presidency Convention Center",
+    area: "Poopalam, Perinthalmanna",
+    address: "SH-39, Poopalam, Perinthalmanna, Kerala 679322",
+    photo: "", // Optional URL/path for pointed-arch photo; leave empty to hide slot
+    mapsButtonText: "Open location in Maps",
+    mapsUrl: "https://maps.app.goo.gl/CgF19UWEokYYaRuU6",
+    calendarButtonText: "Add to Calendar",
+    calendarUrl: "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Nikah+Ceremony%3A+Zain+Weds+Hanna&dates=20261226T053000Z/20261226T063000Z&details=With+the+blessings+of+Allah%2C+we+cordially+invite+you+to+the+Nikah+ceremony+of+Dr.+Sayed+Zain+Mashhoor+and+Adv.+Hanna+Musthafa.&location=Presidency+Convention+Center%2C+Poopalam",
+    copyButtonText: "Copy address",
+    copiedToast: "Address copied"
+  },
+
   countdown: {
-    heading: "Counting down to forever",
+    headingPrefix: "Counting down to ",
+    headingAccent: "forever",
     subheading: "Until we begin our forever",
     completedText: "The blessed day is here!",
     isoDateTime: "2026-12-26T11:00:00+05:30"
@@ -170,7 +175,7 @@ const SITE_CONFIG = {
     dua: "بَارَكَ اللَّهُ لَكُمَا وَبَارَكَ عَلَيْكُمَا وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ",
     gratitudeTitle: "With love & gratitude",
     gratitudeMessage: "Your presence will make our day complete.",
-    coupleSignature: "Zain & Hanna",
+    wedsText: "weds",
     dateFormatted: "26 DECEMBER 2026",
     copyright: "MADE WITH LOVE · 2026"
   },

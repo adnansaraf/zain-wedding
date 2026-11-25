@@ -1,169 +1,261 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-locked">
+<html lang="en" class="scroll-locked" data-theme="ivorySage">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#FAF7F2">
+  <meta name="theme-color" id="metaThemeColor" content="#FBF9F4">
 
-  <!-- Dynamic / Fallback Title & Meta -->
+  <!-- Meta & Open Graph (Hydrated cleanly from config/site.config.js) -->
   <title id="metaTitle">Zain Weds Hanna — The Nikah Invitation</title>
   <meta name="description" id="metaDescription" content="With the blessings of Allah, we cordially invite you to celebrate the Nikah ceremony of Dr. Sayed Zain Mashhoor &amp; Adv. Hanna Musthafa on 26 December 2026.">
 
-  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:title" id="ogTitle" content="Zain Weds Hanna — The Nikah Invitation">
   <meta property="og:description" id="ogDescription" content="With the blessings of Allah, we cordially invite you to celebrate the Nikah ceremony of Dr. Sayed Zain Mashhoor &amp; Adv. Hanna Musthafa on 26 December 2026.">
   <meta property="og:image" id="ogImage" content="assets/images/share.jpg">
   <meta property="og:url" id="ogUrl" content="https://zain-wedding.vercel.app">
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" id="twitterTitle" content="Zain Weds Hanna — The Nikah Invitation">
   <meta name="twitter:description" id="twitterDescription" content="With the blessings of Allah, we cordially invite you to celebrate the Nikah ceremony of Dr. Sayed Zain Mashhoor &amp; Adv. Hanna Musthafa on 26 December 2026.">
   <meta name="twitter:image" id="twitterImage" content="assets/images/share.jpg">
 
-  <!-- Preload Critical Self-Hosted Fonts -->
+  <!-- Stylesheet first so CSS never waits behind font preloads -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Preload Critical Cover Fonts -->
   <link rel="preload" href="assets/fonts/alex-brush-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/amiri-arabic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/aref-ruqaa-arabic.woff2" as="font" type="font/woff2" crossorigin>
 
   <!-- Favicons -->
   <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
   <link rel="alternate icon" type="image/png" href="assets/images/favicon.png">
 
-  <!-- Production Stylesheet -->
-  <link rel="stylesheet" href="css/style.css">
-
-  <!-- Site Config loaded first so content tokens are available immediately -->
-  <script src="config/site.config.js"></script>
+  <!-- Configuration loaded non-blocking; main.js runs right after in strict order -->
+  <script defer src="config/site.config.js"></script>
 </head>
 <body class="scroll-locked">
 
-  <!-- Accessible Fallback for Non-JavaScript Users -->
+  <!-- Shared Inline SVG Symbol Definitions (Theme-Adaptive Line Art) -->
+  <svg class="svg-sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <!-- Olive / Eucalyptus Branch (ivorySage preset) -->
+      <symbol id="branch-olive" viewBox="0 0 180 180" fill="none">
+        <path d="M8 6 C 46 34, 88 76, 134 148" stroke="var(--accent)" stroke-width="1.15" stroke-linecap="round"/>
+        <path d="M36 30 C 48 14, 68 12, 74 26 C 60 36, 44 36, 36 30 Z" fill="var(--tint)" stroke="var(--accent)" stroke-width="0.9"/>
+        <path d="M52 44 C 36 52, 26 68, 38 78 C 52 68, 56 54, 52 44 Z" fill="var(--tint)" stroke="var(--accent)" stroke-width="0.9"/>
+        <path d="M70 62 C 88 46, 110 48, 112 64 C 96 72, 78 68, 70 62 Z" fill="var(--tint)" stroke="var(--accent)" stroke-width="0.9"/>
+        <path d="M84 78 C 68 88, 60 106, 74 116 C 88 106, 90 88, 84 78 Z" fill="var(--tint)" stroke="var(--accent)" stroke-width="0.9"/>
+        <path d="M104 102 C 122 88, 142 92, 144 108 C 128 114, 110 110, 104 102 Z" fill="var(--tint)" stroke="var(--accent)" stroke-width="0.9"/>
+        <path d="M116 118 C 102 128, 98 144, 110 152 C 122 142, 122 126, 116 118 Z" fill="var(--tint)" stroke="var(--accent)" stroke-width="0.9"/>
+        <circle cx="28" cy="18" r="2.2" fill="var(--accent)"/>
+        <circle cx="138" cy="154" r="2" fill="var(--accent)"/>
+      </symbol>
+
+      <!-- Wheat / Lavender Sprig (pearlBlue preset) -->
+      <symbol id="branch-wheat" viewBox="0 0 180 180" fill="none">
+        <path d="M8 8 C 44 32, 92 78, 142 150" stroke="var(--accent)" stroke-width="1.1" stroke-linecap="round"/>
+        <path d="M40 32 C 50 16, 62 14, 62 28 C 52 34, 44 34, 40 32 Z" fill="var(--tint)" stroke="var(--accent)" stroke-width="0.85"/>
+        <path d="M44 38 C 28 46, 22 58, 34 62 C 42 54, 44 44, 44 38 Z" fill="var(--tint)" stroke="var(--accent)" stroke-width="0.85"/>
+        <path d="M66 56 C 78 40, 92 40, 90 54 C 80 60, 70 58, 66 56 Z" fill="var(--tint)" stroke="var(--accent)" stroke-width="0.85"/>
+        <path d="M72 64 C 54 72, 48 86, 60 90 C 70 82, 72 70, 72 64 Z" fill="var(--tint)" stroke="var(--accent)" stroke-width="0.85"/>
+        <path d="M94 86 C 108 72, 122 72, 120 86 C 108 92, 98 90, 94 86 Z" fill="var(--tint)" stroke="var(--accent)" stroke-width="0.85"/>
+        <path d="M100 94 C 84 102, 78 118, 90 122 C 100 112, 102 100, 100 94 Z" fill="var(--tint)" stroke="var(--accent)" stroke-width="0.85"/>
+        <path d="M122 120 C 136 108, 148 110, 146 122 C 134 128, 126 126, 122 120 Z" fill="var(--tint)" stroke="var(--accent)" stroke-width="0.85"/>
+        <line x1="142" y1="150" x2="156" y2="164" stroke="var(--accent)" stroke-width="0.9" stroke-dasharray="2 3"/>
+      </symbol>
+
+      <!-- Tiny 4-Point Star -->
+      <symbol id="star-4" viewBox="0 0 24 24">
+        <path d="M12 1.5 Q12 12 22.5 12 Q12 12 12 22.5 Q12 12 1.5 12 Q12 12 12 1.5 Z" fill="currentColor"/>
+      </symbol>
+
+      <!-- Crescent & Star Mark -->
+      <symbol id="crescent-star" viewBox="0 0 28 24" fill="none">
+        <path d="M14.5 3.5 A8.5 8.5 0 1 0 14.5 20.5 A6.6 6.6 0 1 1 14.5 3.5 Z" fill="currentColor"/>
+        <path d="M20 7.5 Q20 11 23.5 11 Q20 11 20 14.5 Q20 11 16.5 11 Q20 11 20 7.5 Z" fill="currentColor"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- Non-JavaScript Fallback -->
   <noscript>
     <div class="noscript-banner">
-      <p dir="rtl" lang="ar" style="font-family: serif; font-size: 24px; color: #163E2B; margin-bottom: 8px;">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
-      <h1 style="color: #163E2B; font-family: 'Alex Brush', cursive; font-size: 48px; margin-bottom: 8px;">Zain weds Hanna</h1>
-      <p style="color: #C5A566; font-weight: 600; margin-bottom: 4px;">Dr. Sayed Zain Mashhoor &amp; Adv. Hanna Musthafa</p>
-      <p style="color: #52463B; margin-bottom: 12px;">Saturday, 26 December 2026 · 11:00 AM IST</p>
-      <p style="color: #163E2B; margin-bottom: 16px;">Presidency Convention Center, Poopalam</p>
-      <p><a href="https://maps.app.goo.gl/CgF19UWEokYYaRuU6" style="color: #163E2B; text-decoration: underline;">View on Google Maps</a></p>
+      <p dir="rtl" lang="ar" style="font-size: 26px; margin-bottom: 12px;">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+      <h1 style="font-size: 40px; margin-bottom: 8px;">Zain weds Hanna</h1>
+      <p style="margin-bottom: 8px;">Dr. Sayed Zain Mashhoor &amp; Adv. Hanna Musthafa</p>
+      <p style="margin-bottom: 8px;">Saturday, 26 December 2026 · 11:00 AM IST</p>
+      <p style="margin-bottom: 12px;">Presidency Convention Center, Poopalam</p>
+      <p><a href="https://maps.app.goo.gl/CgF19UWEokYYaRuU6">Open location in Maps</a></p>
     </div>
   </noscript>
 
-  <!-- 1. ROYAL INVITATION COVER GATE — TWO-PAGE OPENING FROM BOTH SIDES -->
-  <div id="doorGate" class="royal-cover-gate" aria-label="Wedding invitation cover">
-    
-    <!-- Left Folio Leaf (Swings open to the left) -->
-    <div class="folio-leaf folio-left" aria-hidden="true">
-      <div class="leaf-texture"></div>
-      <div class="leaf-inset-panel">
-        <div class="leaf-inner-line"></div>
-        <div class="leaf-corner-flourish leaf-tl"></div>
-        <div class="leaf-corner-flourish leaf-bl"></div>
+  <!-- ========================================================================
+       1. COVER GATE — IVORY DOORS WITH KHATAM LATTICE & SEAL BUTTON
+       ======================================================================== -->
+  <div id="doorGate" class="door-gate" role="region" aria-label="Wedding invitation cover">
+
+    <!-- Left Door Leaf -->
+    <div class="door-leaf door-left" aria-hidden="true">
+      <div class="door-khatam-layer"></div>
+      <div class="door-inset-outer">
+        <div class="door-inset-inner"></div>
       </div>
-      <div class="leaf-seam leaf-seam-left"></div>
+      <div class="door-shade"></div>
+      <div class="door-seam door-seam-left"></div>
+      <svg class="corner-branch door-branch-tl" viewBox="0 0 180 180">
+        <use class="motif-olive" href="#branch-olive"/>
+        <use class="motif-wheat" href="#branch-wheat"/>
+      </svg>
     </div>
 
-    <!-- Right Folio Leaf (Swings open to the right) -->
-    <div class="folio-leaf folio-right" aria-hidden="true">
-      <div class="leaf-texture"></div>
-      <div class="leaf-inset-panel">
-        <div class="leaf-inner-line"></div>
-        <div class="leaf-corner-flourish leaf-tr"></div>
-        <div class="leaf-corner-flourish leaf-br"></div>
+    <!-- Right Door Leaf -->
+    <div class="door-leaf door-right" aria-hidden="true">
+      <div class="door-khatam-layer"></div>
+      <div class="door-inset-outer">
+        <div class="door-inset-inner"></div>
       </div>
-      <div class="leaf-seam leaf-seam-right"></div>
+      <div class="door-shade"></div>
+      <div class="door-seam door-seam-right"></div>
+      <svg class="corner-branch door-branch-tr" viewBox="0 0 180 180">
+        <use class="motif-olive" href="#branch-olive"/>
+        <use class="motif-wheat" href="#branch-wheat"/>
+      </svg>
     </div>
 
-    <!-- Floating Sparkles on Cover -->
-    <span class="sparkle" style="top: 15%; left: 14%; font-size: 20px; animation-delay: 0s;">✦</span>
-    <span class="sparkle" style="top: 25%; right: 16%; font-size: 16px; animation-delay: 1.2s;">★</span>
-    <span class="sparkle" style="bottom: 20%; left: 18%; font-size: 18px; animation-delay: 2.1s;">✦</span>
-    <span class="sparkle" style="bottom: 28%; right: 14%; font-size: 22px; animation-delay: 0.8s;">✦</span>
-    <span class="sparkle" style="top: 52%; left: 8%; font-size: 14px; animation-delay: 1.6s;">•</span>
-    <span class="sparkle" style="top: 62%; right: 9%; font-size: 14px; animation-delay: 2.5s;">•</span>
-
-    <!-- Corner Botanical Branches on Cover -->
-    <img src="assets/images/corner-branch.svg" class="corner-botanical corner-top-right" alt="" aria-hidden="true">
-    <img src="assets/images/corner-branch.svg" class="corner-botanical corner-bottom-left" alt="" aria-hidden="true">
-
-    <!-- Center Royal Invitation Card -->
-    <div class="royal-card-folio" id="royalCardFolio">
-      <div class="card-inner-frame">
-        <p dir="rtl" lang="ar" class="door-bismillah" id="coverBismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
-        <div class="gold-rule" aria-hidden="true"></div>
-        <p class="door-tagline" id="coverTagline">A CELEBRATION OF LOVE &amp; FAITH</p>
-        
-        <!-- Stacked Couple Name (Line 1: Zain, Line 2: weds, Line 3: Hanna) -->
-        <div class="couple-title-stacked cover-couple-stacked">
-          <span class="couple-name-script" id="coverGroomName">Zain</span>
-          <span class="couple-weds-script" id="coverWedsText">weds</span>
-          <span class="couple-name-script" id="coverBrideName">Hanna</span>
-        </div>
-
-        <p class="door-date" id="coverDate">26 · 12 · 2026, Saturday</p>
-
-        <!-- Embossed Royal Wax Seal & Action Button -->
-        <div class="wax-seal-wrapper">
-          <img src="assets/images/wax-seal.svg" class="wax-seal-img" alt="Royal Wax Seal" aria-hidden="true">
-        </div>
-
-        <button id="openInvitationBtn" type="button" class="btn-primary royal-open-btn">
-          <span id="coverBtnText">OPEN INVITATION</span>
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-        </button>
+    <!-- 14 Staggered Twinkling Gold Specks Across Doors (3 Composite Groups) -->
+    <div class="cover-specks" aria-hidden="true">
+      <div class="speck-group speck-g1">
+        <svg class="speck s1" viewBox="0 0 24 24"><use href="#star-4"/></svg>
+        <svg class="speck s5" viewBox="0 0 24 24"><use href="#star-4"/></svg>
+        <svg class="speck s8" viewBox="0 0 24 24"><use href="#star-4"/></svg>
+        <svg class="speck s11" viewBox="0 0 24 24"><use href="#star-4"/></svg>
+        <svg class="speck s14" viewBox="0 0 24 24"><use href="#star-4"/></svg>
       </div>
+      <div class="speck-group speck-g2">
+        <svg class="speck s2" viewBox="0 0 24 24"><use href="#star-4"/></svg>
+        <svg class="speck s4" viewBox="0 0 24 24"><use href="#star-4"/></svg>
+        <svg class="speck s7" viewBox="0 0 24 24"><use href="#star-4"/></svg>
+        <svg class="speck s10" viewBox="0 0 24 24"><use href="#star-4"/></svg>
+        <svg class="speck s13" viewBox="0 0 24 24"><use href="#star-4"/></svg>
+      </div>
+      <div class="speck-group speck-g3">
+        <svg class="speck s3" viewBox="0 0 24 24"><use href="#star-4"/></svg>
+        <svg class="speck s6" viewBox="0 0 24 24"><use href="#star-4"/></svg>
+        <svg class="speck s9" viewBox="0 0 24 24"><use href="#star-4"/></svg>
+        <svg class="speck s12" viewBox="0 0 24 24"><use href="#star-4"/></svg>
+      </div>
+    </div>
+
+    <!-- Centered Invitation Composition Directly On Doors -->
+    <div class="cover-center" id="coverCenter">
+      <p dir="rtl" lang="ar" class="cover-bismillah" id="coverBismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+
+      <div class="ornament-row" aria-hidden="true">
+        <span class="ornament-line"></span>
+        <svg class="ornament-crescent" viewBox="0 0 28 24" width="22" height="19">
+          <use href="#crescent-star"/>
+        </svg>
+        <span class="ornament-line"></span>
+      </div>
+
+      <p class="eyebrow cover-eyebrow" id="coverTagline">A CELEBRATION OF LOVE &amp; FAITH</p>
+
+      <div class="cover-names">
+        <span class="script-name cover-name" id="coverGroomName">Zain</span>
+        <span class="cover-weds" id="coverWedsText">weds</span>
+        <span class="script-name cover-name" id="coverBrideName">Hanna</span>
+      </div>
+
+      <div class="cover-date-group">
+        <span class="cover-date-nums" id="coverDateNumbers">26 · 12 · 2026</span>
+        <span class="cover-date-day" id="coverDayName">SATURDAY</span>
+      </div>
+
+      <button id="openInvitationBtn" type="button" class="seal-trigger">
+        <span class="wax-seal-btn" aria-hidden="true">
+          <svg class="seal-svg" viewBox="0 0 88 88" width="88" height="88">
+            <defs>
+              <linearGradient id="sealGoldGrad" x1="12%" y1="8%" x2="88%" y2="92%">
+                <stop offset="0%" stop-color="#ECE0C2"/>
+                <stop offset="50%" stop-color="#D2B67B"/>
+                <stop offset="100%" stop-color="#B99652"/>
+              </linearGradient>
+              <radialGradient id="sealInnerGlow" cx="35%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="rgba(255,255,255,0.42)"/>
+                <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+              </radialGradient>
+            </defs>
+            <circle cx="44" cy="44" r="42" fill="url(#sealGoldGrad)"/>
+            <circle cx="44" cy="44" r="42" fill="url(#sealInnerGlow)"/>
+            <circle cx="44" cy="44" r="36.5" fill="none" stroke="rgba(251,249,244,0.75)" stroke-width="1"/>
+            <circle cx="44" cy="44" r="32.5" fill="none" stroke="rgba(36,64,47,0.32)" stroke-width="0.9"/>
+          </svg>
+          <span class="seal-monogram" id="coverSealMonogram">Z&amp;H</span>
+        </span>
+        <span class="seal-label" id="coverBtnText">OPEN INVITATION</span>
+      </button>
     </div>
   </div>
 
-  <!-- PAGE CONTENT BEHIND COVER -->
+  <!-- ========================================================================
+       PAGE SHELL BEHIND DOORS
+       ======================================================================== -->
   <div id="pageContent" class="page-shell" inert>
 
-    <!-- Floating Navigation: Mobile Bar -->
-    <header class="site-header-mobile" aria-label="Mobile Navigation">
-      <a href="#intro" class="nav-brand" id="mobileBrandText">Z &amp; H</a>
-      <div class="nav-actions">
-        <button id="shareBtnMobile" type="button" class="btn-secondary" aria-label="Share invitation">
-          <span id="mobileShareBtnLabel">Share invitation</span>
-        </button>
-        <button id="menuOpenBtn" type="button" class="btn-icon" aria-label="Open navigation menu">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
+    <!-- Floating Navigation Bar -->
+    <header id="siteNav" class="site-nav" aria-label="Primary navigation">
+      <div class="nav-inner">
+        <a href="#intro" class="nav-monogram" id="navMonogram">Z&amp;H</a>
+
+        <nav class="nav-links-desktop" aria-label="Sections">
+          <ul class="nav-link-list" id="desktopNavLinks">
+            <li><a href="#intro">Home</a></li>
+            <li><a href="#couple">Couple</a></li>
+            <li><a href="#ceremony">Ceremony</a></li>
+            <li><a href="#venue">Venue</a></li>
+            <li><a href="#countdown">Countdown</a></li>
+            <li><a href="#wishes">Wishes</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-right">
+          <button id="shareBtnDesktop" type="button" class="nav-share-pill">
+            <span id="desktopShareBtnLabel">Share invitation</span>
+          </button>
+
+          <!-- Mobile icon-only actions (44px x 44px) -->
+          <button id="shareBtnMobile" type="button" class="nav-icon-btn nav-mobile-only" aria-label="Share invitation">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="18" cy="5" r="3"/>
+              <circle cx="6" cy="12" r="3"/>
+              <circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+          </button>
+
+          <button id="menuOpenBtn" type="button" class="nav-icon-btn nav-mobile-only" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenuOverlay">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+              <line x1="4" y1="7" x2="20" y2="7"/>
+              <line x1="4" y1="12" x2="20" y2="12"/>
+              <line x1="4" y1="17" x2="20" y2="17"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </header>
 
-    <!-- Floating Navigation: Desktop Pill -->
-    <header class="site-header-desktop" aria-label="Desktop Navigation">
-      <a href="#intro" class="nav-brand" id="desktopBrandText">Z &amp; H</a>
-      <ul class="desktop-nav-links" id="desktopNavLinks">
-        <li><a href="#intro">Home</a></li>
-        <li><a href="#couple">Couple</a></li>
-        <li><a href="#ceremony">Ceremony</a></li>
-        <li><a href="#venue">Venue</a></li>
-        <li><a href="#countdown">Countdown</a></li>
-        <li><a href="#wishes">Wishes</a></li>
-      </ul>
-      <button id="shareBtnDesktop" type="button" class="btn-secondary" aria-label="Share invitation">
-        <span id="desktopShareBtnLabel">Share invitation</span>
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-      </button>
-    </header>
-
-    <!-- Full-Screen Overlay Menu (Mobile) -->
-    <div id="mobileMenuOverlay" class="mobile-menu-overlay" role="dialog" aria-modal="true" aria-label="Navigation Menu">
-      <button id="menuCloseBtn" type="button" class="btn-icon mobile-menu-close" aria-label="Close navigation menu">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
+    <!-- Full-Screen Mobile Overlay Menu -->
+    <div id="mobileMenuOverlay" class="mobile-menu-overlay" role="dialog" aria-modal="true" aria-label="Navigation menu" hidden>
+      <button id="menuCloseBtn" type="button" class="nav-icon-btn mobile-menu-close" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+          <line x1="6" y1="6" x2="18" y2="18"/>
+          <line x1="18" y1="6" x2="6" y2="18"/>
         </svg>
       </button>
-      <nav aria-label="Overlay Navigation">
+      <nav aria-label="Mobile sections">
         <ul class="mobile-nav-list" id="mobileNavList">
           <li><a href="#intro" class="mobile-nav-link">Home</a></li>
           <li><a href="#couple" class="mobile-nav-link">Couple</a></li>
@@ -175,459 +267,402 @@
       </nav>
     </div>
 
-    <!-- MAIN PAGE CONTENT -->
     <main>
+      <!-- ====================================================================
+           2. HERO SECTION (POINTED ARCH LINE DECORATION & MASKED KHATAM BAND)
+           ==================================================================== -->
+      <section id="intro" class="section-hero">
+        <!-- Masked 240px khatam pattern band at the top -->
+        <div class="hero-khatam-band" aria-hidden="true"></div>
 
-      <!-- 2. INVITATION INTRO (ARCH FRAMING & STACKED SCRIPT COUPLE NAMES) -->
-      <section id="intro" class="section-intro">
-        <!-- Corner Botanical Olive/Laurel Branches Framing Hero -->
-        <img src="assets/images/corner-branch.svg" class="corner-botanical corner-top-right" alt="" aria-hidden="true">
-        <img src="assets/images/corner-branch.svg" class="corner-botanical corner-bottom-left" alt="" aria-hidden="true">
+        <!-- Very large faint pointed-arch line outline BEHIND content -->
+        <svg class="hero-arch-outline" viewBox="0 0 440 620" fill="none" preserveAspectRatio="xMidYMin meet" aria-hidden="true">
+          <path
+            class="hero-arch-path"
+            pathLength="100"
+            d="M20 620 L20 265 C20 138, 108 58, 220 16 C332 58, 420 138, 420 265 L420 620"
+            stroke="currentColor"
+            stroke-width="1"
+          />
+        </svg>
 
-        <!-- Floating Sparkles -->
-        <span class="sparkle" style="top: 22%; left: 10%; font-size: 16px; animation-delay: 0.5s;">✦</span>
-        <span class="sparkle" style="top: 35%; right: 12%; font-size: 14px; animation-delay: 1.8s;">★</span>
-        <span class="sparkle" style="bottom: 18%; left: 15%; font-size: 18px; animation-delay: 2.4s;">✦</span>
+        <!-- Swaying corner sprigs -->
+        <svg class="corner-branch hero-branch-tl" viewBox="0 0 180 180" aria-hidden="true">
+          <use class="motif-olive" href="#branch-olive"/>
+          <use class="motif-wheat" href="#branch-wheat"/>
+        </svg>
+        <svg class="corner-branch hero-branch-tr" viewBox="0 0 180 180" aria-hidden="true">
+          <use class="motif-olive" href="#branch-olive"/>
+          <use class="motif-wheat" href="#branch-wheat"/>
+        </svg>
 
-        <!-- Vertical Side Annotation -->
-        <span class="side-annotation" id="sideAnnotation">A NEW CHAPTER · 2026</span>
+        <div class="container hero-stack">
+          <p dir="rtl" lang="ar" class="hero-bismillah" id="introBismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
 
-        <div class="container">
-          <!-- Elegant Architectural Arch Frame -->
-          <div class="hero-arch-wrapper">
-            <div class="intro-content">
-              <p dir="rtl" lang="ar" class="hero-bismillah" id="introBismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
-              
-              <p class="sub-kicker" id="introSubKicker">TOGETHER WITH OUR FAMILIES</p>
+          <span class="gold-hairline" aria-hidden="true"></span>
 
-              <!-- Stacked Couple Names (Line 1: Zain, Line 2: weds, Line 3: Hanna) -->
-              <h1 class="couple-title-stacked hero-couple-stacked" id="heroCoupleTitle">
-                <span class="couple-name-script" id="heroGroomName">Zain</span>
-                <span class="couple-weds-script" id="heroWedsText">weds</span>
-                <span class="couple-name-script" id="heroBrideName">Hanna</span>
-              </h1>
+          <p class="eyebrow" id="introSubKicker">TOGETHER WITH OUR FAMILIES</p>
 
-              <p class="kicker" id="introKicker">WE ARE GETTING MARRIED</p>
-              <p class="hero-date-display" id="heroDateDisplay">26 DECEMBER 2026 | SATURDAY</p>
+          <h1 class="hero-names" aria-label="Zain and Hanna">
+            <span class="script-name hero-word hero-word-1" id="heroGroomName">Zain</span>
+            <span class="hero-amp hero-word hero-word-2" id="heroAmpersand">&amp;</span>
+            <span class="script-name hero-word hero-word-3" id="heroBrideName">Hanna</span>
+          </h1>
 
-              <div class="gold-rule" aria-hidden="true"></div>
+          <p class="eyebrow" id="introKicker">WE ARE GETTING MARRIED</p>
 
-              <h2 class="intro-lead" id="introLead">With the blessings of Allah, we cordially invite you to the Nikah ceremony.</h2>
+          <!-- Three-part Date Block -->
+          <div class="hero-date-block" id="heroDateBlock">
+            <div class="hero-date-cols">
+              <span class="date-side-caps" id="heroMonth">DEC</span>
+              <span class="date-vert-rule" aria-hidden="true"></span>
+              <span class="date-center-num" id="heroDay">26</span>
+              <span class="date-vert-rule" aria-hidden="true"></span>
+              <span class="date-side-caps" id="heroWeekday">SATURDAY</span>
             </div>
+            <span class="date-year" id="heroYear">2026</span>
+          </div>
+
+          <a href="#invite-message" class="hero-scroll-cue" aria-label="Scroll to invitation message">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </a>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           2b. DEDICATED SHORT INVITATION SENTENCE SECTION
+           ==================================================================== -->
+      <section id="invite-message" class="section-invite-note reveal-block">
+        <div class="container invite-note-inner">
+          <div class="ornament-row" aria-hidden="true">
+            <span class="ornament-line ornament-wide"></span>
+            <svg class="tiny-star" viewBox="0 0 24 24" width="12" height="12"><use href="#star-4"/></svg>
+            <span class="ornament-line ornament-wide"></span>
+          </div>
+
+          <p class="invite-lead" id="introLead">With the blessings of Allah, we cordially invite you to the Nikah ceremony.</p>
+
+          <div class="ornament-row" aria-hidden="true">
+            <span class="ornament-line ornament-wide"></span>
+            <svg class="tiny-star" viewBox="0 0 24 24" width="12" height="12"><use href="#star-4"/></svg>
+            <span class="ornament-line ornament-wide"></span>
           </div>
         </div>
       </section>
 
-      <!-- 3. COUPLE SECTION (CLEAN, NO BOXES BEHIND NAMES) -->
-      <section id="couple" class="reveal-section section-couple">
-        <div class="container">
-          <div class="couple-wrapper">
-            <!-- THE GROOM (Clean & Borderless) -->
-            <article class="couple-card-clean" id="groomCard">
-              <span class="couple-role" id="groomRole">THE GROOM</span>
-              <h3 class="couple-name" id="groomName">Dr. Sayed Zain Mashhoor</h3>
-              <p class="couple-lineage" id="groomLineage">S/o Sayed Ibrahim Mashhoor and Thahira Jiffri</p>
+      <!-- ====================================================================
+           3. COUPLE SECTION (GROOM FIRST, BALANCED TYPOGRAPHY)
+           ==================================================================== -->
+      <section id="couple" class="section-couple">
+        <div class="container couple-grid">
+          <article class="couple-person reveal-block" id="groomCard">
+            <p class="eyebrow" id="groomRole">THE GROOM</p>
+            <h2 class="script-name couple-person-name" id="groomName">Dr. Sayed Zain Mashhoor</h2>
+            <p class="couple-parents" id="groomLineage">S/o Sayed Ibrahim Mashhoor and Thahira Jiffri</p>
+          </article>
+
+          <div class="couple-separator reveal-block" aria-hidden="true">
+            <span class="sep-line"></span>
+            <span class="sep-amp" id="coupleAmpersand">&amp;</span>
+            <span class="sep-line"></span>
+          </div>
+
+          <article class="couple-person reveal-block" id="brideCard">
+            <p class="eyebrow" id="brideRole">THE BRIDE</p>
+            <h2 class="script-name couple-person-name" id="brideName">Adv. Hanna Musthafa</h2>
+            <p class="couple-parents" id="brideLineage">D/o Mohamed Musthafa and Zuhra Musthafa</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           4. CEREMONY SECTION (3 STAGGERED CARDS, NO PATTERN)
+           ==================================================================== -->
+      <section id="ceremony" class="section-ceremony">
+        <div class="container ceremony-inner">
+          <div class="section-head reveal-block">
+            <svg class="head-star" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><use href="#star-4"/></svg>
+            <h2 class="section-title" id="ceremonyHeading">The Nikah Ceremony</h2>
+          </div>
+
+          <div class="ceremony-cards">
+            <!-- Date -->
+            <article class="detail-card reveal-stagger" style="--stagger: 0ms;">
+              <span class="icon-circle" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="5" width="18" height="16" rx="2"/>
+                  <line x1="16" y1="3" x2="16" y2="7"/>
+                  <line x1="8" y1="3" x2="8" y2="7"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+              </span>
+              <span class="eyebrow card-eyebrow" id="dateLabel">DATE</span>
+              <p class="detail-value" id="dateValue">26</p>
+              <p class="detail-sub" id="dateSubtext">December 2026 · Saturday</p>
             </article>
 
-            <!-- Hairline Divider with "&" -->
-            <div class="couple-divider" aria-hidden="true">
-              <span class="couple-divider-line"></span>
-              <span class="couple-ampersand" id="coupleAmpersand">&amp;</span>
-              <span class="couple-divider-line"></span>
-            </div>
+            <!-- Time -->
+            <article class="detail-card reveal-stagger" style="--stagger: 120ms;">
+              <span class="icon-circle" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9"/>
+                  <polyline points="12 7 12 12 15.5 14"/>
+                </svg>
+              </span>
+              <span class="eyebrow card-eyebrow" id="timeLabel">TIME</span>
+              <p class="detail-value" id="timeDisplay">11:00 AM</p>
+              <p class="detail-sub" id="timeZone">Indian Standard Time</p>
+            </article>
 
-            <!-- THE BRIDE (Clean & Borderless) -->
-            <article class="couple-card-clean" id="brideCard">
-              <span class="couple-role" id="brideRole">THE BRIDE</span>
-              <h3 class="couple-name" id="brideName">Adv. Hanna Musthafa</h3>
-              <p class="couple-lineage" id="brideLineage">D/o Mohamed Musthafa and Zuhra Musthafa</p>
+            <!-- Venue -->
+            <article class="detail-card reveal-stagger" style="--stagger: 240ms;">
+              <span class="icon-circle" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 1 1 13 0C18.5 14.8 12 21 12 21z"/>
+                  <circle cx="12" cy="9.8" r="2.3"/>
+                </svg>
+              </span>
+              <span class="eyebrow card-eyebrow" id="venueLabel">VENUE</span>
+              <p class="detail-value detail-value-venue" id="venueName">Presidency Convention Center</p>
+              <p class="detail-sub" id="venueLocation">Poopalam</p>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- 4. CEREMONY SECTION (CENTERED LAYOUT & REALISTIC MAP) -->
-      <section id="ceremony" class="reveal-section section-ceremony">
+      <!-- ====================================================================
+           5. VENUE CARD SECTION (CLEAN DOUBLE-BORDER CARD, NO MAP EMBED)
+           ==================================================================== -->
+      <section id="venue" class="section-venue">
         <div class="container">
-          <h2 class="ceremony-title text-center" id="ceremonyHeading">The Nikah Ceremony</h2>
-
-          <div class="ceremony-grid-centered">
-            <!-- Centered Ticket Details -->
-            <div class="ceremony-ticket-centered">
-              <!-- Date item (Centered) -->
-              <div class="ticket-item-centered">
-                <span class="ticket-label" id="dateLabel">DATE</span>
-                <span class="ticket-value-huge" id="dateDayNumber">26</span>
-                <p class="ticket-text-primary" id="dateFull">26 December 2026 · Saturday</p>
+          <div class="venue-card reveal-block" id="venueCard">
+            <div class="venue-card-inner">
+              <!-- Optional Photo in Pointed-Arch Mask (Hidden if config.venue.photo is empty) -->
+              <div class="venue-photo-arch" id="venuePhotoWrap" hidden>
+                <img id="venuePhotoImg" alt="Presidency Convention Center, Poopalam" loading="lazy">
               </div>
 
-              <!-- Time item (Centered) -->
-              <div class="ticket-item-centered">
-                <span class="ticket-label" id="timeLabel">TIME</span>
-                <p class="ticket-value-huge" id="timeDisplay">11:00 AM</p>
-                <p class="ticket-text-muted" id="timeZone">Indian Standard Time</p>
-              </div>
-
-              <!-- Venue item (Centered) -->
-              <div class="ticket-item-centered" id="venue">
-                <span class="ticket-label" id="venueLabel">VENUE</span>
-                <h3 class="ticket-venue-name" id="venueName">Presidency Convention Center</h3>
-                <p class="ticket-text-muted" id="venueLocation">Poopalam</p>
-              </div>
-            </div>
-
-              <!-- Redesigned Realistic Google Maps Card -->
-              <div class="ceremony-map-card">
-                <!-- Interactive Map Frame: Click to open Google Maps directly -->
-                <a href="https://maps.app.goo.gl/CgF19UWEokYYaRuU6" target="_blank" rel="noopener noreferrer" class="map-interactive-frame" aria-label="Open Presidency Convention Center on Google Maps">
-                  
-                  <!-- Floating Google Maps Venue Card Header -->
-                  <div class="gmap-venue-header">
-                    <div class="gmap-venue-avatar">
-                      <svg viewBox="0 0 24 24" width="20" height="20" fill="#EA4335" aria-hidden="true">
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                      </svg>
-                    </div>
-                    <div class="gmap-venue-info">
-                      <span class="gmap-venue-title">Presidency Convention Center</span>
-                      <span class="gmap-venue-sub">Poopalam, Perinthalmanna · <strong class="gmap-rating">4.4 ★★★★☆</strong> (1.2k)</span>
-                    </div>
-                    <div class="gmap-directions-btn" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
-                        <path d="M22.43 10.59l-9.01-9.01c-.75-.75-2.07-.76-2.83 0l-9 9c-.78.78-.78 2.04 0 2.82l9 9c.39.39.9.58 1.41.58.51 0 1.02-.2 1.41-.59l8.99-8.98c.78-.78.78-2.04.03-2.82zm-10.42 10.4l-9-9 9-9 9 9-9 9zM8 11v4h2v-3h4v2.5l3.5-3.5L14 7.5V10H9c-.55 0-1 .45-1 1z"/>
-                      </svg>
-                      <span>Directions</span>
-                    </div>
-                  </div>
-
-                  <!-- Realistic Google Maps SVG Vector Artwork -->
-                  <svg class="map-bg-art" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <defs>
-                      <linearGradient id="gmapGround" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#F6F3EC"/>
-                        <stop offset="100%" stop-color="#EEE8DC"/>
-                      </linearGradient>
-                      <filter id="venueShadow" x="-10%" y="-10%" width="130%" height="130%">
-                        <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#163E2B" flood-opacity="0.25"/>
-                      </filter>
-                      <filter id="pinShadow" x="-30%" y="-30%" width="160%" height="160%">
-                        <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0E281C" flood-opacity="0.35"/>
-                      </filter>
-                    </defs>
-
-                    <!-- Background Base Terrain -->
-                    <rect width="600" height="300" fill="url(#gmapGround)"/>
-
-                    <!-- Lush Kerala Palm / Paddy Greenery Zones -->
-                    <path d="M -10 60 Q 90 20 180 50 Q 160 130 60 140 Q -10 120 -10 60 Z" fill="#D8EAD0" opacity="0.8"/>
-                    <path d="M 420 180 Q 510 140 610 170 L 610 310 L 380 310 Q 400 240 420 180 Z" fill="#D8EAD0" opacity="0.85"/>
-                    <path d="M 450 -10 Q 530 30 610 10 L 610 -10 Z" fill="#D8EAD0" opacity="0.7"/>
-                    <path d="M -10 200 Q 60 190 90 240 L 70 310 L -10 310 Z" fill="#D8EAD0" opacity="0.75"/>
-
-                    <!-- Subtle Tree Texture dots in green zones -->
-                    <g fill="#A9D49E" opacity="0.6">
-                      <circle cx="45" cy="75" r="4"/><circle cx="75" cy="65" r="5"/><circle cx="115" cy="85" r="4.5"/>
-                      <circle cx="500" cy="220" r="5"/><circle cx="540" cy="205" r="4.5"/><circle cx="470" cy="255" r="5.5"/>
-                    </g>
-
-                    <!-- River / Canal Stream Curve -->
-                    <path d="M -10 170 C 80 160, 140 185, 200 240 C 230 270, 250 310, 260 310" stroke="#CFE8F4" stroke-width="12" fill="none" stroke-linecap="round"/>
-                    <path d="M -10 170 C 80 160, 140 185, 200 240 C 230 270, 250 310, 260 310" stroke="#B8DEEE" stroke-width="2" fill="none" stroke-linecap="round"/>
-
-                    <!-- Local Streets (White with subtle casing) -->
-                    <!-- Valambur Road -->
-                    <path d="M 120 -10 L 155 310" stroke="#DDD6C8" stroke-width="14" fill="none"/>
-                    <path d="M 120 -10 L 155 310" stroke="#FFFFFF" stroke-width="11" fill="none"/>
-
-                    <!-- Poopalam Cross Rd -->
-                    <path d="M -10 110 L 610 110" stroke="#DDD6C8" stroke-width="13" fill="none"/>
-                    <path d="M -10 110 L 610 110" stroke="#FFFFFF" stroke-width="10" fill="none"/>
-
-                    <!-- Residential Connector Roads -->
-                    <path d="M 440 -10 L 410 310" stroke="#DDD6C8" stroke-width="12" fill="none"/>
-                    <path d="M 440 -10 L 410 310" stroke="#FFFFFF" stroke-width="9" fill="none"/>
-                    <path d="M 270 310 L 290 190 L 410 190" stroke="#DDD6C8" stroke-width="11" fill="none"/>
-                    <path d="M 270 310 L 290 190 L 410 190" stroke="#FFFFFF" stroke-width="8" fill="none"/>
-
-                    <!-- Main Corridor: State Highway 39 (SH-39 / Perinthalmanna - Ooty Highway) -->
-                    <!-- Casing -->
-                    <path d="M -10 275 Q 260 170 610 35" stroke="#E5A835" stroke-width="18" fill="none" stroke-linecap="round"/>
-                    <!-- Road Fill (Classic Google Maps Highway Gold) -->
-                    <path d="M -10 275 Q 260 170 610 35" stroke="#FFD868" stroke-width="14" fill="none" stroke-linecap="round"/>
-                    <!-- Center Lane Divider (Dashed) -->
-                    <path d="M -10 275 Q 260 170 610 35" stroke="#FFFFFF" stroke-width="1.8" stroke-dasharray="14 10" fill="none"/>
-
-                    <!-- Highway Shield & Label -->
-                    <g transform="translate(365, 82)">
-                      <rect x="0" y="0" width="135" height="22" rx="11" fill="#FFFFFF" stroke="#E5A835" stroke-width="1.2" filter="url(#venueShadow)"/>
-                      <rect x="4" y="3" width="34" height="16" rx="8" fill="#E5A835"/>
-                      <text x="21" y="14" font-family="system-ui,sans-serif" font-size="8.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">SH-39</text>
-                      <text x="82" y="14.5" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#6B4A0E" text-anchor="middle" letter-spacing="0.4">OOTY ROAD</text>
-                    </g>
-
-                    <!-- Presidency Convention Center Property Grounds -->
-                    <g transform="translate(190, 85)" filter="url(#venueShadow)">
-                      <!-- Compound Boundary Lot -->
-                      <polygon points="15,40 185,15 210,120 40,140" fill="#FFFFFF" stroke="#C5A566" stroke-width="1.5" stroke-dasharray="4 3"/>
-                      
-                      <!-- Parking Lots -->
-                      <rect x="35" y="55" width="40" height="30" rx="3" fill="#EAE5DB"/>
-                      <line x1="42" y1="55" x2="42" y2="85" stroke="#D3CBC0" stroke-width="1"/>
-                      <line x1="52" y1="55" x2="52" y2="85" stroke="#D3CBC0" stroke-width="1"/>
-                      <line x1="62" y1="55" x2="62" y2="85" stroke="#D3CBC0" stroke-width="1"/>
-
-                      <!-- Grand Convention Center 3D Isometric Building Footprint -->
-                      <polygon points="85,38 175,25 188,85 98,98" fill="#163E2B" opacity="0.14"/>
-                      <polygon points="82,34 172,21 185,81 95,94" fill="#FFFFFF" stroke="#163E2B" stroke-width="1.5"/>
-                      <polygon points="82,34 172,21 172,30 82,43" fill="#C5A566" opacity="0.3"/>
-                      
-                      <!-- Front Portico & Entrance Canopy -->
-                      <polygon points="110,92 145,87 148,106 113,111" fill="#C5A566" stroke="#9A7B40" stroke-width="1"/>
-                      <text x="131" y="103" font-family="system-ui,sans-serif" font-size="6.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">MAIN ENTRY</text>
-
-                      <!-- Center Fountain Roundabout -->
-                      <circle cx="130" cy="126" r="9" fill="#D9EBD3" stroke="#C5A566" stroke-width="1"/>
-                      <circle cx="130" cy="126" r="4" fill="#CFE8F4" stroke="#9A7B40" stroke-width="0.8"/>
-
-                      <!-- Venue Complex Label -->
-                      <text x="135" y="60" font-family="system-ui,sans-serif" font-size="7.5" font-weight="700" fill="#163E2B" text-anchor="middle" letter-spacing="0.5">PRESIDENCY</text>
-                      <text x="135" y="70" font-family="system-ui,sans-serif" font-size="6.5" font-weight="600" fill="#7C6B58" text-anchor="middle" letter-spacing="0.3">CONVENTION CENTER</text>
-                    </g>
-
-                    <!-- Radar Pulse Beacon Rings -->
-                    <circle cx="320" cy="180" r="14" fill="none" stroke="#C5A566" stroke-width="2" opacity="0.8" class="map-beacon-ring"/>
-                    <circle cx="320" cy="180" r="14" fill="none" stroke="#163E2B" stroke-width="1.5" opacity="0.8" class="map-beacon-ring-2"/>
-
-                    <!-- Google Maps Destination Pin Marker -->
-                    <g transform="translate(304, 138)" filter="url(#pinShadow)">
-                      <!-- Teardrop Pin Base -->
-                      <path d="M16 0C7.16 0 0 7.16 0 16C0 27.5 16 42 16 42C16 42 32 27.5 32 16C32 7.16 24.84 0 16 0Z" fill="#163E2B"/>
-                      <!-- Gold Accent Ring -->
-                      <circle cx="16" cy="15" r="9" fill="#FFFFFF"/>
-                      <circle cx="16" cy="15" r="7" fill="#C5A566"/>
-                      <!-- Inner Icon (Wedding Rings / Arch) -->
-                      <circle cx="14" cy="15" r="3.2" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
-                      <circle cx="18" cy="15" r="3.2" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
-                    </g>
-
-                    <!-- Floating Venue Name Speech Bubble Callout -->
-                    <g transform="translate(200, 115)" filter="url(#venueShadow)">
-                      <rect width="210" height="32" rx="16" fill="#FFFFFF" stroke="#C5A566" stroke-width="1.4"/>
-                      <path d="M 120 32 L 124 37 L 128 32 Z" fill="#FFFFFF"/>
-                      <circle cx="20" cy="16" r="9" fill="#163E2B"/>
-                      <path d="M17.5 13.5L20 16L22.5 13.5" stroke="#FFFFFF" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-                      <text x="118" y="15" font-family="system-ui,sans-serif" font-size="10.5" font-weight="700" fill="#163E2B" text-anchor="middle" letter-spacing="0.2">Presidency Convention Center</text>
-                      <text x="118" y="25.5" font-family="system-ui,sans-serif" font-size="8" font-weight="500" fill="#8C775D" text-anchor="middle">Poopalam, Perinthalmanna · Tap to Open</text>
-                    </g>
-
-                    <!-- Authentic Google Maps UI Controls -->
-                    <!-- Map Scale Indicator -->
-                    <g transform="translate(18, 275)">
-                      <line x1="0" y1="0" x2="60" y2="0" stroke="#7A6D5C" stroke-width="2"/>
-                      <line x1="0" y1="-4" x2="0" y2="4" stroke="#7A6D5C" stroke-width="2"/>
-                      <line x1="60" y1="-4" x2="60" y2="4" stroke="#7A6D5C" stroke-width="2"/>
-                      <text x="30" y="-5" font-family="system-ui,sans-serif" font-size="8.5" font-weight="600" fill="#7A6D5C" text-anchor="middle">100 m</text>
-                    </g>
-
-                    <!-- Google Logo Watermark -->
-                    <g transform="translate(86, 268)">
-                      <text font-family="system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" letter-spacing="-0.5">
-                        <tspan fill="#4285F4">G</tspan><tspan fill="#EA4335">o</tspan><tspan fill="#FBBC05">o</tspan><tspan fill="#4285F4">g</tspan><tspan fill="#34A853">l</tspan><tspan fill="#EA4335">e</tspan>
-                      </text>
-                    </g>
-
-                    <!-- Zoom Controls -->
-                    <g transform="translate(554, 230)">
-                      <rect width="28" height="52" rx="6" fill="#FFFFFF" stroke="#D3CBC0" stroke-width="1" filter="url(#venueShadow)"/>
-                      <text x="14" y="21" font-family="system-ui,sans-serif" font-size="17" font-weight="400" fill="#555555" text-anchor="middle">+</text>
-                      <line x1="5" y1="26" x2="23" y2="26" stroke="#E5DDD2" stroke-width="1"/>
-                      <text x="14" y="44" font-family="system-ui,sans-serif" font-size="19" font-weight="300" fill="#555555" text-anchor="middle">−</text>
-                    </g>
-
-                    <!-- Compass Rose -->
-                    <g transform="translate(568, 70)">
-                      <circle cx="0" cy="0" r="14" fill="#FFFFFF" stroke="#D3CBC0" stroke-width="1" filter="url(#venueShadow)"/>
-                      <polygon points="0,-10 3.5,0 -3.5,0" fill="#EA4335"/>
-                      <polygon points="0,10 3.5,0 -3.5,0" fill="#999999"/>
-                      <text x="0" y="-12" font-family="system-ui,sans-serif" font-size="7" font-weight="700" fill="#EA4335" text-anchor="middle">N</text>
-                    </g>
+              <!-- Centered Pin Ornament with One Gentle Entrance Pulse -->
+              <div class="venue-pin-wrap" aria-hidden="true">
+                <span class="venue-pin-pulse"></span>
+                <span class="icon-circle venue-pin-circle">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 1 1 13 0C18.5 14.8 12 21 12 21z"/>
+                    <circle cx="12" cy="9.8" r="2.4"/>
                   </svg>
-
-                  <!-- Hover Hint -->
-                  <div class="map-hover-hint">
-                    <span>Open in Google Maps</span>
-                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                  </div>
-                </a>
-
-                <!-- Card Actions & Venue Address -->
-                <div class="map-actions">
-                  <a id="openMapsBtn" href="https://maps.app.goo.gl/CgF19UWEokYYaRuU6" target="_blank" rel="noopener noreferrer" class="btn-primary map-open-btn">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
-                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                    </svg>
-                    <span id="mapBtnText">Open in Google Maps</span>
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                  </a>
-                  <a id="addToCalendarBtn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Nikah+Ceremony%3A+Zain+Weds+Hanna&amp;dates=20261226T053000Z/20261226T063000Z&amp;details=With+the+blessings+of+Allah%2C+we+cordially+invite+you+to+the+Nikah+ceremony+of+Dr.+Sayed+Zain+Mashhoor+and+Adv.+Hanna+Musthafa.&amp;location=Presidency+Convention+Center%2C+Poopalam" target="_blank" rel="noopener noreferrer" class="btn-secondary">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                      <line x1="16" y1="2" x2="16" y2="6"></line>
-                      <line x1="8" y1="2" x2="8" y2="6"></line>
-                      <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
-                    <span id="calendarBtnText">Add to Calendar</span>
-                  </a>
-                  <p class="map-venue-address-footer">
-                    Presidency Convention Center, SH-39, Poopalam, Perinthalmanna, Kerala 679322
-                  </p>
-                </div>
-              </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 5. COUNTDOWN SECTION (IVORY GLASS BAND) -->
-      <section id="countdown" class="reveal-section section-countdown">
-        <div class="container">
-          <div class="countdown-wrapper">
-            <h2 class="countdown-title" id="countdownHeading">Counting down to forever</h2>
-
-            <div class="countdown-band">
-              <div class="countdown-grid" id="countdownGrid" aria-label="Countdown timer to wedding ceremony">
-                <div class="countdown-unit">
-                  <div class="odometer-wrapper">
-                    <span id="cd-days" class="countdown-numeral" aria-label="Days">00</span>
-                  </div>
-                  <span class="countdown-unit-label">DAYS</span>
-                </div>
-                <div class="countdown-unit">
-                  <div class="odometer-wrapper">
-                    <span id="cd-hours" class="countdown-numeral" aria-label="Hours">00</span>
-                  </div>
-                  <span class="countdown-unit-label">HOURS</span>
-                </div>
-                <div class="countdown-unit">
-                  <div class="odometer-wrapper">
-                    <span id="cd-minutes" class="countdown-numeral" aria-label="Minutes">00</span>
-                  </div>
-                  <span class="countdown-unit-label">MINUTES</span>
-                </div>
-                <div class="countdown-unit">
-                  <div class="odometer-wrapper">
-                    <span id="cd-seconds" class="countdown-numeral" aria-label="Seconds">00</span>
-                  </div>
-                  <span class="countdown-unit-label">SECONDS</span>
-                </div>
-              </div>
-            </div>
-
-            <p class="countdown-subtext" id="countdownSubtext">Until we begin our forever</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- 6. WISHES SECTION (FLOATING TICKER & FORM) -->
-      <section id="wishes" class="reveal-section section-wishes">
-        <div class="container">
-          <div class="wishes-wrapper">
-
-            <!-- Section Header -->
-            <header class="wishes-header">
-              <div class="wishes-header-top">
-                <h2 class="wishes-title" id="wishesHeading">Leave Your Wishes</h2>
-                <span class="wishes-chip">
-                  <span id="wishCountChip">0 wishes</span>
                 </span>
               </div>
-              <p class="wishes-desc" id="wishesDesc">Your prayers and wishes mean a lot to us.</p>
-            </header>
 
-            <!-- Wish Form -->
-            <form id="wishForm" class="wish-form smoked-glass" novalidate>
+              <h2 class="venue-card-title" id="venueCardName">Presidency Convention Center</h2>
+              <p class="venue-card-area" id="venueCardArea">Poopalam, Perinthalmanna</p>
+              <p class="venue-card-address" id="venueCardAddress">SH-39, Poopalam, Perinthalmanna, Kerala 679322</p>
+
+              <div class="venue-actions">
+                <a id="openMapsBtn" href="https://maps.app.goo.gl/CgF19UWEokYYaRuU6" target="_blank" rel="noopener noreferrer" class="btn-solid">
+                  <span id="mapBtnText">Open location in Maps</span>
+                </a>
+                <a id="addToCalendarBtn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Nikah+Ceremony%3A+Zain+Weds+Hanna&amp;dates=20261226T053000Z/20261226T063000Z&amp;details=With+the+blessings+of+Allah%2C+we+cordially+invite+you+to+the+Nikah+ceremony+of+Dr.+Sayed+Zain+Mashhoor+and+Adv.+Hanna+Musthafa.&amp;location=Presidency+Convention+Center%2C+Poopalam" target="_blank" rel="noopener noreferrer" class="btn-outline">
+                  <span id="calendarBtnText">Add to Calendar</span>
+                </a>
+                <button id="copyAddressBtn" type="button" class="btn-text-link">
+                  <span id="copyAddressBtnText">Copy address</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           6. COUNTDOWN SECTION (CURVED EDGES & 4 MIHRAB ARCH TILES)
+           ==================================================================== -->
+      <section id="countdown" class="section-countdown">
+        <!-- Soft Top Curved Edge -->
+        <svg class="curve-edge curve-edge-top" viewBox="0 0 1440 56" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 0 L1440 0 L1440 20 Q720 68 0 20 Z" fill="var(--bg)"/>
+        </svg>
+
+        <!-- Decorative Side Sprigs -->
+        <svg class="corner-branch countdown-branch-l" viewBox="0 0 180 180" aria-hidden="true">
+          <use class="motif-olive" href="#branch-olive"/>
+          <use class="motif-wheat" href="#branch-wheat"/>
+        </svg>
+        <svg class="corner-branch countdown-branch-r" viewBox="0 0 180 180" aria-hidden="true">
+          <use class="motif-olive" href="#branch-olive"/>
+          <use class="motif-wheat" href="#branch-wheat"/>
+        </svg>
+
+        <div class="container countdown-inner">
+          <h2 class="section-title reveal-block" id="countdownHeading">
+            <span id="countdownHeadingPrefix">Counting down to </span><em id="countdownHeadingAccent">forever</em>
+          </h2>
+
+          <div class="mihrab-grid" id="countdownGrid" aria-label="Countdown timer to wedding ceremony">
+            <!-- DAYS -->
+            <div class="mihrab-tile reveal-stagger" style="--stagger: 0ms;">
+              <svg class="mihrab-svg" viewBox="0 0 100 136" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M1.5 134.5 L1.5 52 C1.5 26, 22 10, 50 2 C78 10, 98.5 26, 98.5 52 L98.5 134.5 Z" fill="#FFFFFF" stroke="var(--accent)" stroke-width="1"/>
+              </svg>
+              <div class="mihrab-body">
+                <div class="digit-slot"><span id="cd-days" class="mihrab-numeral">00</span></div>
+                <span class="mihrab-rule" aria-hidden="true"></span>
+                <span class="mihrab-label">DAYS</span>
+              </div>
+            </div>
+
+            <!-- HOURS -->
+            <div class="mihrab-tile reveal-stagger" style="--stagger: 100ms;">
+              <svg class="mihrab-svg" viewBox="0 0 100 136" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M1.5 134.5 L1.5 52 C1.5 26, 22 10, 50 2 C78 10, 98.5 26, 98.5 52 L98.5 134.5 Z" fill="#FFFFFF" stroke="var(--accent)" stroke-width="1"/>
+              </svg>
+              <div class="mihrab-body">
+                <div class="digit-slot"><span id="cd-hours" class="mihrab-numeral">00</span></div>
+                <span class="mihrab-rule" aria-hidden="true"></span>
+                <span class="mihrab-label">HOURS</span>
+              </div>
+            </div>
+
+            <!-- MINUTES -->
+            <div class="mihrab-tile reveal-stagger" style="--stagger: 200ms;">
+              <svg class="mihrab-svg" viewBox="0 0 100 136" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M1.5 134.5 L1.5 52 C1.5 26, 22 10, 50 2 C78 10, 98.5 26, 98.5 52 L98.5 134.5 Z" fill="#FFFFFF" stroke="var(--accent)" stroke-width="1"/>
+              </svg>
+              <div class="mihrab-body">
+                <div class="digit-slot"><span id="cd-minutes" class="mihrab-numeral">00</span></div>
+                <span class="mihrab-rule" aria-hidden="true"></span>
+                <span class="mihrab-label">MINUTES</span>
+              </div>
+            </div>
+
+            <!-- SECONDS (Animated 60s Stroke Progress Outline) -->
+            <div class="mihrab-tile mihrab-tile-seconds reveal-stagger" style="--stagger: 300ms;">
+              <svg class="mihrab-svg" viewBox="0 0 100 136" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M1.5 134.5 L1.5 52 C1.5 26, 22 10, 50 2 C78 10, 98.5 26, 98.5 52 L98.5 134.5 Z" fill="#FFFFFF" stroke="var(--line)" stroke-width="1"/>
+                <path id="secondsProgressPath" class="mihrab-progress-path" pathLength="60" d="M50 2 C78 10, 98.5 26, 98.5 52 L98.5 134.5 L1.5 134.5 L1.5 52 C1.5 26, 22 10, 50 2 Z" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="60" stroke-dashoffset="0"/>
+              </svg>
+              <div class="mihrab-body">
+                <div class="digit-slot"><span id="cd-seconds" class="mihrab-numeral">00</span></div>
+                <span class="mihrab-rule" aria-hidden="true"></span>
+                <span class="mihrab-label">SECONDS</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="countdown-sub reveal-block">
+            <svg class="tiny-star" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
+            <em id="countdownSubtext">Until we begin our forever</em>
+            <svg class="tiny-star" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
+          </p>
+        </div>
+
+        <!-- Soft Bottom Curved Edge -->
+        <svg class="curve-edge curve-edge-bottom" viewBox="0 0 1440 56" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 56 L1440 56 L1440 36 Q720 -12 0 36 Z" fill="var(--bg)"/>
+        </svg>
+      </section>
+
+      <!-- ====================================================================
+           7. WISHES SECTION (LIGHT GLASS TICKER & FORM)
+           ==================================================================== -->
+      <section id="wishes" class="section-wishes">
+        <div class="container wishes-inner">
+          <header class="wishes-header reveal-block">
+            <div class="wishes-title-row">
+              <h2 class="section-title" id="wishesHeading">Leave Your Wishes</h2>
+              <span class="wishes-count-chip" id="wishCountWrap" hidden>
+                <span id="wishCountChip">0 wishes</span>
+              </span>
+            </div>
+            <p class="wishes-desc" id="wishesDesc">Your prayers and wishes mean a lot to us.</p>
+          </header>
+
+          <div class="wishes-layout">
+            <!-- Form -->
+            <form id="wishForm" class="wish-form glass-card reveal-block" novalidate>
               <input type="text" name="honeypot" id="wishHp" class="visually-hidden-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
 
               <div class="form-group">
-                <label for="wishNameInput" class="form-label" id="formNameLabel">Name</label>
+                <label for="wishNameInput" class="eyebrow form-label" id="formNameLabel">Name</label>
                 <input id="wishNameInput" type="text" maxlength="60" required placeholder="Your name" class="form-input" autocomplete="name">
               </div>
 
               <div class="form-group">
-                <label for="wishMessageInput" class="form-label" id="formMessageLabel">Message</label>
+                <label for="wishMessageInput" class="eyebrow form-label" id="formMessageLabel">Message</label>
                 <textarea id="wishMessageInput" rows="3" maxlength="300" required placeholder="Write a warm dua or wish..." class="form-textarea"></textarea>
               </div>
 
               <div id="wishFormAlert" class="form-alert" role="alert" aria-live="assertive"></div>
 
-              <button id="wishSubmitBtn" type="submit" class="btn-primary">
+              <button id="wishSubmitBtn" type="submit" class="btn-solid">
                 <span id="formSubmitBtnText">Send your wishes</span>
               </button>
             </form>
 
-            <!-- Floating Wish Ticker Panel -->
-            <div id="wishTickerPanel" class="wish-ticker-panel smoked-glass" aria-label="Wishes ticker">
-              <div id="wishTickerContent" class="wish-ticker-content" aria-live="polite">
-                <div class="wish-item entering">
-                  <div class="wish-author">
-                    <div class="wish-avatar">✦</div>
-                    <h3 class="wish-name">Loading wishes...</h3>
+            <!-- Floating One-at-a-Time Wish Ticker -->
+            <div class="wish-ticker-column reveal-block">
+              <div id="wishTickerPanel" class="wish-ticker-card glass-card" aria-label="Guest wishes">
+                <span class="wish-quote-mark" aria-hidden="true">“</span>
+
+                <div id="wishTickerContent" class="wish-ticker-content" aria-live="polite">
+                  <div class="wish-item">
+                    <p class="wish-message">Be the first to leave a wish.</p>
                   </div>
-                  <div class="wish-sparkle" aria-hidden="true">✦</div>
-                  <p class="wish-message">Please wait a moment while we load guest wishes.</p>
+                </div>
+
+                <div class="wish-ticker-controls">
+                  <span id="wishTickerCounter" class="eyebrow wish-counter" hidden>1 / 1</span>
+                  <div class="ticker-btn-row">
+                    <button id="wishPrevBtn" type="button" class="ticker-circle-btn" aria-label="Previous wish">
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+                    </button>
+                    <button id="wishPauseBtn" type="button" class="ticker-circle-btn" aria-label="Pause wish ticker">
+                      <svg id="pauseIcon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>
+                      <svg id="playIcon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" style="display:none;" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                    </button>
+                    <button id="wishNextBtn" type="button" class="ticker-circle-btn" aria-label="Next wish">
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              <!-- Ticker Controls -->
-              <div class="wish-ticker-controls">
-                <span id="wishTickerCounter" class="wish-counter-badge">1 / 1</span>
-                <div class="ticker-btns">
-                  <button id="wishPrevBtn" type="button" class="ticker-btn" aria-label="Previous wish">
-                    <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-                  </button>
-                  <button id="wishPauseBtn" type="button" class="ticker-btn" aria-label="Pause wish ticker">
-                    <svg id="pauseIcon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-                    <svg id="playIcon" viewBox="0 0 24 24" style="display:none;"><path d="M8 5v14l11-7z"/></svg>
-                  </button>
-                  <button id="wishNextBtn" type="button" class="ticker-btn" aria-label="Next wish">
-                    <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-                  </button>
-                </div>
-              </div>
+              <button id="viewAllWishesBtn" type="button" class="btn-outline wishes-view-all">
+                <span id="viewAllWishesBtnText">View all wishes</span>
+              </button>
             </div>
-
-            <!-- "View all wishes" Button -->
-            <button id="viewAllWishesBtn" type="button" class="btn-secondary wishes-view-all-btn">
-              <span id="viewAllWishesBtnText">View all wishes</span>
-            </button>
-
           </div>
         </div>
       </section>
-
     </main>
 
-    <!-- 7. FOOTER -->
+    <!-- ======================================================================
+         8. FOOTER (MASKED KHATAM PATTERN, BALANCED ARABIC DUA, CLEAR NAMES)
+         ====================================================================== -->
     <footer class="site-footer">
-      <div class="container">
-        <div class="footer-content">
-          <p dir="rtl" lang="ar" class="footer-dua" id="footerDua">بَارَكَ اللَّهُ لَكُمَا وَبَارَكَ عَلَيْكُمَا وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ</p>
-          <div class="gold-rule" aria-hidden="true"></div>
+      <div class="footer-khatam-wrap" aria-hidden="true">
+        <div class="footer-khatam-layer"></div>
+      </div>
 
-          <div>
-            <h2 class="footer-heading" id="footerGratitudeTitle">With love &amp; gratitude</h2>
-            <p class="footer-msg" id="footerGratitudeMsg">Your presence will make our day complete.</p>
-          </div>
+      <div class="container footer-inner">
+        <p dir="rtl" lang="ar" class="footer-dua" id="footerDua">بَارَكَ اللَّهُ لَكُمَا وَبَارَكَ عَلَيْكُمَا وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ</p>
 
-          <!-- Stacked Couple Signature in Footer -->
-          <div class="couple-title-stacked footer-couple-stacked">
-            <span class="couple-name-script" style="font-size: 38px;">Zain</span>
-            <span class="couple-weds-script" style="font-size: 13px; margin: 0;">weds</span>
-            <span class="couple-name-script" style="font-size: 38px;">Hanna</span>
-          </div>
+        <span class="gold-hairline" aria-hidden="true"></span>
 
-          <p class="footer-date" id="footerDate">26 DECEMBER 2026</p>
-          <p class="footer-copyright" id="footerCopyright">MADE WITH LOVE · 2026</p>
+        <div class="footer-message-group">
+          <h2 class="footer-heading" id="footerGratitudeTitle">With love &amp; gratitude</h2>
+          <p class="footer-msg" id="footerGratitudeMsg">Your presence will make our day complete.</p>
         </div>
+
+        <div class="footer-names" aria-label="Zain weds Hanna">
+          <span class="script-name footer-couple-name" id="footerGroomName">Zain</span>
+          <span class="footer-weds" id="footerWedsText">weds</span>
+          <span class="script-name footer-couple-name" id="footerBrideName">Hanna</span>
+        </div>
+
+        <p class="eyebrow footer-date" id="footerDate">26 DECEMBER 2026</p>
+        <p class="eyebrow footer-copyright" id="footerCopyright">MADE WITH LOVE · 2026</p>
       </div>
     </footer>
 
@@ -638,18 +673,16 @@
     <div class="modal-sheet" id="modalSheet">
       <div class="modal-header">
         <h3 class="modal-title" id="modalTitle">All Wishes &amp; Prayers</h3>
-        <button id="modalCloseBtn" type="button" class="btn-icon" aria-label="Close all wishes">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
+        <button id="modalCloseBtn" type="button" class="nav-icon-btn" aria-label="Close all wishes">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+            <line x1="6" y1="6" x2="18" y2="18"/>
+            <line x1="18" y1="6" x2="6" y2="18"/>
           </svg>
         </button>
       </div>
-      <div class="modal-body" id="modalWishesList" tabindex="0">
-        <!-- Rendered wish cards -->
-      </div>
+      <div class="modal-body" id="modalWishesList" tabindex="0"></div>
       <div class="modal-footer" id="modalFooter">
-        <button id="modalLoadMoreBtn" type="button" class="btn-secondary">
+        <button id="modalLoadMoreBtn" type="button" class="btn-outline">
           <span id="modalLoadMoreText">Load more</span>
         </button>
       </div>
@@ -659,7 +692,7 @@
   <!-- Toast Banner -->
   <div id="toastBanner" role="status" aria-live="polite" class="toast-banner"></div>
 
-  <!-- Main JavaScript Logic -->
-  <script src="js/main.js"></script>
+  <!-- Main Script -->
+  <script defer src="js/main.js"></script>
 </body>
 </html>

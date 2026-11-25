@@ -6,41 +6,35 @@ A production-ready, zero-dependency wedding invitation website (Groom's side) bu
 
 ## Highlights & Features
 
-- **Two-Page Cream Folio Cover Gate**: Warm `#F4ECE1` damask-patterned left and right folio leaves with antique gold borders, embossed wax seal (`Z&H`), and centered cream royal card. Scroll is locked until "OPEN INVITATION" is clicked, then both leaves swing open smoothly with GPU-accelerated CSS keyframes.
-- **Luminous Ivory Cream & Royal Emerald Gold Palette**: Self-hosted web fonts (`Alex Brush`, `Amiri`, `Cormorant Garamond`, `Bodoni Moda`, `Jost`), architectural Islamic arch hero framing, botanical corner flourishes, and repeating gold damask texture across all sections.
-- **Responsive Mobile-First Editorial Layout**: Engineered for mobile (`360px–430px`), tablet, and desktop (`1280px–1920px`) with a floating pill nav on desktop, full-screen glass menu on mobile, 44px+ tap targets, and reduced-motion support.
-- **Realistic Google Maps Venue Preview**: Custom vector cartography of Poopalam (SH-39 / Ooty Road) highlighting **Presidency Convention Center**, interactive venue header, animated beacon marker, direct Google Maps link, and pre-filled Google Calendar event link.
-- **Floating Wish Ticker & Supabase Guestbook**: Cycles one wish at a time with adaptive reading hold durations, Play/Pause and Prev/Next controls, "View all wishes" modal with focus trap & pagination, honeypot anti-spam, 60s `localStorage` cooldown, and XSS-safe `textContent` rendering.
+- **Two-Page Ivory Folio Cover Gate**: Ivory leaves with an 8-point-star (khatam) lattice at 8% opacity, double gold inset border, corner botanical branches, twinkling gold stars, embossed gold CSS/SVG seal button (`Z&H`), and centered cream typography. Scroll is locked until tapped, then opens over 2.4s with GPU-accelerated CSS transforms.
+- **Dual Theme Presets (`ivorySage` & `pearlBlue`)**: Configured cleanly in `config/site.config.js` with matching olive/eucalyptus (`ivorySage`) or wheat/lavender (`pearlBlue`) inline SVG sprigs.
+- **Responsive Mobile-First Editorial Layout**: Crafted on an 8px spacing grid for `360px–430px` mobile, `768px` tablet, and `1280px–1920px` desktop with zero overlapping text, clean scroll-triggered staggers, and `prefers-reduced-motion` support.
+- **Venue Card & Live Countdown**: Clean double-gold-bordered venue card with Maps, Calendar, and one-click address copy, plus four pointed-arch (mihrab) countdown tiles with a 60-second stroke progress outline.
+- **Floating Wish Ticker & Supabase Guestbook**: Light frosted glass ticker cycling one wish at a time, adaptive reading durations, 44px controls, honeypot anti-spam, 60s `localStorage` cooldown, and XSS-safe `textContent` rendering.
 
 ---
 
 ## Project Structure
 
 ```text
-├── index.html                               # Semantic HTML5 & accessible noscript fallback
+├── index.html                               # Semantic HTML5, inline SVG sprite & accessible fallback
 ├── css/
-│   └── style.css                            # Vanilla CSS (custom properties, folio gate, animations)
+│   └── style.css                            # Vanilla CSS (theme presets, 8px grid, doors, mihrab tiles)
 ├── js/
-│   └── main.js                              # Config hydration, folio gate, countdown, ticker, Supabase
+│   └── main.js                              # Theme switching, hydration, 2.4s doors, countdown, Supabase
 ├── config/
-│   └── site.config.js                       # All content, links, dates, theme tokens, Supabase config
+│   └── site.config.js                       # All content, theme presets, venue, dates & Supabase keys
 ├── assets/
 │   ├── fonts/                               # Self-hosted variable/latin/arabic woff2 fonts
 │   │   ├── alex-brush-latin.woff2
-│   │   ├── amiri-arabic.woff2
 │   │   ├── aref-ruqaa-arabic-700.woff2
 │   │   ├── aref-ruqaa-arabic.woff2
-│   │   ├── bodoni-moda-italic.woff2
-│   │   ├── bodoni-moda-normal.woff2
 │   │   ├── cormorant-garamond-latin.woff2
 │   │   └── jost-latin.woff2
-│   └── images/                              # Self-hosted SVG/raster graphics
-│       ├── corner-branch.svg
-│       ├── damask-pattern.svg
+│   └── images/                              # Favicon & social share card
 │       ├── favicon.png
 │       ├── favicon.svg
-│       ├── share.jpg
-│       └── wax-seal.svg
+│       └── share.jpg
 ├── supabase/
 │   └── schema.sql                           # Wishes table schema, index & RLS policies
 ├── netlify.toml                             # Netlify security headers & asset cache rules
