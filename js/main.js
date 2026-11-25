@@ -417,9 +417,10 @@
 
       const gb = config.guestbook;
       const table = gb.tableName || 'zain_hanna_wishes';
+      const baseUrl = gb.supabaseUrl.replace(/\/rest\/v1\/?$/, '').replace(/\/$/, '');
       const offset = page * this.pageSize;
       const limit = this.pageSize;
-      const url = `${gb.supabaseUrl.replace(/\/$/, '')}/rest/v1/${table}?select=*&visible=eq.true&order=created_at.desc&offset=${offset}&limit=${limit}`;
+      const url = `${baseUrl}/rest/v1/${table}?select=*&visible=eq.true&order=created_at.desc&offset=${offset}&limit=${limit}`;
 
       try {
         const response = await fetch(url, {
@@ -477,7 +478,8 @@
 
       const gb = config.guestbook;
       const table = gb.tableName || 'zain_hanna_wishes';
-      const url = `${gb.supabaseUrl.replace(/\/$/, '')}/rest/v1/${table}`;
+      const baseUrl = gb.supabaseUrl.replace(/\/rest\/v1\/?$/, '').replace(/\/$/, '');
+      const url = `${baseUrl}/rest/v1/${table}`;
 
       const payload = {
         name: name.trim(),
