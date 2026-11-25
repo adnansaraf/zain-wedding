@@ -209,18 +209,6 @@
       setText('calendarBtnText', config.venue.calendarButtonText);
       setAttr('addToCalendarBtn', 'href', config.venue.calendarUrl);
       setText('copyAddressBtnText', config.venue.copyButtonText);
-
-      const photoWrap = document.getElementById('venuePhotoWrap');
-      const photoImg = document.getElementById('venuePhotoImg');
-      if (photoWrap && photoImg) {
-        if (config.venue.photo && String(config.venue.photo).trim()) {
-          photoImg.src = String(config.venue.photo).trim();
-          photoImg.alt = config.venue.name || 'Ceremony Venue';
-          photoWrap.hidden = false;
-        } else {
-          photoWrap.hidden = true;
-        }
-      }
     }
 
     // Countdown
@@ -452,24 +440,24 @@
   }
 
   // -------------------------------------------------------------------------
-  // 7. VENUE COPY ADDRESS
+  // 7. VENUE GOOGLE MAPS EMBED, INTERACTION GUARD & COPY ADDRESS
   // -------------------------------------------------------------------------
-  function setupVenueCopy() {
+  function setupVenueSection() {
     const copyBtn = document.getElementById('copyAddressBtn');
-    if (!copyBtn) return;
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        const address = (config.venue && config.venue.address) || 'Presidency Convention Center, Poopalam, Perinthalmanna, Kerala 679322';
+        const toastMsg = (config.venue && config.venue.copiedToast) || 'Address copied';
 
-    copyBtn.addEventListener('click', function () {
-      const address = (config.venue && config.venue.address) || 'Presidency Convention Center, Poopalam, Perinthalmanna, Kerala 679322';
-      const toastMsg = (config.venue && config.venue.copiedToast) || 'Address copied';
-
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(address)
-          .then(function () { showToast(toastMsg); })
-          .catch(function () { fallbackCopy(address, toastMsg); });
-      } else {
-        fallbackCopy(address, toastMsg);
-      }
-    });
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(address)
+            .then(function () { showToast(toastMsg); })
+            .catch(function () { fallbackCopy(address, toastMsg); });
+        } else {
+          fallbackCopy(address, toastMsg);
+        }
+      });
+    }
 
     function fallbackCopy(text, msg) {
       const area = document.createElement('textarea');
@@ -486,6 +474,87 @@
         showToast(text);
       }
       document.body.removeChild(area);
+    }
+
+    const frame = document.getElementById('venueMapFrame');
+    const iframe = document.getElementById('venueMapIframe');
+    const guard = document.getElementById('venueMapGuard');
+    if (!frame || !iframe) return;
+
+    const venueName = (config.venue && config.venue.name) || 'Presidency Convention Center';
+    const address = (config.venue && config.venue.address) || 'Presidency Convention Center, Poopalam, Perinthalmanna, Kerala 679322';
+    const customEmbed = config.venue && config.venue.mapEmbedSrc ? String(config.venue.mapEmbedSrc).trim() : '';
+    const embedSrc = customEmbed || ('https://www.google.com/maps?q=' + encodeURIComponent(address) + '&z=16&output=embed');
+
+    iframe.setAttribute('title', 'Map showing ' + venueName + ', Poopalam');
+
+    let iframeLoaded = false;
+    let loadTimer = null;
+
+    function showMapFallback() {
+      frame.classList.add('is-fallback');
+      frame.classList.remove('is-interactive');
+    }
+
+    function clearMapFallback() {
+      frame.classList.remove('is-fallback');
+    }
+
+    if (guard) {
+      guard.addEventListener('click', function () {
+        if (frame.classList.contains('is-fallback')) return;
+        frame.classList.add('is-interactive');
+      });
+    }
+
+    iframe.addEventListener('load', function () {
+      if (navigator.onLine === false) {
+        showMapFallback();
+        return;
+      }
+      iframeLoaded = true;
+      clearTimeout(loadTimer);
+      clearMapFallback();
+    });
+
+    iframe.addEventListener('error', showMapFallback);
+
+    window.addEventListener('offline', showMapFallback);
+    window.addEventListener('online', function () {
+      clearMapFallback();
+      iframeLoaded = false;
+      iframe.src = embedSrc;
+    });
+
+    if (navigator.onLine === false) {
+      showMapFallback();
+      return;
+    }
+
+    iframe.src = embedSrc;
+
+    // Start load timeout once venue section enters view so lazy loading never falsely triggers fallback
+    function armFallbackTimeout() {
+      if (iframeLoaded || loadTimer) return;
+      loadTimer = setTimeout(function () {
+        if (!iframeLoaded || navigator.onLine === false) {
+          showMapFallback();
+        }
+      }, 12000);
+    }
+
+    if ('IntersectionObserver' in window) {
+      const obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            armFallbackTimeout();
+            obs.disconnect();
+          }
+        });
+      }, { rootMargin: '200px 0px' });
+      obs.observe(frame);
+    } else {
+      armFallbackTimeout();
     }
   }
 
@@ -733,36 +802,18 @@
     const tickerPanel = document.getElementById('wishTickerPanel');
     const tickerContent = document.getElementById('wishTickerContent');
     const counterBadge = document.getElementById('wishTickerCounter');
-    const countWrap = document.getElementById('wishCountWrap');
-    const countChip = document.getElementById('wishCountChip');
     const prevBtn = document.getElementById('wishPrevBtn');
     const nextBtn = document.getElementById('wishNextBtn');
     const pauseBtn = document.getElementById('wishPauseBtn');
     const pauseIcon = document.getElementById('pauseIcon');
     const playIcon = document.getElementById('playIcon');
+    const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     let currentIndex = 0;
     let isPaused = false;
     let cycleTimeout = null;
+    let transitionTimeout = null;
     let sectionInView = true;
-
-    function updateCountUI() {
-      const total = Guestbook.totalCount;
-      const countLabel = (config.wishes?.ticker?.counterSuffix) || 'wishes';
-
-      if (countWrap && countChip) {
-        if (total > 0) {
-          countChip.textContent = `${total} ${total === 1 ? 'wish' : countLabel}`;
-          countWrap.hidden = false;
-        } else {
-          countWrap.hidden = true;
-        }
-      }
-
-      if (counterBadge) {
-        counterBadge.hidden = total <= 0;
-      }
-    }
 
     function createWishNode(wish) {
       const wrap = document.createElement('div');
@@ -796,34 +847,48 @@
       if (counterBadge) counterBadge.hidden = true;
     }
 
-    function showWish(index, immediate = false) {
+    function showWish(index, options) {
       if (!Guestbook.wishes.length) {
         renderEmpty();
         return;
       }
 
+      const opts = typeof options === 'boolean' ? { immediate: options } : (options || {});
+      const immediate = Boolean(opts.immediate);
+      const direction = opts.direction === 'prev' ? 'prev' : 'next';
+
+      clearTimeout(cycleTimeout);
+      clearTimeout(transitionTimeout);
+
       currentIndex = (index + Guestbook.wishes.length) % Guestbook.wishes.length;
       const wish = Guestbook.wishes[currentIndex];
+      const totalForCounter = Guestbook.totalCount > Guestbook.wishes.length
+        ? Guestbook.totalCount
+        : Guestbook.wishes.length;
 
       if (counterBadge) {
         counterBadge.hidden = false;
-        counterBadge.textContent = `${currentIndex + 1} / ${Guestbook.wishes.length}`;
+        counterBadge.textContent = `${currentIndex + 1} / ${totalForCounter}`;
       }
 
       const nextNode = createWishNode(wish);
-      nextNode.classList.add('entering');
+      const enterCls = direction === 'prev' ? 'entering-down' : 'entering-up';
+      const exitCls = direction === 'prev' ? 'exiting-down' : 'exiting-up';
       const prevNode = tickerContent.querySelector('.wish-item');
 
       if (prevNode && !immediate) {
-        prevNode.classList.remove('entering');
-        prevNode.classList.add('exiting');
-        setTimeout(function () {
+        prevNode.classList.remove('entering-up', 'entering-down', 'exiting-up', 'exiting-down');
+        prevNode.classList.add(exitCls);
+        const exitMs = reducedMotion ? 220 : 520;
+        transitionTimeout = setTimeout(function () {
           tickerContent.textContent = '';
+          nextNode.classList.add(enterCls);
           tickerContent.appendChild(nextNode);
           scheduleNext(wish.message);
-        }, 560);
+        }, exitMs);
       } else {
         tickerContent.textContent = '';
+        if (!immediate) nextNode.classList.add(enterCls);
         tickerContent.appendChild(nextNode);
         scheduleNext(wish.message);
       }
@@ -838,8 +903,18 @@
       const holdMs = Math.min(6000, 2000 + extraMs);
 
       cycleTimeout = setTimeout(function () {
-        showWish(currentIndex + 1);
+        showWish(currentIndex + 1, { direction: 'next' });
       }, holdMs);
+    }
+
+    function stepNext() {
+      if (!Guestbook.wishes.length) return;
+      showWish(currentIndex + 1, { direction: 'next' });
+    }
+
+    function stepPrev() {
+      if (!Guestbook.wishes.length) return;
+      showWish(currentIndex - 1, { direction: 'prev' });
     }
 
     if (pauseBtn) {
@@ -853,25 +928,17 @@
         if (isPaused) {
           clearTimeout(cycleTimeout);
         } else if (Guestbook.wishes.length) {
-          showWish(currentIndex + 1);
+          stepNext();
         }
       });
     }
 
     if (prevBtn) {
-      prevBtn.addEventListener('click', function () {
-        if (!Guestbook.wishes.length) return;
-        clearTimeout(cycleTimeout);
-        showWish(currentIndex - 1, true);
-      });
+      prevBtn.addEventListener('click', stepPrev);
     }
 
     if (nextBtn) {
-      nextBtn.addEventListener('click', function () {
-        if (!Guestbook.wishes.length) return;
-        clearTimeout(cycleTimeout);
-        showWish(currentIndex + 1, true);
-      });
+      nextBtn.addEventListener('click', stepNext);
     }
 
     if (tickerPanel) {
@@ -883,7 +950,43 @@
       tickerPanel.addEventListener('focusout', function () {
         if (!isPaused && Guestbook.wishes.length) scheduleNext(Guestbook.wishes[currentIndex]?.message);
       });
-      tickerPanel.addEventListener('touchstart', function () { clearTimeout(cycleTimeout); }, { passive: true });
+
+      // Keyboard: ArrowUp = next, ArrowDown = previous
+      tickerPanel.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          stepNext();
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          stepPrev();
+        }
+      });
+
+      // Touch swipe: vertical swipe only (swipe up = next, swipe down = previous)
+      let touchStartY = 0;
+      let touchStartX = 0;
+      tickerPanel.addEventListener('touchstart', function (e) {
+        clearTimeout(cycleTimeout);
+        if (e.changedTouches && e.changedTouches[0]) {
+          touchStartY = e.changedTouches[0].clientY;
+          touchStartX = e.changedTouches[0].clientX;
+        }
+      }, { passive: true });
+
+      tickerPanel.addEventListener('touchend', function (e) {
+        if (!e.changedTouches || !e.changedTouches[0]) return;
+        const deltaY = e.changedTouches[0].clientY - touchStartY;
+        const deltaX = Math.abs(e.changedTouches[0].clientX - touchStartX);
+        if (Math.abs(deltaY) >= 36 && Math.abs(deltaY) > deltaX) {
+          if (deltaY < 0) {
+            stepNext();
+          } else {
+            stepPrev();
+          }
+        } else if (!isPaused && Guestbook.wishes.length) {
+          scheduleNext(Guestbook.wishes[currentIndex]?.message);
+        }
+      }, { passive: true });
     }
 
     const wishesSection = document.getElementById('wishes');
@@ -910,9 +1013,8 @@
     });
 
     Guestbook.fetchWishes(0).then(function (res) {
-      updateCountUI();
       if (res.wishes && res.wishes.length > 0) {
-        showWish(0, true);
+        showWish(0, { immediate: true });
       } else {
         renderEmpty();
       }
@@ -920,8 +1022,7 @@
 
     return {
       onNewWishAdded: function () {
-        updateCountUI();
-        showWish(0, true);
+        showWish(0, { immediate: true });
       }
     };
   }
@@ -1122,7 +1223,7 @@
     hydrateContent();
     setupNavigation();
     setupSectionReveals();
-    setupVenueCopy();
+    setupVenueSection();
     setupCountdown();
     const tickerApi = setupWishTicker();
     setupWishForm(tickerApi);

@@ -107,11 +107,6 @@ const SITE_CONFIG = {
       label: "TIME",
       value: "11:00 AM",
       subtext: "Indian Standard Time"
-    },
-    venue: {
-      label: "VENUE",
-      value: "Presidency Convention Center",
-      subtext: "Poopalam"
     }
   },
 
@@ -119,7 +114,9 @@ const SITE_CONFIG = {
     name: "Presidency Convention Center",
     area: "Poopalam, Perinthalmanna",
     address: "SH-39, Poopalam, Perinthalmanna, Kerala 679322",
-    photo: "", // Optional URL/path for pointed-arch photo; leave empty to hide slot
+    // How to get mapEmbedSrc: Open Google Maps -> Share -> Embed a map -> copy only the src="..." URL inside the iframe code.
+    // Leave empty ("") to automatically build the embed URL from `venue.address`.
+    mapEmbedSrc: "",
     mapsButtonText: "Open location in Maps",
     mapsUrl: "https://maps.app.goo.gl/CgF19UWEokYYaRuU6",
     calendarButtonText: "Add to Calendar",
@@ -153,7 +150,6 @@ const SITE_CONFIG = {
     ticker: {
       viewAllText: "View all wishes",
       emptyStateText: "Be the first to leave a wish.",
-      counterSuffix: "wishes",
       pauseButtonAria: "Pause wish ticker",
       playButtonAria: "Resume wish ticker",
       prevButtonAria: "Previous wish",

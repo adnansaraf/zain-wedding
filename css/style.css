@@ -20,9 +20,36 @@
 @font-face {
   font-family: 'Cormorant Garamond';
   font-style: normal;
-  font-weight: 400 600;
+  font-weight: 400;
   font-display: swap;
   src: url('/assets/fonts/cormorant-garamond-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/assets/fonts/cormorant-garamond-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/assets/fonts/cormorant-garamond-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: italic;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/assets/fonts/cormorant-garamond-italic-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
@@ -68,7 +95,7 @@
   --line: rgba(176, 141, 74, 0.35);
 
   --font-script: 'Alex Brush', cursive;
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
   --font-body: 'Jost', system-ui, -apple-system, sans-serif;
   --font-arabic: 'Aref Ruqaa', serif;
 
@@ -339,10 +366,46 @@ a {
 /* Hardware-cached 96x96 Khatam Pattern Layer */
 .door-khatam-layer,
 .hero-khatam-band,
+.ceremony-khatam-layer,
+.countdown-khatam-layer,
+.wishes-khatam-layer,
 .footer-khatam-layer {
   background-image: var(--khatam-bg);
   background-repeat: repeat;
   background-size: 96px 96px;
+}
+
+/* Shared Layered Section Decorations (Transform/Opacity only) */
+.section-bg-arch {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--accent);
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes bgStarTwinkle {
+  0%, 100% { opacity: 0.22; }
+  50% { opacity: 0.78; }
+}
+
+.bg-star {
+  position: absolute;
+  color: var(--accent);
+  pointer-events: none;
+  z-index: 2;
+  animation: bgStarTwinkle 4.8s ease-in-out infinite;
+}
+
+.bg-star-delay-1 { animation-delay: 1.1s; }
+.bg-star-delay-2 { animation-delay: 2.4s; }
+.bg-star-delay-3 { animation-delay: 3.6s; }
+
+@keyframes branchSwayFlipped {
+  0% { transform: scale(-1) rotate(-1deg); }
+  100% { transform: scale(-1) rotate(1deg); }
 }
 
 /* --------------------------------------------------------------------------
@@ -355,6 +418,9 @@ a {
   right: 0;
   z-index: 400;
   padding: max(12px, env(safe-area-inset-top)) 16px 8px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
   opacity: 0;
   pointer-events: none;
   transition: opacity 550ms cubic-bezier(0.22, 1, 0.36, 1) 450ms;
@@ -362,11 +428,10 @@ a {
 
 .page-shell.is-revealed .site-nav {
   opacity: 1;
-  pointer-events: auto;
 }
 
 .nav-inner {
-  max-width: var(--container-max);
+  max-width: min(920px, calc(100% - 8px));
   margin-inline: auto;
   display: flex;
   align-items: center;
@@ -376,14 +441,24 @@ a {
   border-radius: 9999px;
   border: 1px solid transparent;
   background-color: transparent;
-  transition: background-color 250ms ease, border-color 250ms ease, backdrop-filter 250ms ease;
+  pointer-events: none;
+  transition: background-color 250ms ease, border-color 250ms ease, box-shadow 250ms ease, backdrop-filter 250ms ease;
+}
+
+.page-shell.is-revealed .nav-inner {
+  pointer-events: auto;
 }
 
 .site-nav.is-scrolled .nav-inner {
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(251, 249, 244, 0.9);
   border-color: var(--line);
+  box-shadow: 0 8px 24px rgba(36, 64, 47, 0.08);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
+}
+
+[data-theme="pearlBlue"] .site-nav.is-scrolled .nav-inner {
+  background-color: rgba(252, 251, 248, 0.9);
 }
 
 .nav-monogram {
@@ -605,7 +680,16 @@ a {
   pointer-events: none;
 }
 
-/* Double-Line Gold Inset Frame on Each Leaf */
+/* Align 96x96 khatam lattice flush at the 50% center so both leaves form one continuous panel */
+.door-left .door-khatam-layer {
+  background-position: right top;
+}
+
+.door-right .door-khatam-layer {
+  background-position: left top;
+}
+
+/* Double-Line Gold Inset Frame on Outer Edges (Zero center hairline or break) */
 .door-inset-outer {
   position: absolute;
   inset: clamp(12px, 2.5vw, 24px);
@@ -614,10 +698,12 @@ a {
 }
 
 .door-left .door-inset-outer {
+  right: 0;
   border-right: none;
 }
 
 .door-right .door-inset-outer {
+  left: 0;
   border-left: none;
 }
 
@@ -629,44 +715,13 @@ a {
 }
 
 .door-left .door-inset-inner {
+  right: 0;
   border-right: none;
 }
 
 .door-right .door-inset-inner {
+  left: 0;
   border-left: none;
-}
-
-.door-seam {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background-color: var(--line);
-  transition: opacity 400ms ease;
-}
-
-.door-seam-left { right: 0; }
-.door-seam-right { left: 0; }
-
-.door-gate.is-opening .door-seam {
-  opacity: 0;
-}
-
-/* Dynamic Door Shade Darkening on Open */
-.door-shade {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 2.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.door-left .door-shade {
-  background: linear-gradient(to left, rgba(36, 64, 47, 0.16) 0%, transparent 65%);
-}
-
-.door-right .door-shade {
-  background: linear-gradient(to right, rgba(36, 64, 47, 0.16) 0%, transparent 65%);
 }
 
 .door-gate.is-opening .door-left {
@@ -677,37 +732,33 @@ a {
   transform: rotateY(104deg);
 }
 
-.door-gate.is-opening .door-shade {
-  opacity: 1;
-}
-
-/* Branches Hanging From Top Corners of Each Door Leaf */
+/* Compact Corner Branches (Safe from Bismillah at 360px/390px/430px) */
 .door-branch-tl {
-  top: -4px;
-  left: -6px;
-  width: clamp(74px, 17vw, 170px);
+  top: -8px;
+  left: -10px;
+  width: clamp(46px, 11vw, 108px);
   height: auto;
   transform-origin: 12px 12px;
-  animation: branchSway 9s ease-in-out infinite alternate;
+  animation: branchSway 10s ease-in-out infinite alternate;
 }
 
 .door-branch-tr {
-  top: -4px;
-  right: -6px;
-  width: clamp(74px, 17vw, 170px);
+  top: -8px;
+  right: -10px;
+  width: clamp(46px, 11vw, 108px);
   height: auto;
   transform-origin: 12px 12px;
-  animation: branchSwayMirrored 9s ease-in-out infinite alternate;
+  animation: branchSwayMirrored 10s ease-in-out infinite alternate;
 }
 
 @keyframes branchSway {
-  0% { transform: rotate(-1.5deg); }
-  100% { transform: rotate(1.5deg); }
+  0% { transform: rotate(-1deg); }
+  100% { transform: rotate(1deg); }
 }
 
 @keyframes branchSwayMirrored {
-  0% { transform: scaleX(-1) rotate(-1.5deg); }
-  100% { transform: scaleX(-1) rotate(1.5deg); }
+  0% { transform: scaleX(-1) rotate(-1deg); }
+  100% { transform: scaleX(-1) rotate(1deg); }
 }
 
 /* 14 Tiny Twinkling Gold Specks (3 Staggered Opacity Groups) */
@@ -805,7 +856,8 @@ a {
 .cover-weds {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 18px;
+  font-weight: 500;
+  font-size: 19px;
   line-height: 1.2;
   color: var(--accent);
   margin: 8px 0;
@@ -1275,17 +1327,67 @@ a {
 }
 
 /* --------------------------------------------------------------------------
-   11. CEREMONY SECTION ("The Nikah Ceremony" — 3 CARDS, NO PATTERN)
+   11. CEREMONY SECTION ("The Nikah Ceremony" — LAYERED BG & 2 CARDS)
    -------------------------------------------------------------------------- */
 .section-ceremony {
+  position: relative;
+  overflow: hidden;
   padding: var(--section-pad) 0;
-  background-color: var(--bg-2);
-  background-image: radial-gradient(ellipse 80% 60% at 50% 0%, var(--tint-soft) 0%, transparent 75%);
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 65% 42% at 50% 18%, var(--tint-soft) 0%, transparent 72%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 52%, var(--bg) 100%);
+}
+
+.ceremony-khatam-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 1;
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, transparent 22%, transparent 78%, #000 100%);
+  mask-image: linear-gradient(90deg, #000 0%, transparent 22%, transparent 78%, #000 100%);
+}
+
+.sec-branch-tl {
+  top: -6px;
+  left: -10px;
+  width: clamp(54px, 12vw, 120px);
+  height: auto;
+  transform-origin: 12px 12px;
+  opacity: 0.72;
+  animation: branchSway 10s ease-in-out infinite alternate;
+}
+
+.sec-branch-tr {
+  top: -6px;
+  right: -10px;
+  width: clamp(54px, 12vw, 120px);
+  height: auto;
+  transform-origin: 12px 12px;
+  opacity: 0.72;
+  animation: branchSwayMirrored 10s ease-in-out infinite alternate;
+}
+
+.ceremony-bg-arch {
+  top: 28px;
+  width: min(86vw, 380px);
+  height: auto;
+}
+
+.ceremony-star-l { top: 24%; left: 10%; }
+.ceremony-star-r { bottom: 18%; right: 10%; }
+
+.ceremony-arches-trio {
+  width: 132px;
+  height: 40px;
+  color: var(--accent);
+  opacity: 0.55;
 }
 
 .ceremony-inner {
+  position: relative;
+  z-index: 5;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1293,6 +1395,7 @@ a {
 }
 
 .section-head {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1305,14 +1408,16 @@ a {
 
 .ceremony-cards {
   width: 100%;
+  max-width: 720px;
+  margin-inline: auto;
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-3);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .ceremony-cards {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -1346,16 +1451,10 @@ a {
 
 .detail-value {
   font-family: var(--font-serif);
-  font-weight: 400;
+  font-weight: 500;
   font-size: clamp(34px, 5vw, 44px);
   line-height: 1.15;
   color: var(--ink);
-}
-
-.detail-value-venue {
-  font-size: clamp(24px, 3.2vw, 28px);
-  line-height: 1.25;
-  text-wrap: balance;
 }
 
 .detail-sub {
@@ -1365,7 +1464,7 @@ a {
 }
 
 /* --------------------------------------------------------------------------
-   12. VENUE CARD SECTION (DOUBLE GOLD BORDER, NO MAP EMBED)
+   12. VENUE CARD SECTION (SINGLE DOUBLE-BORDER CARD + REAL GOOGLE MAP)
    -------------------------------------------------------------------------- */
 .section-venue {
   padding: var(--section-pad) 0;
@@ -1373,89 +1472,208 @@ a {
 }
 
 .venue-card {
-  max-width: 560px;
+  max-width: 680px;
   margin-inline: auto;
   background-color: var(--bg);
   border: 1px solid var(--line);
   padding: 6px;
-  border-radius: 20px;
+  border-radius: 24px;
   box-shadow: 0 12px 32px rgba(36, 64, 47, 0.05);
 }
 
 .venue-card-inner {
+  position: relative;
   border: 1px solid var(--line);
-  border-radius: 15px;
-  padding: 40px 24px 32px;
+  border-radius: 19px;
+  padding: 52px 20px 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: var(--space-2);
+  overflow: hidden;
 }
 
 @media (min-width: 600px) {
   .venue-card-inner {
-    padding: 48px 40px 40px;
+    padding: 64px 36px 40px;
   }
 }
 
-.venue-photo-arch {
-  width: 100%;
-  max-width: 320px;
-  aspect-ratio: 4 / 3;
-  border-radius: 160px 160px 8px 8px;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  margin-bottom: 8px;
+.venue-branch-tl {
+  top: 4px;
+  left: 6px;
+  width: clamp(42px, 8vw, 58px);
+  height: auto;
+  transform-origin: 10px 10px;
+  opacity: 0.7;
+  animation: branchSway 10s ease-in-out infinite alternate;
 }
 
-.venue-photo-arch img {
+.venue-branch-tr {
+  top: 4px;
+  right: 6px;
+  width: clamp(42px, 8vw, 58px);
+  height: auto;
+  transform-origin: 10px 10px;
+  opacity: 0.7;
+  animation: branchSwayMirrored 10s ease-in-out infinite alternate;
+}
+
+.venue-map-wrap {
+  position: relative;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.venue-map-frame {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  border-radius: 20px;
+  border: 1px solid rgba(176, 141, 74, 0.55);
+  box-shadow: inset 0 2px 14px rgba(36, 64, 47, 0.1);
+  overflow: hidden;
+  background-color: var(--bg-2);
+}
+
+@media (min-width: 768px) {
+  .venue-map-frame {
+    height: 340px;
+  }
+}
+
+.venue-map-iframe {
+  position: relative;
+  z-index: 2;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  border: 0;
+  display: block;
+  filter: saturate(0.75) sepia(0.12) contrast(1.02);
+  transition: opacity 260ms ease;
 }
 
-.venue-pin-wrap {
+.venue-map-frame:not(.is-interactive) .venue-map-iframe {
+  pointer-events: none;
+}
+
+.venue-map-frame.is-fallback .venue-map-iframe {
+  display: none;
+}
+
+.map-tap-guard {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border: 0;
+  padding: 12px;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.venue-map-frame.is-interactive .map-tap-guard,
+.venue-map-frame.is-fallback .map-tap-guard {
+  display: none;
+}
+
+.map-explore-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background-color: rgba(251, 249, 244, 0.94);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(36, 64, 47, 0.12);
+}
+
+.venue-map-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 24px;
+  background-color: var(--bg-2);
+  color: var(--ink-muted);
+}
+
+.venue-fallback-pin,
+.venue-fallback-text {
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.venue-map-frame.is-fallback .venue-fallback-pin,
+.venue-map-frame.is-fallback .venue-fallback-text {
+  opacity: 1;
+}
+
+.venue-map-frame.is-fallback .venue-map-fallback {
+  z-index: 4;
+}
+
+.venue-fallback-grid {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.35;
+  color: var(--accent);
+  pointer-events: none;
+}
+
+.venue-fallback-pin {
   position: relative;
-  width: 56px;
-  height: 56px;
+  z-index: 2;
+  color: var(--accent);
+}
+
+.venue-fallback-text {
+  position: relative;
+  z-index: 2;
+  font-size: 14px;
+  color: var(--ink);
+  max-width: 28ch;
+}
+
+/* Gold Pin Badge Overlapping Bottom Center Edge of Map Frame */
+.venue-pin-badge {
+  position: absolute;
+  left: 50%;
+  bottom: -26px;
+  transform: translateX(-50%);
+  z-index: 5;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: var(--bg);
+  border: 1.5px solid var(--accent);
+  box-shadow: 0 0 0 4px #FFFFFF, 0 6px 16px rgba(36, 64, 47, 0.14);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 4px;
-}
-
-.venue-pin-circle {
-  width: 52px;
-  height: 52px;
-  margin-bottom: 0;
-  background-color: var(--bg);
-  position: relative;
-  z-index: 2;
-}
-
-.venue-pin-pulse {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 1px solid var(--accent);
-  opacity: 0;
-}
-
-.venue-card.is-visible .venue-pin-pulse {
-  animation: venuePulseOnce 1.5s cubic-bezier(0.22, 1, 0.36, 1) 250ms 1 forwards;
-}
-
-@keyframes venuePulseOnce {
-  0%   { opacity: 0.7; transform: scale(0.9); }
-  100% { opacity: 0; transform: scale(1.65); }
+  color: var(--accent);
+  pointer-events: none;
 }
 
 .venue-card-title {
   font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: 28px;
-  line-height: 1.25;
+  font-weight: 500;
+  font-size: clamp(24px, 6.5vw, 32px);
+  line-height: 1.2;
   color: var(--ink);
   text-wrap: balance;
 }
@@ -1493,11 +1711,14 @@ a {
 }
 
 /* --------------------------------------------------------------------------
-   13. COUNTDOWN SECTION (CURVED EDGES & 4 POINTED-ARCH MIHRAB TILES)
+   13. COUNTDOWN SECTION (CURVED EDGES, LAYERED BG & 4 MIHRAB TILES)
    -------------------------------------------------------------------------- */
 .section-countdown {
   position: relative;
   background-color: var(--tint-soft);
+  background-image:
+    radial-gradient(ellipse 68% 45% at 50% 24%, rgba(255, 255, 255, 0.45) 0%, transparent 72%),
+    linear-gradient(180deg, var(--tint-soft) 0%, var(--bg-2) 55%, var(--tint-soft) 100%);
   padding: 104px 0;
   overflow: hidden;
 }
@@ -1508,6 +1729,22 @@ a {
   }
 }
 
+.countdown-khatam-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 1;
+  -webkit-mask-image: radial-gradient(ellipse 52% 60% at 50% 52%, transparent 45%, #000 100%);
+  mask-image: radial-gradient(ellipse 52% 60% at 50% 52%, transparent 45%, #000 100%);
+}
+
+.countdown-bg-arch {
+  top: 72px;
+  width: min(94vw, 560px);
+  height: auto;
+}
+
 .curve-edge {
   position: absolute;
   left: 0;
@@ -1515,7 +1752,7 @@ a {
   height: 40px;
   display: block;
   pointer-events: none;
-  z-index: 2;
+  z-index: 3;
 }
 
 @media (min-width: 768px) {
@@ -1528,20 +1765,24 @@ a {
 .curve-edge-bottom { bottom: -1px; }
 
 .countdown-branch-l {
-  top: 20px;
-  left: -8px;
-  width: clamp(64px, 14vw, 140px);
+  top: 24px;
+  left: -10px;
+  width: clamp(56px, 12vw, 128px);
   height: auto;
+  transform-origin: 12px 12px;
   opacity: 0.72;
+  animation: branchSway 10s ease-in-out infinite alternate;
 }
 
 .countdown-branch-r {
-  bottom: 20px;
-  right: -8px;
-  width: clamp(64px, 14vw, 140px);
+  bottom: 24px;
+  right: -10px;
+  width: clamp(56px, 12vw, 128px);
   height: auto;
+  transform-origin: 12px 12px;
   transform: scale(-1);
   opacity: 0.72;
+  animation: branchSwayFlipped 10s ease-in-out infinite alternate;
 }
 
 .countdown-inner {
@@ -1709,14 +1950,58 @@ a {
 }
 
 /* --------------------------------------------------------------------------
-   14. WISHES SECTION (LIGHT GLASS CARD & FLOATING TICKER)
+   14. WISHES SECTION (LAYERED BG, LIGHT GLASS CARD & FLOATING TICKER)
    -------------------------------------------------------------------------- */
 .section-wishes {
+  position: relative;
+  overflow: hidden;
   padding: var(--section-pad) 0;
   background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 65% 38% at 50% 14%, var(--tint-soft) 0%, transparent 72%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
 }
 
+.wishes-khatam-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 1;
+  -webkit-mask-image:
+    radial-gradient(circle 280px at 0% 100%, #000 0%, transparent 100%),
+    radial-gradient(circle 280px at 100% 100%, #000 0%, transparent 100%);
+  mask-image:
+    radial-gradient(circle 280px at 0% 100%, #000 0%, transparent 100%),
+    radial-gradient(circle 280px at 100% 100%, #000 0%, transparent 100%);
+}
+
+.wishes-bg-arch {
+  top: 28px;
+  width: min(86vw, 360px);
+  height: auto;
+}
+
+.wishes-crescent-corner {
+  position: absolute;
+  top: 20px;
+  right: -20px;
+  width: clamp(110px, 22vw, 180px);
+  height: auto;
+  color: var(--accent);
+  opacity: 0.16;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.wishes-star-1 { top: 18%; left: 9%; }
+.wishes-star-2 { top: 30%; right: 8%; }
+.wishes-star-3 { bottom: 16%; left: 7%; }
+.wishes-star-4 { bottom: 12%; right: 9%; }
+
 .wishes-inner {
+  position: relative;
+  z-index: 5;
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -1728,27 +2013,6 @@ a {
   align-items: center;
   text-align: center;
   gap: var(--space-2);
-}
-
-.wishes-title-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.wishes-count-chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 14px;
-  border-radius: 9999px;
-  background-color: var(--bg-2);
-  border: 1px solid var(--line);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  color: var(--ink);
 }
 
 .wishes-desc {
@@ -1925,13 +2189,35 @@ a {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes wishFloatOut {
+@keyframes wishFloatUpOut {
   from { opacity: 1; transform: translateY(0); }
   to   { opacity: 0; transform: translateY(-28px); }
 }
 
-.wish-item.entering { animation: wishRiseIn 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.wish-item.exiting  { animation: wishFloatOut 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+@keyframes wishDropIn {
+  from { opacity: 0; transform: translateY(-28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes wishSlideDownOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(28px); }
+}
+
+@keyframes wishFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes wishFadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+.wish-item.entering-up   { animation: wishRiseIn 560ms cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.wish-item.exiting-up    { animation: wishFloatUpOut 560ms cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.wish-item.entering-down { animation: wishDropIn 560ms cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.wish-item.exiting-down  { animation: wishSlideDownOut 560ms cubic-bezier(0.22, 1, 0.36, 1) forwards; }
 
 .wish-name {
   font-family: var(--font-serif);
@@ -1997,13 +2283,15 @@ a {
 }
 
 /* --------------------------------------------------------------------------
-   15. FOOTER (MASKED KHATAM PATTERN & BALANCED ARABIC DUA)
+   15. FOOTER (MIHRAB SILHOUETTES, MASKED KHATAM & CRESCENT DUA)
    -------------------------------------------------------------------------- */
 .site-footer {
   position: relative;
   background-color: var(--bg-2);
+  background-image:
+    radial-gradient(ellipse 65% 45% at 50% 42%, var(--tint-soft) 0%, transparent 72%),
+    linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 100%);
   padding: var(--section-pad) 0 clamp(48px, 8vw, 72px);
-  border-top: 1px solid var(--line);
   text-align: center;
   overflow: hidden;
   content-visibility: auto;
@@ -2020,6 +2308,18 @@ a {
   contain-intrinsic-size: auto 560px;
 }
 
+.footer-mihrab-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 36px;
+  color: var(--accent);
+  opacity: 0.28;
+  pointer-events: none;
+  z-index: 2;
+}
+
 .footer-khatam-wrap {
   position: absolute;
   inset: 0;
@@ -2031,18 +2331,27 @@ a {
   position: absolute;
   inset: 0;
   opacity: 0.1;
+  -webkit-mask-image: radial-gradient(ellipse 56% 64% at 50% 50%, transparent 40%, #000 100%);
+  mask-image: radial-gradient(ellipse 56% 64% at 50% 50%, transparent 40%, #000 100%);
 }
 
-/* Radial gradient mask fades the khatam lattice cleanly toward center text */
-.footer-khatam-wrap::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 75% 70% at 50% 50%, var(--bg-2) 28%, rgba(243, 238, 226, 0.7) 65%, transparent 100%);
+.footer-bg-arch {
+  top: 48px;
+  width: min(84vw, 360px);
+  height: auto;
 }
 
-[data-theme="pearlBlue"] .footer-khatam-wrap::after {
-  background: radial-gradient(ellipse 75% 70% at 50% 50%, var(--bg-2) 28%, rgba(241, 244, 246, 0.7) 65%, transparent 100%);
+.footer-crescent-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--accent);
+}
+
+.footer-crescent-icon {
+  color: var(--accent);
+  flex-shrink: 0;
 }
 
 .footer-inner {
@@ -2287,7 +2596,14 @@ noscript .noscript-banner {
   .door-branch-tr,
   .hero-branch-tl,
   .hero-branch-tr,
+  .sec-branch-tl,
+  .sec-branch-tr,
+  .venue-branch-tl,
+  .venue-branch-tr,
+  .countdown-branch-l,
+  .countdown-branch-r,
   .speck-group,
+  .bg-star,
   .hero-scroll-cue {
     animation: none !important;
   }
@@ -2301,7 +2617,6 @@ noscript .noscript-banner {
   }
 
   .door-leaf,
-  .door-shade,
   .cover-center,
   .cover-specks {
     transition: none !important;
@@ -2343,9 +2658,17 @@ noscript .noscript-banner {
     transition: none !important;
   }
 
-  .mihrab-numeral.is-rolling,
-  .wish-item.entering,
-  .wish-item.exiting {
+  .mihrab-numeral.is-rolling {
     animation: none !important;
+  }
+
+  .wish-item.entering-up,
+  .wish-item.entering-down {
+    animation: wishFadeIn 240ms ease forwards;
+  }
+
+  .wish-item.exiting-up,
+  .wish-item.exiting-down {
+    animation: wishFadeOut 240ms ease forwards;
   }
 }

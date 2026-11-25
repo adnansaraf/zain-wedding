@@ -35,12 +35,13 @@ html.scroll-locked,body.scroll-locked{overflow:hidden;height:100vh}
 .cover-center{position:relative;z-index:20;text-align:center}
 .page-shell{visibility:hidden}
 svg{display:block;max-width:100%}
-.corner-branch{width:120px;height:120px}
+.corner-branch{width:96px;height:96px}
 .speck{width:10px;height:10px}
 .curve-edge{width:100%;height:40px}
 .mihrab-svg{width:100px;height:136px}
+.venue-map-iframe{width:100%;height:240px;border:0}
 html.css-fallback,html.css-fallback body{overflow:auto!important;height:auto!important;max-width:720px;margin:0 auto;padding:24px 16px;line-height:1.6}
-html.css-fallback :is(.door-gate,.corner-branch,.cover-specks,.hero-arch-outline,.hero-khatam-band,.footer-khatam-wrap,.curve-edge,.mihrab-svg,.ornament-row,.mobile-menu-overlay,.modal-backdrop,.icon-circle,.tiny-star,.head-star,.nav-mobile-only,.hero-scroll-cue){display:none!important}
+html.css-fallback :is(.door-gate,[class*=-khatam],.cover-specks,.ornament-row,.mobile-menu-overlay,.modal-backdrop,.icon-circle,.nav-mobile-only,.hero-scroll-cue,.map-tap-guard,svg){display:none!important}
 html.css-fallback .page-shell{opacity:1!important;visibility:visible!important;content-visibility:visible!important}
 html.css-fallback .site-nav{position:static!important;opacity:1!important;pointer-events:auto!important;margin-bottom:24px}
 html.css-fallback .nav-link-list{display:flex;flex-wrap:wrap;gap:12px;list-style:none;padding:0}
@@ -49,7 +50,7 @@ html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-a
   </style>
 
   <!-- Stylesheet first so CSS never waits behind font preloads -->
-  <link rel="stylesheet" id="mainStylesheet" href="css/style.css?v=20261125b">
+  <link rel="stylesheet" id="mainStylesheet" href="css/style.css?v=20261125d">
 
   <!-- Preload Critical Cover Fonts -->
   <link rel="preload" href="/assets/fonts/alex-brush-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -60,7 +61,7 @@ html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-a
   <link rel="alternate icon" type="image/png" href="assets/images/favicon.png">
 
   <!-- Configuration loaded non-blocking; main.js runs right after in strict order -->
-  <script defer src="config/site.config.js?v=20261125b"></script>
+  <script defer src="config/site.config.js?v=20261125d"></script>
 </head>
 <body class="scroll-locked">
 
@@ -100,8 +101,19 @@ html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-a
 
       <!-- Crescent & Star Mark -->
       <symbol id="crescent-star" viewBox="0 0 28 24" fill="none">
-        <path d="M14.5 3.5 A8.5 8.5 0 1 0 14.5 20.5 A6.6 6.6 0 1 1 14.5 3.5 Z" fill="currentColor"/>
-        <path d="M20 7.5 Q20 11 23.5 11 Q20 11 20 14.5 Q20 11 16.5 11 Q20 11 20 7.5 Z" fill="currentColor"/>
+        <path d="M14.5 3.5 C8.5 3.5 4 7.8 4 12 C4 16.2 8.5 20.5 14.5 20.5 C10.8 19.1 9 15.8 9 12 C9 8.2 10.8 4.9 14.5 3.5 Z" fill="currentColor"/>
+        <path d="M20.5 7.5 Q20.5 11 24 11 Q20.5 11 20.5 14.5 Q20.5 11 17 11 Q20.5 11 20.5 7.5 Z" fill="currentColor"/>
+      </symbol>
+
+      <!-- Large Faint Pointed-Arch Outline -->
+      <symbol id="arch-pointed" viewBox="0 0 100 130" fill="none">
+        <path d="M3 130 L3 54 C3 26, 23 10, 50 2 C77 10, 97 26, 97 54 L97 130" stroke="currentColor" stroke-width="0.6" vector-effect="non-scaling-stroke"/>
+      </symbol>
+
+      <!-- Large Faint Line-Art Crescent & Star Corner Outline -->
+      <symbol id="crescent-star-outline" viewBox="0 0 120 120" fill="none">
+        <path d="M70 16 A40 40 0 1 0 70 104 A32 32 0 1 1 70 16 Z" stroke="currentColor" stroke-width="1"/>
+        <path d="M88 38 Q88 52 102 52 Q88 52 88 66 Q88 52 74 52 Q88 52 88 38 Z" stroke="currentColor" stroke-width="1"/>
       </symbol>
     </defs>
   </svg>
@@ -129,9 +141,7 @@ html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-a
       <div class="door-inset-outer">
         <div class="door-inset-inner"></div>
       </div>
-      <div class="door-shade"></div>
-      <div class="door-seam door-seam-left"></div>
-      <svg class="corner-branch door-branch-tl" viewBox="0 0 180 180" width="120" height="120" aria-hidden="true">
+      <svg class="corner-branch door-branch-tl" id="doorBranchTL" viewBox="0 0 180 180" width="84" height="84" aria-hidden="true">
         <use class="motif-olive" href="#branch-olive"/>
         <use class="motif-wheat" href="#branch-wheat"/>
       </svg>
@@ -143,9 +153,7 @@ html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-a
       <div class="door-inset-outer">
         <div class="door-inset-inner"></div>
       </div>
-      <div class="door-shade"></div>
-      <div class="door-seam door-seam-right"></div>
-      <svg class="corner-branch door-branch-tr" viewBox="0 0 180 180" width="120" height="120" aria-hidden="true">
+      <svg class="corner-branch door-branch-tr" id="doorBranchTR" viewBox="0 0 180 180" width="84" height="84" aria-hidden="true">
         <use class="motif-olive" href="#branch-olive"/>
         <use class="motif-wheat" href="#branch-wheat"/>
       </svg>
@@ -405,12 +413,34 @@ html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-a
       </section>
 
       <!-- ====================================================================
-           4. CEREMONY SECTION (3 STAGGERED CARDS, NO PATTERN)
+           4. CEREMONY SECTION (LAYERED BG, 2 CARDS: DATE & TIME)
            ==================================================================== -->
       <section id="ceremony" class="section-ceremony">
+        <div class="ceremony-khatam-layer" aria-hidden="true"></div>
+
+        <svg class="corner-branch sec-branch-tl" viewBox="0 0 180 180" width="112" height="112" aria-hidden="true">
+          <use class="motif-olive" href="#branch-olive"/>
+          <use class="motif-wheat" href="#branch-wheat"/>
+        </svg>
+        <svg class="corner-branch sec-branch-tr" viewBox="0 0 180 180" width="112" height="112" aria-hidden="true">
+          <use class="motif-olive" href="#branch-olive"/>
+          <use class="motif-wheat" href="#branch-wheat"/>
+        </svg>
+
+        <svg class="section-bg-arch ceremony-bg-arch" viewBox="0 0 100 130" width="380" height="220" fill="none" aria-hidden="true">
+          <use href="#arch-pointed"/>
+        </svg>
+
+        <svg class="bg-star ceremony-star-l" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
+        <svg class="bg-star bg-star-delay-2 ceremony-star-r" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
+
         <div class="container ceremony-inner">
           <div class="section-head reveal-block">
-            <svg class="head-star" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><use href="#star-4"/></svg>
+            <svg class="ceremony-arches-trio" viewBox="0 0 132 40" width="132" height="40" fill="none" aria-hidden="true">
+              <path d="M8 38 L8 22 C8 13, 15 8, 24 5 C33 8, 40 13, 40 22 L40 38" stroke="currentColor" stroke-width="1"/>
+              <path d="M46 38 L46 18 C46 9, 55 4, 66 1 C77 4, 86 9, 86 18 L86 38" stroke="currentColor" stroke-width="1"/>
+              <path d="M92 38 L92 22 C92 13, 99 8, 108 5 C117 8, 124 13, 124 22 L124 38" stroke="currentColor" stroke-width="1"/>
+            </svg>
             <h2 class="section-title" id="ceremonyHeading">The Nikah Ceremony</h2>
           </div>
 
@@ -442,44 +472,64 @@ html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-a
               <p class="detail-value" id="timeDisplay">11:00 AM</p>
               <p class="detail-sub" id="timeZone">Indian Standard Time</p>
             </article>
-
-            <!-- Venue -->
-            <article class="detail-card reveal-stagger" style="--stagger: 240ms;">
-              <span class="icon-circle" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 1 1 13 0C18.5 14.8 12 21 12 21z"/>
-                  <circle cx="12" cy="9.8" r="2.3"/>
-                </svg>
-              </span>
-              <span class="eyebrow card-eyebrow" id="venueLabel">VENUE</span>
-              <p class="detail-value detail-value-venue" id="venueName">Presidency Convention Center</p>
-              <p class="detail-sub" id="venueLocation">Poopalam</p>
-            </article>
           </div>
         </div>
       </section>
 
       <!-- ====================================================================
-           5. VENUE CARD SECTION (CLEAN DOUBLE-BORDER CARD, NO MAP EMBED)
+           5. VENUE CARD SECTION (SINGLE DOUBLE-BORDER CARD + REAL GOOGLE MAP)
            ==================================================================== -->
       <section id="venue" class="section-venue">
         <div class="container">
           <div class="venue-card reveal-block" id="venueCard">
             <div class="venue-card-inner">
-              <!-- Optional Photo in Pointed-Arch Mask (Hidden if config.venue.photo is empty) -->
-              <div class="venue-photo-arch" id="venuePhotoWrap" hidden>
-                <img id="venuePhotoImg" alt="Presidency Convention Center, Poopalam" loading="lazy">
-              </div>
+              <!-- Small Corner Sprigs Strictly Above the Map Frame -->
+              <svg class="corner-branch venue-branch-tl" viewBox="0 0 180 180" width="54" height="54" aria-hidden="true">
+                <use class="motif-olive" href="#branch-olive"/>
+                <use class="motif-wheat" href="#branch-wheat"/>
+              </svg>
+              <svg class="corner-branch venue-branch-tr" viewBox="0 0 180 180" width="54" height="54" aria-hidden="true">
+                <use class="motif-olive" href="#branch-olive"/>
+                <use class="motif-wheat" href="#branch-wheat"/>
+              </svg>
 
-              <!-- Centered Pin Ornament with One Gentle Entrance Pulse -->
-              <div class="venue-pin-wrap" aria-hidden="true">
-                <span class="venue-pin-pulse"></span>
-                <span class="icon-circle venue-pin-circle">
+              <!-- Full-Width Real Google Maps Preview Frame + Overlapping Pin Badge -->
+              <div class="venue-map-wrap">
+                <div class="venue-map-frame" id="venueMapFrame">
+                  <div class="venue-map-fallback" id="venueMapFallback">
+                    <svg class="venue-fallback-grid" viewBox="0 0 320 240" width="320" height="240" fill="none" preserveAspectRatio="none" aria-hidden="true">
+                      <path d="M0 60 Q140 80 320 42 M0 150 Q160 120 320 165 M75 0 Q95 120 65 240 M230 0 Q205 110 245 240" stroke="currentColor" stroke-width="1" stroke-dasharray="3 4"/>
+                      <circle cx="160" cy="116" r="28" stroke="currentColor" stroke-width="0.9"/>
+                      <circle cx="160" cy="116" r="56" stroke="currentColor" stroke-width="0.6" stroke-dasharray="2 4"/>
+                    </svg>
+                    <svg class="venue-fallback-pin" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 1 1 13 0C18.5 14.8 12 21 12 21z"/>
+                      <circle cx="12" cy="9.8" r="2.4"/>
+                    </svg>
+                    <p class="venue-fallback-text">Open in Maps to view the location</p>
+                  </div>
+
+                  <iframe
+                    id="venueMapIframe"
+                    class="venue-map-iframe"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Map showing Presidency Convention Center, Poopalam"
+                    allowfullscreen
+                  ></iframe>
+
+                  <button type="button" id="venueMapGuard" class="map-tap-guard" aria-label="Tap to explore map">
+                    <span class="map-explore-chip" aria-hidden="true">Tap to explore</span>
+                  </button>
+                </div>
+
+                <!-- Centered Gold Pin Badge Overlapping Bottom Edge With White Ring -->
+                <div class="venue-pin-badge" aria-hidden="true">
                   <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 1 1 13 0C18.5 14.8 12 21 12 21z"/>
                     <circle cx="12" cy="9.8" r="2.4"/>
                   </svg>
-                </span>
+                </div>
               </div>
 
               <h2 class="venue-card-title" id="venueCardName">Presidency Convention Center</h2>
@@ -503,12 +553,19 @@ html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-a
       </section>
 
       <!-- ====================================================================
-           6. COUNTDOWN SECTION (CURVED EDGES & 4 MIHRAB ARCH TILES)
+           6. COUNTDOWN SECTION (CURVED EDGES, LAYERED BG & 4 MIHRAB TILES)
            ==================================================================== -->
       <section id="countdown" class="section-countdown">
+        <div class="countdown-khatam-layer" aria-hidden="true"></div>
+
         <!-- Soft Top Curved Edge -->
         <svg class="curve-edge curve-edge-top" viewBox="0 0 1440 56" width="1440" height="40" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0 0 L1440 0 L1440 20 Q720 68 0 20 Z" fill="var(--bg)"/>
+        </svg>
+
+        <!-- Faint Pointed-Arch Outline Behind Tiles -->
+        <svg class="section-bg-arch countdown-bg-arch" viewBox="0 0 100 130" width="560" height="440" fill="none" aria-hidden="true">
+          <use href="#arch-pointed"/>
         </svg>
 
         <!-- Decorative Side Sprigs -->
@@ -591,17 +648,27 @@ html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-a
       </section>
 
       <!-- ====================================================================
-           7. WISHES SECTION (LIGHT GLASS TICKER & FORM)
+           7. WISHES SECTION (LAYERED BG, LIGHT GLASS TICKER & FORM)
            ==================================================================== -->
       <section id="wishes" class="section-wishes">
+        <div class="wishes-khatam-layer" aria-hidden="true"></div>
+
+        <svg class="section-bg-arch wishes-bg-arch" viewBox="0 0 100 130" width="360" height="190" fill="none" aria-hidden="true">
+          <use href="#arch-pointed"/>
+        </svg>
+
+        <svg class="wishes-crescent-corner" viewBox="0 0 120 120" width="160" height="160" fill="none" aria-hidden="true">
+          <use href="#crescent-star-outline"/>
+        </svg>
+
+        <svg class="bg-star wishes-star-1" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true"><use href="#star-4"/></svg>
+        <svg class="bg-star bg-star-delay-1 wishes-star-2" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
+        <svg class="bg-star bg-star-delay-2 wishes-star-3" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
+        <svg class="bg-star bg-star-delay-3 wishes-star-4" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true"><use href="#star-4"/></svg>
+
         <div class="container wishes-inner">
           <header class="wishes-header reveal-block">
-            <div class="wishes-title-row">
-              <h2 class="section-title" id="wishesHeading">Leave Your Wishes</h2>
-              <span class="wishes-count-chip" id="wishCountWrap" hidden>
-                <span id="wishCountChip">0 wishes</span>
-              </span>
-            </div>
+            <h2 class="section-title" id="wishesHeading">Leave Your Wishes</h2>
             <p class="wishes-desc" id="wishesDesc">Your prayers and wishes mean a lot to us.</p>
           </header>
 
@@ -629,7 +696,7 @@ html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-a
 
             <!-- Floating One-at-a-Time Wish Ticker -->
             <div class="wish-ticker-column reveal-block">
-              <div id="wishTickerPanel" class="wish-ticker-card glass-card" aria-label="Guest wishes">
+              <div id="wishTickerPanel" class="wish-ticker-card glass-card" tabindex="0" aria-label="Guest wishes">
                 <span class="wish-quote-mark" aria-hidden="true">“</span>
 
                 <div id="wishTickerContent" class="wish-ticker-content" aria-live="polite">
@@ -642,14 +709,14 @@ html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-a
                   <span id="wishTickerCounter" class="eyebrow wish-counter" hidden>1 / 1</span>
                   <div class="ticker-btn-row">
                     <button id="wishPrevBtn" type="button" class="ticker-circle-btn" aria-label="Previous wish">
-                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
                     </button>
                     <button id="wishPauseBtn" type="button" class="ticker-circle-btn" aria-label="Pause wish ticker">
                       <svg id="pauseIcon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>
                       <svg id="playIcon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" style="display:none;" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
                     </button>
                     <button id="wishNextBtn" type="button" class="ticker-circle-btn" aria-label="Next wish">
-                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
                     </button>
                   </div>
                 </div>
@@ -665,14 +732,31 @@ html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-a
     </main>
 
     <!-- ======================================================================
-         8. FOOTER (MASKED KHATAM PATTERN, BALANCED ARABIC DUA, CLEAR NAMES)
+         8. FOOTER (MIHRAB SILHOUETTES, MASKED KHATAM, CRESCENT & DUA)
          ====================================================================== -->
     <footer class="site-footer">
+      <!-- Row of Mihrab-Arch Silhouettes Across Very Top Edge -->
+      <svg class="footer-mihrab-border" viewBox="0 0 1200 36" width="1440" height="36" preserveAspectRatio="xMidYMin slice" fill="none" aria-hidden="true">
+        <path d="M0 36 L0 22 C0 12, 22 6, 50 2 C78 6, 100 12, 100 22 L100 36 M100 22 C100 12, 122 6, 150 2 C178 6, 200 12, 200 22 L200 36 M200 22 C200 12, 222 6, 250 2 C278 6, 300 12, 300 22 L300 36 M300 22 C300 12, 322 6, 350 2 C378 6, 400 12, 400 22 L400 36 M400 22 C400 12, 422 6, 450 2 C478 6, 500 12, 500 22 L500 36 M500 22 C500 12, 522 6, 550 2 C578 6, 600 12, 600 22 L600 36 M600 22 C600 12, 622 6, 650 2 C678 6, 700 12, 700 22 L700 36 M700 22 C700 12, 722 6, 750 2 C778 6, 800 12, 800 22 L800 36 M800 22 C800 12, 822 6, 850 2 C878 6, 900 12, 900 22 L900 36 M900 22 C900 12, 922 6, 950 2 C978 6, 1000 12, 1000 22 L1000 36 M1000 22 C1000 12, 1022 6, 1050 2 C1078 6, 1100 12, 1100 22 L1100 36 M1100 22 C1100 12, 1122 6, 1150 2 C1178 6, 1200 12, 1200 22 L1200 36" stroke="currentColor" stroke-width="1"/>
+      </svg>
+
       <div class="footer-khatam-wrap" aria-hidden="true">
         <div class="footer-khatam-layer"></div>
       </div>
 
+      <svg class="section-bg-arch footer-bg-arch" viewBox="0 0 100 130" width="340" height="180" fill="none" aria-hidden="true">
+        <use href="#arch-pointed"/>
+      </svg>
+
       <div class="container footer-inner">
+        <div class="footer-crescent-row ornament-row" aria-hidden="true">
+          <span class="ornament-line"></span>
+          <svg class="footer-crescent-icon" viewBox="0 0 28 24" width="24" height="20" aria-hidden="true">
+            <use href="#crescent-star"/>
+          </svg>
+          <span class="ornament-line"></span>
+        </div>
+
         <p dir="rtl" lang="ar" class="footer-dua" id="footerDua">بَارَكَ اللَّهُ لَكُمَا وَبَارَكَ عَلَيْكُمَا وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ</p>
 
         <span class="gold-hairline" aria-hidden="true"></span>
@@ -740,6 +824,6 @@ html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-a
   </script>
 
   <!-- Main Script -->
-  <script defer src="js/main.js?v=20261125b"></script>
+  <script defer src="js/main.js?v=20261125d"></script>
 </body>
 </html>
