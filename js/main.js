@@ -1132,6 +1132,20 @@
   function init() {
     applyThemePreset();
     hydrateCover();
+
+    const bgVar = window.getComputedStyle(document.documentElement).getPropertyValue('--bg');
+    if (!bgVar || !bgVar.trim()) {
+      document.documentElement.classList.add('css-fallback');
+      document.documentElement.classList.remove('scroll-locked');
+      document.body.classList.remove('scroll-locked');
+      const gate = document.getElementById('doorGate');
+      const page = document.getElementById('pageContent');
+      if (gate) gate.hidden = true;
+      if (page) page.removeAttribute('inert');
+      initRevealedPage();
+      return;
+    }
+
     setupCoverGate(initRevealedPage);
   }
 

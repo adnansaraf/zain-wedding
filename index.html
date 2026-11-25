@@ -21,24 +21,51 @@
   <meta name="twitter:description" id="twitterDescription" content="With the blessings of Allah, we cordially invite you to celebrate the Nikah ceremony of Dr. Sayed Zain Mashhoor &amp; Adv. Hanna Musthafa on 26 December 2026.">
   <meta name="twitter:image" id="twitterImage" content="assets/images/share.jpg">
 
+  <!-- Inline Critical CSS (<2KB, excludes custom properties so stylesheet failure is detectable) -->
+  <style id="critical-css">
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+.svg-sprite{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
+html{margin:0;background:#FBF9F4;color:#24402F;font-family:Georgia,serif}
+body{margin:0;background:#FBF9F4;color:#24402F}
+html.scroll-locked,body.scroll-locked{overflow:hidden;height:100vh}
+.door-gate{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center}
+.door-leaf{position:absolute;top:0;bottom:0;width:50%;height:100%;background:#FBF9F4}
+.door-left{left:0}.door-right{right:0}
+.cover-center{position:relative;z-index:20;text-align:center}
+.page-shell{visibility:hidden}
+svg{display:block;max-width:100%}
+.corner-branch{width:120px;height:120px}
+.speck{width:10px;height:10px}
+.curve-edge{width:100%;height:40px}
+.mihrab-svg{width:100px;height:136px}
+html.css-fallback,html.css-fallback body{overflow:auto!important;height:auto!important;max-width:720px;margin:0 auto;padding:24px 16px;line-height:1.6}
+html.css-fallback :is(.door-gate,.corner-branch,.cover-specks,.hero-arch-outline,.hero-khatam-band,.footer-khatam-wrap,.curve-edge,.mihrab-svg,.ornament-row,.mobile-menu-overlay,.modal-backdrop,.icon-circle,.tiny-star,.head-star,.nav-mobile-only,.hero-scroll-cue){display:none!important}
+html.css-fallback .page-shell{opacity:1!important;visibility:visible!important;content-visibility:visible!important}
+html.css-fallback .site-nav{position:static!important;opacity:1!important;pointer-events:auto!important;margin-bottom:24px}
+html.css-fallback .nav-link-list{display:flex;flex-wrap:wrap;gap:12px;list-style:none;padding:0}
+html.css-fallback .mihrab-grid{display:flex;flex-wrap:wrap;gap:16px}
+html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-align:center}
+  </style>
+
   <!-- Stylesheet first so CSS never waits behind font preloads -->
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" id="mainStylesheet" href="css/style.css?v=20261125b">
 
   <!-- Preload Critical Cover Fonts -->
-  <link rel="preload" href="assets/fonts/alex-brush-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/aref-ruqaa-arabic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/alex-brush-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/aref-ruqaa-arabic.woff2" as="font" type="font/woff2" crossorigin>
 
   <!-- Favicons -->
   <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
   <link rel="alternate icon" type="image/png" href="assets/images/favicon.png">
 
   <!-- Configuration loaded non-blocking; main.js runs right after in strict order -->
-  <script defer src="config/site.config.js"></script>
+  <script defer src="config/site.config.js?v=20261125b"></script>
 </head>
 <body class="scroll-locked">
 
   <!-- Shared Inline SVG Symbol Definitions (Theme-Adaptive Line Art) -->
-  <svg class="svg-sprite" aria-hidden="true" focusable="false">
+  <svg class="svg-sprite" width="0" height="0" aria-hidden="true" focusable="false">
     <defs>
       <!-- Olive / Eucalyptus Branch (ivorySage preset) -->
       <symbol id="branch-olive" viewBox="0 0 180 180" fill="none">
@@ -104,7 +131,7 @@
       </div>
       <div class="door-shade"></div>
       <div class="door-seam door-seam-left"></div>
-      <svg class="corner-branch door-branch-tl" viewBox="0 0 180 180">
+      <svg class="corner-branch door-branch-tl" viewBox="0 0 180 180" width="120" height="120" aria-hidden="true">
         <use class="motif-olive" href="#branch-olive"/>
         <use class="motif-wheat" href="#branch-wheat"/>
       </svg>
@@ -118,7 +145,7 @@
       </div>
       <div class="door-shade"></div>
       <div class="door-seam door-seam-right"></div>
-      <svg class="corner-branch door-branch-tr" viewBox="0 0 180 180">
+      <svg class="corner-branch door-branch-tr" viewBox="0 0 180 180" width="120" height="120" aria-hidden="true">
         <use class="motif-olive" href="#branch-olive"/>
         <use class="motif-wheat" href="#branch-wheat"/>
       </svg>
@@ -127,24 +154,24 @@
     <!-- 14 Staggered Twinkling Gold Specks Across Doors (3 Composite Groups) -->
     <div class="cover-specks" aria-hidden="true">
       <div class="speck-group speck-g1">
-        <svg class="speck s1" viewBox="0 0 24 24"><use href="#star-4"/></svg>
-        <svg class="speck s5" viewBox="0 0 24 24"><use href="#star-4"/></svg>
-        <svg class="speck s8" viewBox="0 0 24 24"><use href="#star-4"/></svg>
-        <svg class="speck s11" viewBox="0 0 24 24"><use href="#star-4"/></svg>
-        <svg class="speck s14" viewBox="0 0 24 24"><use href="#star-4"/></svg>
+        <svg class="speck s1" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
+        <svg class="speck s5" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
+        <svg class="speck s8" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
+        <svg class="speck s11" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
+        <svg class="speck s14" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
       </div>
       <div class="speck-group speck-g2">
-        <svg class="speck s2" viewBox="0 0 24 24"><use href="#star-4"/></svg>
-        <svg class="speck s4" viewBox="0 0 24 24"><use href="#star-4"/></svg>
-        <svg class="speck s7" viewBox="0 0 24 24"><use href="#star-4"/></svg>
-        <svg class="speck s10" viewBox="0 0 24 24"><use href="#star-4"/></svg>
-        <svg class="speck s13" viewBox="0 0 24 24"><use href="#star-4"/></svg>
+        <svg class="speck s2" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
+        <svg class="speck s4" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
+        <svg class="speck s7" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
+        <svg class="speck s10" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
+        <svg class="speck s13" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
       </div>
       <div class="speck-group speck-g3">
-        <svg class="speck s3" viewBox="0 0 24 24"><use href="#star-4"/></svg>
-        <svg class="speck s6" viewBox="0 0 24 24"><use href="#star-4"/></svg>
-        <svg class="speck s9" viewBox="0 0 24 24"><use href="#star-4"/></svg>
-        <svg class="speck s12" viewBox="0 0 24 24"><use href="#star-4"/></svg>
+        <svg class="speck s3" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
+        <svg class="speck s6" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
+        <svg class="speck s9" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
+        <svg class="speck s12" viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><use href="#star-4"/></svg>
       </div>
     </div>
 
@@ -154,7 +181,7 @@
 
       <div class="ornament-row" aria-hidden="true">
         <span class="ornament-line"></span>
-        <svg class="ornament-crescent" viewBox="0 0 28 24" width="22" height="19">
+        <svg class="ornament-crescent" viewBox="0 0 28 24" width="22" height="19" aria-hidden="true">
           <use href="#crescent-star"/>
         </svg>
         <span class="ornament-line"></span>
@@ -175,7 +202,7 @@
 
       <button id="openInvitationBtn" type="button" class="seal-trigger">
         <span class="wax-seal-btn" aria-hidden="true">
-          <svg class="seal-svg" viewBox="0 0 88 88" width="88" height="88">
+          <svg class="seal-svg" viewBox="0 0 88 88" width="88" height="88" aria-hidden="true">
             <defs>
               <linearGradient id="sealGoldGrad" x1="12%" y1="8%" x2="88%" y2="92%">
                 <stop offset="0%" stop-color="#ECE0C2"/>
@@ -276,7 +303,7 @@
         <div class="hero-khatam-band" aria-hidden="true"></div>
 
         <!-- Very large faint pointed-arch line outline BEHIND content -->
-        <svg class="hero-arch-outline" viewBox="0 0 440 620" fill="none" preserveAspectRatio="xMidYMin meet" aria-hidden="true">
+        <svg class="hero-arch-outline" viewBox="0 0 440 620" width="440" height="620" fill="none" preserveAspectRatio="xMidYMin meet" aria-hidden="true">
           <path
             class="hero-arch-path"
             pathLength="100"
@@ -287,11 +314,11 @@
         </svg>
 
         <!-- Swaying corner sprigs -->
-        <svg class="corner-branch hero-branch-tl" viewBox="0 0 180 180" aria-hidden="true">
+        <svg class="corner-branch hero-branch-tl" viewBox="0 0 180 180" width="120" height="120" aria-hidden="true">
           <use class="motif-olive" href="#branch-olive"/>
           <use class="motif-wheat" href="#branch-wheat"/>
         </svg>
-        <svg class="corner-branch hero-branch-tr" viewBox="0 0 180 180" aria-hidden="true">
+        <svg class="corner-branch hero-branch-tr" viewBox="0 0 180 180" width="120" height="120" aria-hidden="true">
           <use class="motif-olive" href="#branch-olive"/>
           <use class="motif-wheat" href="#branch-wheat"/>
         </svg>
@@ -338,7 +365,7 @@
         <div class="container invite-note-inner">
           <div class="ornament-row" aria-hidden="true">
             <span class="ornament-line ornament-wide"></span>
-            <svg class="tiny-star" viewBox="0 0 24 24" width="12" height="12"><use href="#star-4"/></svg>
+            <svg class="tiny-star" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><use href="#star-4"/></svg>
             <span class="ornament-line ornament-wide"></span>
           </div>
 
@@ -346,7 +373,7 @@
 
           <div class="ornament-row" aria-hidden="true">
             <span class="ornament-line ornament-wide"></span>
-            <svg class="tiny-star" viewBox="0 0 24 24" width="12" height="12"><use href="#star-4"/></svg>
+            <svg class="tiny-star" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><use href="#star-4"/></svg>
             <span class="ornament-line ornament-wide"></span>
           </div>
         </div>
@@ -391,7 +418,7 @@
             <!-- Date -->
             <article class="detail-card reveal-stagger" style="--stagger: 0ms;">
               <span class="icon-circle" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <rect x="3" y="5" width="18" height="16" rx="2"/>
                   <line x1="16" y1="3" x2="16" y2="7"/>
                   <line x1="8" y1="3" x2="8" y2="7"/>
@@ -406,7 +433,7 @@
             <!-- Time -->
             <article class="detail-card reveal-stagger" style="--stagger: 120ms;">
               <span class="icon-circle" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <circle cx="12" cy="12" r="9"/>
                   <polyline points="12 7 12 12 15.5 14"/>
                 </svg>
@@ -419,7 +446,7 @@
             <!-- Venue -->
             <article class="detail-card reveal-stagger" style="--stagger: 240ms;">
               <span class="icon-circle" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 1 1 13 0C18.5 14.8 12 21 12 21z"/>
                   <circle cx="12" cy="9.8" r="2.3"/>
                 </svg>
@@ -448,7 +475,7 @@
               <div class="venue-pin-wrap" aria-hidden="true">
                 <span class="venue-pin-pulse"></span>
                 <span class="icon-circle venue-pin-circle">
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 1 1 13 0C18.5 14.8 12 21 12 21z"/>
                     <circle cx="12" cy="9.8" r="2.4"/>
                   </svg>
@@ -480,16 +507,16 @@
            ==================================================================== -->
       <section id="countdown" class="section-countdown">
         <!-- Soft Top Curved Edge -->
-        <svg class="curve-edge curve-edge-top" viewBox="0 0 1440 56" preserveAspectRatio="none" aria-hidden="true">
+        <svg class="curve-edge curve-edge-top" viewBox="0 0 1440 56" width="1440" height="40" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0 0 L1440 0 L1440 20 Q720 68 0 20 Z" fill="var(--bg)"/>
         </svg>
 
         <!-- Decorative Side Sprigs -->
-        <svg class="corner-branch countdown-branch-l" viewBox="0 0 180 180" aria-hidden="true">
+        <svg class="corner-branch countdown-branch-l" viewBox="0 0 180 180" width="110" height="110" aria-hidden="true">
           <use class="motif-olive" href="#branch-olive"/>
           <use class="motif-wheat" href="#branch-wheat"/>
         </svg>
-        <svg class="corner-branch countdown-branch-r" viewBox="0 0 180 180" aria-hidden="true">
+        <svg class="corner-branch countdown-branch-r" viewBox="0 0 180 180" width="110" height="110" aria-hidden="true">
           <use class="motif-olive" href="#branch-olive"/>
           <use class="motif-wheat" href="#branch-wheat"/>
         </svg>
@@ -502,7 +529,7 @@
           <div class="mihrab-grid" id="countdownGrid" aria-label="Countdown timer to wedding ceremony">
             <!-- DAYS -->
             <div class="mihrab-tile reveal-stagger" style="--stagger: 0ms;">
-              <svg class="mihrab-svg" viewBox="0 0 100 136" preserveAspectRatio="none" aria-hidden="true">
+              <svg class="mihrab-svg" viewBox="0 0 100 136" width="100" height="136" preserveAspectRatio="none" aria-hidden="true">
                 <path d="M1.5 134.5 L1.5 52 C1.5 26, 22 10, 50 2 C78 10, 98.5 26, 98.5 52 L98.5 134.5 Z" fill="#FFFFFF" stroke="var(--accent)" stroke-width="1"/>
               </svg>
               <div class="mihrab-body">
@@ -514,7 +541,7 @@
 
             <!-- HOURS -->
             <div class="mihrab-tile reveal-stagger" style="--stagger: 100ms;">
-              <svg class="mihrab-svg" viewBox="0 0 100 136" preserveAspectRatio="none" aria-hidden="true">
+              <svg class="mihrab-svg" viewBox="0 0 100 136" width="100" height="136" preserveAspectRatio="none" aria-hidden="true">
                 <path d="M1.5 134.5 L1.5 52 C1.5 26, 22 10, 50 2 C78 10, 98.5 26, 98.5 52 L98.5 134.5 Z" fill="#FFFFFF" stroke="var(--accent)" stroke-width="1"/>
               </svg>
               <div class="mihrab-body">
@@ -526,7 +553,7 @@
 
             <!-- MINUTES -->
             <div class="mihrab-tile reveal-stagger" style="--stagger: 200ms;">
-              <svg class="mihrab-svg" viewBox="0 0 100 136" preserveAspectRatio="none" aria-hidden="true">
+              <svg class="mihrab-svg" viewBox="0 0 100 136" width="100" height="136" preserveAspectRatio="none" aria-hidden="true">
                 <path d="M1.5 134.5 L1.5 52 C1.5 26, 22 10, 50 2 C78 10, 98.5 26, 98.5 52 L98.5 134.5 Z" fill="#FFFFFF" stroke="var(--accent)" stroke-width="1"/>
               </svg>
               <div class="mihrab-body">
@@ -538,7 +565,7 @@
 
             <!-- SECONDS (Animated 60s Stroke Progress Outline) -->
             <div class="mihrab-tile mihrab-tile-seconds reveal-stagger" style="--stagger: 300ms;">
-              <svg class="mihrab-svg" viewBox="0 0 100 136" preserveAspectRatio="none" aria-hidden="true">
+              <svg class="mihrab-svg" viewBox="0 0 100 136" width="100" height="136" preserveAspectRatio="none" aria-hidden="true">
                 <path d="M1.5 134.5 L1.5 52 C1.5 26, 22 10, 50 2 C78 10, 98.5 26, 98.5 52 L98.5 134.5 Z" fill="#FFFFFF" stroke="var(--line)" stroke-width="1"/>
                 <path id="secondsProgressPath" class="mihrab-progress-path" pathLength="60" d="M50 2 C78 10, 98.5 26, 98.5 52 L98.5 134.5 L1.5 134.5 L1.5 52 C1.5 26, 22 10, 50 2 Z" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="60" stroke-dashoffset="0"/>
               </svg>
@@ -558,7 +585,7 @@
         </div>
 
         <!-- Soft Bottom Curved Edge -->
-        <svg class="curve-edge curve-edge-bottom" viewBox="0 0 1440 56" preserveAspectRatio="none" aria-hidden="true">
+        <svg class="curve-edge curve-edge-bottom" viewBox="0 0 1440 56" width="1440" height="40" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0 56 L1440 56 L1440 36 Q720 -12 0 36 Z" fill="var(--bg)"/>
         </svg>
       </section>
@@ -692,7 +719,27 @@
   <!-- Toast Banner -->
   <div id="toastBanner" role="status" aria-live="polite" class="toast-banner"></div>
 
+  <!-- Stylesheet-Failed Fallback (Runs independently even if external CSS/JS fails) -->
+  <script>
+    (function () {
+      function applyCssFallback() {
+        var bg = window.getComputedStyle(document.documentElement).getPropertyValue('--bg');
+        if (bg && bg.trim()) return;
+        document.documentElement.classList.add('css-fallback');
+        document.documentElement.classList.remove('scroll-locked');
+        if (document.body) document.body.classList.remove('scroll-locked');
+        var gate = document.getElementById('doorGate');
+        if (gate) gate.hidden = true;
+        var page = document.getElementById('pageContent');
+        if (page) page.removeAttribute('inert');
+      }
+      var css = document.getElementById('mainStylesheet');
+      if (css) css.addEventListener('error', applyCssFallback);
+      window.addEventListener('load', applyCssFallback);
+    })();
+  </script>
+
   <!-- Main Script -->
-  <script defer src="js/main.js"></script>
+  <script defer src="js/main.js?v=20261125b"></script>
 </body>
 </html>
