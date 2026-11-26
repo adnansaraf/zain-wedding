@@ -50,7 +50,7 @@ html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-a
   </style>
 
   <!-- Stylesheet first so CSS never waits behind font preloads -->
-  <link rel="stylesheet" id="mainStylesheet" href="css/style.css?v=20261125d">
+  <link rel="stylesheet" id="mainStylesheet" href="css/style.css?v=20261126a">
 
   <!-- Preload Critical Cover Fonts -->
   <link rel="preload" href="/assets/fonts/alex-brush-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -61,7 +61,7 @@ html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-a
   <link rel="alternate icon" type="image/png" href="assets/images/favicon.png">
 
   <!-- Configuration loaded non-blocking; main.js runs right after in strict order -->
-  <script defer src="config/site.config.js?v=20261125d"></script>
+  <script defer src="config/site.config.js?v=20261126a"></script>
 </head>
 <body class="scroll-locked">
 
@@ -444,108 +444,106 @@ html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-a
             <h2 class="section-title" id="ceremonyHeading">The Nikah Ceremony</h2>
           </div>
 
-          <div class="ceremony-cards">
-            <!-- Date -->
-            <article class="detail-card reveal-stagger" style="--stagger: 0ms;">
-              <span class="icon-circle" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <rect x="3" y="5" width="18" height="16" rx="2"/>
-                  <line x1="16" y1="3" x2="16" y2="7"/>
-                  <line x1="8" y1="3" x2="8" y2="7"/>
-                  <line x1="3" y1="10" x2="21" y2="10"/>
-                </svg>
-              </span>
-              <span class="eyebrow card-eyebrow" id="dateLabel">DATE</span>
-              <p class="detail-value" id="dateValue">26</p>
-              <p class="detail-sub" id="dateSubtext">December 2026 · Saturday</p>
-            </article>
+          <div class="ceremony-stack">
+            <div class="ceremony-cards">
+              <!-- Date -->
+              <article class="detail-card reveal-stagger" style="--stagger: 0ms;">
+                <span class="icon-circle" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="5" width="18" height="16" rx="2"/>
+                    <line x1="16" y1="3" x2="16" y2="7"/>
+                    <line x1="8" y1="3" x2="8" y2="7"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                  </svg>
+                </span>
+                <span class="eyebrow card-eyebrow" id="dateLabel">DATE</span>
+                <p class="detail-value" id="dateValue">26</p>
+                <p class="detail-sub" id="dateSubtext">December 2026 · Saturday</p>
+              </article>
 
-            <!-- Time -->
-            <article class="detail-card reveal-stagger" style="--stagger: 120ms;">
-              <span class="icon-circle" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <circle cx="12" cy="12" r="9"/>
-                  <polyline points="12 7 12 12 15.5 14"/>
-                </svg>
-              </span>
-              <span class="eyebrow card-eyebrow" id="timeLabel">TIME</span>
-              <p class="detail-value" id="timeDisplay">11:00 AM</p>
-              <p class="detail-sub" id="timeZone">Indian Standard Time</p>
-            </article>
-          </div>
-        </div>
-      </section>
+              <!-- Time -->
+              <article class="detail-card reveal-stagger" style="--stagger: 120ms;">
+                <span class="icon-circle" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9"/>
+                    <polyline points="12 7 12 12 15.5 14"/>
+                  </svg>
+                </span>
+                <span class="eyebrow card-eyebrow" id="timeLabel">TIME</span>
+                <p class="detail-value" id="timeDisplay">11:00 AM</p>
+                <p class="detail-sub" id="timeZone">Indian Standard Time</p>
+              </article>
+            </div>
 
-      <!-- ====================================================================
-           5. VENUE CARD SECTION (SINGLE DOUBLE-BORDER CARD + REAL GOOGLE MAP)
-           ==================================================================== -->
-      <section id="venue" class="section-venue">
-        <div class="container">
-          <div class="venue-card reveal-block" id="venueCard">
-            <div class="venue-card-inner">
-              <!-- Small Corner Sprigs Strictly Above the Map Frame -->
-              <svg class="corner-branch venue-branch-tl" viewBox="0 0 180 180" width="54" height="54" aria-hidden="true">
-                <use class="motif-olive" href="#branch-olive"/>
-                <use class="motif-wheat" href="#branch-wheat"/>
-              </svg>
-              <svg class="corner-branch venue-branch-tr" viewBox="0 0 180 180" width="54" height="54" aria-hidden="true">
-                <use class="motif-olive" href="#branch-olive"/>
-                <use class="motif-wheat" href="#branch-wheat"/>
-              </svg>
+            <!-- Venue Card inside Unified Stack (Same --stack-gap below Date/Time) -->
+            <div id="venue" class="venue-anchor">
+              <div class="venue-card reveal-block" id="venueCard">
+                <div class="venue-card-inner">
+                  <!-- Small Corner Sprigs Strictly Above the Map Frame -->
+                  <svg class="corner-branch venue-branch-tl" viewBox="0 0 180 180" width="54" height="54" aria-hidden="true">
+                    <use class="motif-olive" href="#branch-olive"/>
+                    <use class="motif-wheat" href="#branch-wheat"/>
+                  </svg>
+                  <svg class="corner-branch venue-branch-tr" viewBox="0 0 180 180" width="54" height="54" aria-hidden="true">
+                    <use class="motif-olive" href="#branch-olive"/>
+                    <use class="motif-wheat" href="#branch-wheat"/>
+                  </svg>
 
-              <!-- Full-Width Real Google Maps Preview Frame + Overlapping Pin Badge -->
-              <div class="venue-map-wrap">
-                <div class="venue-map-frame" id="venueMapFrame">
-                  <div class="venue-map-fallback" id="venueMapFallback">
-                    <svg class="venue-fallback-grid" viewBox="0 0 320 240" width="320" height="240" fill="none" preserveAspectRatio="none" aria-hidden="true">
-                      <path d="M0 60 Q140 80 320 42 M0 150 Q160 120 320 165 M75 0 Q95 120 65 240 M230 0 Q205 110 245 240" stroke="currentColor" stroke-width="1" stroke-dasharray="3 4"/>
-                      <circle cx="160" cy="116" r="28" stroke="currentColor" stroke-width="0.9"/>
-                      <circle cx="160" cy="116" r="56" stroke="currentColor" stroke-width="0.6" stroke-dasharray="2 4"/>
-                    </svg>
-                    <svg class="venue-fallback-pin" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 1 1 13 0C18.5 14.8 12 21 12 21z"/>
-                      <circle cx="12" cy="9.8" r="2.4"/>
-                    </svg>
-                    <p class="venue-fallback-text">Open in Maps to view the location</p>
+                  <!-- Full-Width Real Google Maps Preview Frame + Overlapping Pin Badge -->
+                  <div class="venue-map-wrap">
+                    <div class="venue-map-frame" id="venueMapFrame">
+                      <div class="venue-map-fallback" id="venueMapFallback">
+                        <svg class="venue-fallback-grid" viewBox="0 0 320 240" width="320" height="240" fill="none" preserveAspectRatio="none" aria-hidden="true">
+                          <path d="M0 60 Q140 80 320 42 M0 150 Q160 120 320 165 M75 0 Q95 120 65 240 M230 0 Q205 110 245 240" stroke="currentColor" stroke-width="1" stroke-dasharray="3 4"/>
+                          <circle cx="160" cy="116" r="28" stroke="currentColor" stroke-width="0.9"/>
+                          <circle cx="160" cy="116" r="56" stroke="currentColor" stroke-width="0.6" stroke-dasharray="2 4"/>
+                        </svg>
+                        <svg class="venue-fallback-pin" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 1 1 13 0C18.5 14.8 12 21 12 21z"/>
+                          <circle cx="12" cy="9.8" r="2.4"/>
+                        </svg>
+                        <p class="venue-fallback-text">Open in Maps to view the location</p>
+                      </div>
+
+                      <iframe
+                        id="venueMapIframe"
+                        class="venue-map-iframe"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Map showing Presidency Convention Center, Poopalam"
+                        allowfullscreen
+                      ></iframe>
+
+                      <button type="button" id="venueMapGuard" class="map-tap-guard" aria-label="Tap to explore map">
+                        <span class="map-explore-chip" aria-hidden="true">Tap to explore</span>
+                      </button>
+                    </div>
+
+                    <!-- Centered Gold Pin Badge Overlapping Bottom Edge With White Ring -->
+                    <div class="venue-pin-badge" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 1 1 13 0C18.5 14.8 12 21 12 21z"/>
+                        <circle cx="12" cy="9.8" r="2.4"/>
+                      </svg>
+                    </div>
                   </div>
 
-                  <iframe
-                    id="venueMapIframe"
-                    class="venue-map-iframe"
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"
-                    title="Map showing Presidency Convention Center, Poopalam"
-                    allowfullscreen
-                  ></iframe>
+                  <h2 class="venue-card-title" id="venueCardName">Presidency Convention Center</h2>
+                  <p class="venue-card-area" id="venueCardArea">Poopalam, Perinthalmanna</p>
+                  <p class="venue-card-address" id="venueCardAddress">SH-39, Poopalam, Perinthalmanna, Kerala 679322</p>
 
-                  <button type="button" id="venueMapGuard" class="map-tap-guard" aria-label="Tap to explore map">
-                    <span class="map-explore-chip" aria-hidden="true">Tap to explore</span>
-                  </button>
+                  <div class="venue-actions">
+                    <a id="openMapsBtn" href="https://maps.app.goo.gl/CgF19UWEokYYaRuU6" target="_blank" rel="noopener noreferrer" class="btn-solid">
+                      <span id="mapBtnText">Open location in Maps</span>
+                    </a>
+                    <a id="addToCalendarBtn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Nikah+Ceremony%3A+Zain+Weds+Hanna&amp;dates=20261226T053000Z/20261226T063000Z&amp;details=With+the+blessings+of+Allah%2C+we+cordially+invite+you+to+the+Nikah+ceremony+of+Dr.+Sayed+Zain+Mashhoor+and+Adv.+Hanna+Musthafa.&amp;location=Presidency+Convention+Center%2C+Poopalam" target="_blank" rel="noopener noreferrer" class="btn-outline">
+                      <span id="calendarBtnText">Add to Calendar</span>
+                    </a>
+                    <button id="copyAddressBtn" type="button" class="btn-text-link">
+                      <span id="copyAddressBtnText">Copy address</span>
+                    </button>
+                  </div>
                 </div>
-
-                <!-- Centered Gold Pin Badge Overlapping Bottom Edge With White Ring -->
-                <div class="venue-pin-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 1 1 13 0C18.5 14.8 12 21 12 21z"/>
-                    <circle cx="12" cy="9.8" r="2.4"/>
-                  </svg>
-                </div>
-              </div>
-
-              <h2 class="venue-card-title" id="venueCardName">Presidency Convention Center</h2>
-              <p class="venue-card-area" id="venueCardArea">Poopalam, Perinthalmanna</p>
-              <p class="venue-card-address" id="venueCardAddress">SH-39, Poopalam, Perinthalmanna, Kerala 679322</p>
-
-              <div class="venue-actions">
-                <a id="openMapsBtn" href="https://maps.app.goo.gl/CgF19UWEokYYaRuU6" target="_blank" rel="noopener noreferrer" class="btn-solid">
-                  <span id="mapBtnText">Open location in Maps</span>
-                </a>
-                <a id="addToCalendarBtn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Nikah+Ceremony%3A+Zain+Weds+Hanna&amp;dates=20261226T053000Z/20261226T063000Z&amp;details=With+the+blessings+of+Allah%2C+we+cordially+invite+you+to+the+Nikah+ceremony+of+Dr.+Sayed+Zain+Mashhoor+and+Adv.+Hanna+Musthafa.&amp;location=Presidency+Convention+Center%2C+Poopalam" target="_blank" rel="noopener noreferrer" class="btn-outline">
-                  <span id="calendarBtnText">Add to Calendar</span>
-                </a>
-                <button id="copyAddressBtn" type="button" class="btn-text-link">
-                  <span id="copyAddressBtnText">Copy address</span>
-                </button>
               </div>
             </div>
           </div>
@@ -824,6 +822,6 @@ html.css-fallback .mihrab-tile{padding:12px 16px;border:1px solid #B08D4A;text-a
   </script>
 
   <!-- Main Script -->
-  <script defer src="js/main.js?v=20261125d"></script>
+  <script defer src="js/main.js?v=20261126a"></script>
 </body>
 </html>
