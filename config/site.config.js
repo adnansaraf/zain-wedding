@@ -114,11 +114,13 @@ const SITE_CONFIG = {
     name: "Presidency Convention Center",
     area: "Poopalam, Perinthalmanna",
     address: "SH-39, Poopalam, Perinthalmanna, Kerala 679322",
-    // How to get mapEmbedSrc: Open Google Maps -> Share -> Embed a map -> copy only the src="..." URL inside the iframe code.
-    // Leave empty ("") to automatically build the embed URL from `venue.address`.
-    mapEmbedSrc: "",
     mapsButtonText: "Open location in Maps",
-    mapsUrl: "https://maps.app.goo.gl/CgF19UWEokYYaRuU6",
+    mapsUrl: "https://maps.app.goo.gl/mxupFqSkUYHrzY53A",
+    // Exact coordinates of the venue pin (from Google Maps URL @lat,lng or right-click). Leave empty ("") if unknown.
+    lat: "",
+    lng: "",
+    // Optional: paste the src="..." URL from Google Maps > Share > Embed a map; it wins over everything else.
+    mapEmbedSrc: "",
     calendarButtonText: "Add to Calendar",
     calendarUrl: "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Nikah+Ceremony%3A+Zain+Weds+Hanna&dates=20261226T053000Z/20261226T063000Z&details=With+the+blessings+of+Allah%2C+we+cordially+invite+you+to+the+Nikah+ceremony+of+Dr.+Sayed+Zain+Mashhoor+and+Adv.+Hanna+Musthafa.&location=Presidency+Convention+Center%2C+Poopalam",
     copyButtonText: "Copy address",

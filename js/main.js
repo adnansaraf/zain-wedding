@@ -482,9 +482,17 @@
     if (!frame || !iframe) return;
 
     const venueName = (config.venue && config.venue.name) || 'Presidency Convention Center';
-    const address = (config.venue && config.venue.address) || 'Presidency Convention Center, Poopalam, Perinthalmanna, Kerala 679322';
     const customEmbed = config.venue && config.venue.mapEmbedSrc ? String(config.venue.mapEmbedSrc).trim() : '';
-    const embedSrc = customEmbed || ('https://www.google.com/maps?q=' + encodeURIComponent(address) + '&z=16&output=embed');
+    const rawLat = config.venue && config.venue.lat !== undefined && config.venue.lat !== null ? String(config.venue.lat).trim() : '';
+    const rawLng = config.venue && config.venue.lng !== undefined && config.venue.lng !== null ? String(config.venue.lng).trim() : '';
+    const hasCoords = rawLat !== '' && rawLng !== '' && Number.isFinite(Number(rawLat)) && Number.isFinite(Number(rawLng));
+
+    let embedSrc = '';
+    if (customEmbed) {
+      embedSrc = customEmbed;
+    } else if (hasCoords) {
+      embedSrc = `https://www.google.com/maps?q=${encodeURIComponent(rawLat)},${encodeURIComponent(rawLng)}&z=17&output=embed`;
+    }
 
     iframe.setAttribute('title', 'Map showing ' + venueName + ', Poopalam');
 
@@ -498,6 +506,11 @@
 
     function clearMapFallback() {
       frame.classList.remove('is-fallback');
+    }
+
+    if (!embedSrc) {
+      showMapFallback();
+      return;
     }
 
     if (guard) {
